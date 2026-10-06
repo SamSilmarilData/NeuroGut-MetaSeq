@@ -6,6 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Reproducibility: Docker](https://img.shields.io/badge/reproducibility-Docker-2496ED.svg)](Dockerfile)
 [![FAIR Data](https://img.shields.io/badge/FAIR-Compliant-brightgreen.svg)](SPECIFICATION.md)
+[![Literature Review](https://img.shields.io/badge/Literature%20Review-5%2C200%2B%20words-purple.svg)](docs/LITERATURE_REVIEW.md)
 [![GitHub Pages](https://img.shields.io/badge/Web%20Paper-Live-success.svg)](docs/index.html)
 
 ---
@@ -226,6 +227,8 @@ NeuroGut-MetaSeq/
 │   └── figures/                   # Publication-ready figures (300 DPI)
 ├── docs/
 │   ├── index.html                 # Interactive scientific web paper
+│   ├── LITERATURE_REVIEW.md       # Comprehensive academic literature review (5,200+ words)
+│   ├── USER_GUIDE.md              # User and deployment manual
 │   └── assets/                    # Figures, CSVs, and interactive assets
 └── tests/
     ├── test_metadata_schema.py    # Metadata validation tests

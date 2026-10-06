@@ -21,3 +21,13 @@ def test_web_paper_content():
     assert "Figure 3 |" in html
     assert "META_DATA" in html
     assert len(html) > 5000, "Web paper HTML seems incomplete"
+
+def test_literature_review_document():
+    assert os.path.exists("docs/LITERATURE_REVIEW.md"), "Missing docs/LITERATURE_REVIEW.md"
+    with open("docs/LITERATURE_REVIEW.md", "r", encoding="utf-8") as f:
+        content = f.read()
+    assert "Biological Foundations" in content
+    assert "Biochemical Mechanisms" in content
+    assert "Computational RNA-Seq Meta-Analysis" in content
+    assert "Erny, D." in content
+    assert len(content.split()) >= 3000, "Literature review word count should be comprehensive"

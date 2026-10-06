@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2026-10-07
 
 ### Added
+- **Comprehensive Academic Literature Review** (`docs/LITERATURE_REVIEW.md`):
+  - 5,200+ word, 3-pillar scholarly review with 40 formal academic citations (PMIDs/DOIs).
+  - Deep coverage of microglial ontogeny, homeostatic checkpoints (*Tmem119*, *Cx3cr1*, *P2ry12*), and microbiome depletion phenotypes (Erny et al. 2015, Thion et al. 2018).
+  - Detailed biochemical signaling models: pan-HDAC inhibition, canonical NF-κB repression, GPCR signaling (*Ffar2*, *Ffar3*, *Hcar2*), and the "two-hit" neuroinflammatory priming paradox.
+  - Comprehensive guide to computational RNA-seq meta-analysis: Negative Binomial GLMs, random-effects pooling, isolation stress auditing, and TF regulon inference.
 - **Multi-Cohort RNA-Seq Ingestion Engine** (`scripts/01_download_geo.py`):
   - Automated downloader for public transcriptomic repositories using NCBI E-utilities and HTTPS FTP.
   - Curated initial dataset manifest (`config/datasets.yaml`) including landmark cohorts:
