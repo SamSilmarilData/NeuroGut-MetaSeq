@@ -1,0 +1,30 @@
+# Python & Virtual Environments
+.venv/
+env/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Raw Large Genomic Data (Downloaded on demand)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Logs & Temp
+*.log
+scratch/

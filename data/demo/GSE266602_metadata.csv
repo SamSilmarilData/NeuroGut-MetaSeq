@@ -1,0 +1,7 @@
+sample_id,cohort,condition,group_label,sex,tissue,sequencing_type
+SPF_Sham_1,GSE266602,reference,SPF_Sham,Unspecified,Microglia,Bulk RNA-seq
+SPF_Sham_2,GSE266602,reference,SPF_Sham,Unspecified,Microglia,Bulk RNA-seq
+SPF_Sham_3,GSE266602,reference,SPF_Sham,Unspecified,Microglia,Bulk RNA-seq
+GF_Sham_1,GSE266602,perturbed,GF_Sham,Unspecified,Microglia,Bulk RNA-seq
+GF_Sham_2,GSE266602,perturbed,GF_Sham,Unspecified,Microglia,Bulk RNA-seq
+GF_Sham_3,GSE266602,perturbed,GF_Sham,Unspecified,Microglia,Bulk RNA-seq

@@ -1,0 +1,85 @@
+# NeuroGut-MetaSeq Dataset Configuration Manifest
+version: "1.0"
+
+cohorts:
+  GSE107925:
+    title: "Genome wide study of microglia in Specific-pathogen-free (SPF) and Germ-free (GF) mice"
+    publication: "Thion et al., Cell 2018"
+    pmid: "29249358"
+    organism: "Mus musculus"
+    tissue: "Adult brain microglia (FACS sorted CD11b+ CD45low)"
+    sequencing_type: "Bulk RNA-seq"
+    contrast_type: "depletion"
+    reference_group: "SPF"
+    treatment_group: "GF"
+    sample_selection:
+      age: "Adult (A2M)"
+      sexes: ["Male", "Female"]
+    files:
+      counts:
+        url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107925/suppl/GSE107925_readCount_geneName.txt.gz"
+        local_path: "data/raw/GSE107925/GSE107925_readCount_geneName.txt.gz"
+      series_matrix:
+        url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE107nnn/GSE107925/matrix/GSE107925_series_matrix.txt.gz"
+        local_path: "data/raw/GSE107925/GSE107925_series_matrix.txt.gz"
+
+  GSE108045:
+    title: "Adult microglia in SPF mice treated with broad-spectrum antibiotics (ABX)"
+    publication: "Thion et al., Cell 2018"
+    pmid: "29249358"
+    organism: "Mus musculus"
+    tissue: "Adult brain microglia"
+    sequencing_type: "Bulk RNA-seq"
+    contrast_type: "depletion"
+    reference_group: "CTR"
+    treatment_group: "ABX"
+    sample_selection:
+      age: "Adult"
+      sexes: ["Male", "Female"]
+    files:
+      counts:
+        url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE108nnn/GSE108045/suppl/GSE108045_readCount_geneName_exp2.txt.gz"
+        local_path: "data/raw/GSE108045/GSE108045_readCount_geneName_exp2.txt.gz"
+      series_matrix:
+        url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE108nnn/GSE108045/matrix/GSE108045_series_matrix.txt.gz"
+        local_path: "data/raw/GSE108045/GSE108045_series_matrix.txt.gz"
+
+  GSE266602:
+    title: "Microglia-mediated neuroinflammation post-ICH by gut microbiota and SCFA metabolism"
+    publication: "Wang et al., 2024"
+    pmid: "38763355"
+    organism: "Mus musculus"
+    tissue: "Primary microglia"
+    sequencing_type: "Bulk RNA-seq"
+    contrast_type: "depletion"
+    reference_group: "SPF_Sham"
+    treatment_group: "GF_Sham"
+    sample_selection:
+      baseline_only: true
+    files:
+      counts:
+        url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE266nnn/GSE266602/suppl/GSE266602_gene_count_matrix.txt.gz"
+        local_path: "data/raw/GSE266602/GSE266602_gene_count_matrix.txt.gz"
+      series_matrix:
+        url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE266nnn/GSE266602/matrix/GSE266602_series_matrix.txt.gz"
+        local_path: "data/raw/GSE266602/GSE266602_series_matrix.txt.gz"
+
+  GSE186210:
+    title: "Role of dietary fiber and microbiota metabolite receptors in microglial transcriptome"
+    publication: "Matt et al., J Neurosci 2023"
+    pmid: "37596052"
+    organism: "Mus musculus"
+    tissue: "Microglia"
+    sequencing_type: "Bulk RNA-seq"
+    contrast_type: "metabolite_perturbation"
+    reference_group: "Fiber_Normal"
+    treatment_group: "Zero_Fiber"
+    sample_selection:
+      genotype: "WT"
+    files:
+      counts:
+        url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE186nnn/GSE186210/suppl/GSE186210_table.tsv.gz"
+        local_path: "data/raw/GSE186210/GSE186210_table.tsv.gz"
+      series_matrix:
+        url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE186nnn/GSE186210/matrix/GSE186210_series_matrix.txt.gz"
+        local_path: "data/raw/GSE186210/GSE186210_series_matrix.txt.gz"

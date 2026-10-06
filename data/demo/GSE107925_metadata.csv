@@ -1,0 +1,13 @@
+sample_id,cohort,condition,group_label,sex,tissue,sequencing_type
+A2M_SPF_Male_1,GSE107925,reference,SPF,Male,Microglia,Bulk RNA-seq
+A2M_SPF_Male_2,GSE107925,reference,SPF,Male,Microglia,Bulk RNA-seq
+A2M_SPF_Male_3,GSE107925,reference,SPF,Male,Microglia,Bulk RNA-seq
+A2M_SPF_Female_1,GSE107925,reference,SPF,Female,Microglia,Bulk RNA-seq
+A2M_SPF_Female_2,GSE107925,reference,SPF,Female,Microglia,Bulk RNA-seq
+A2M_SPF_Female_3,GSE107925,reference,SPF,Female,Microglia,Bulk RNA-seq
+A2M_GF_Male_1,GSE107925,perturbed,GF,Male,Microglia,Bulk RNA-seq
+A2M_GF_Male_2,GSE107925,perturbed,GF,Male,Microglia,Bulk RNA-seq
+A2M_GF_Male_3,GSE107925,perturbed,GF,Male,Microglia,Bulk RNA-seq
+A2M_GF_Female_1,GSE107925,perturbed,GF,Female,Microglia,Bulk RNA-seq
+A2M_GF_Female_2,GSE107925,perturbed,GF,Female,Microglia,Bulk RNA-seq
+A2M_GF_Female_3,GSE107925,perturbed,GF,Female,Microglia,Bulk RNA-seq

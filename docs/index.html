@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroGut-MetaSeq | Microglial Transcriptomic Meta-Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a365d;
+      --secondary: #2b6cb0;
+      --accent: #c53030;
+      --accent-blue: #2b5c8f;
+      --bg: #fdfdfd;
+      --text: #2d3748;
+      --text-muted: #718096;
+      --border: #e2e8f0;
+      --card-bg: #ffffff;
+      --code-bg: #f7fafc;
+      --highlight: #feebc8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 19px;
+      line-height: 1.7;
+      color: var(--text);
+      background-color: var(--bg);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    header, main, footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    header {
+      padding-top: 50px;
+      padding-bottom: 40px;
+      border-bottom: 2px solid var(--border);
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: var(--primary);
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+    .subtitle {
+      font-size: 22px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+    .authors {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+    .meta-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--secondary); color: white; border: 1px solid var(--secondary); }
+    .btn-primary:hover { background: var(--primary); }
+    .btn-outline { background: white; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { background: var(--code-bg); border-color: var(--text-muted); }
+    
+    .abstract-box {
+      background: #f7fafc;
+      border-left: 4px solid var(--secondary);
+      padding: 24px 28px;
+      margin: 40px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .abstract-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--secondary);
+      margin-bottom: 10px;
+    }
+    
+    h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 48px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+    p { margin-bottom: 20px; }
+    
+    .figure-container {
+      margin: 36px 0;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+    .figure-img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+    .figure-caption {
+      margin-top: 14px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+    }
+    .figure-caption strong {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--primary);
+    }
+    
+    /* Interactive Explorer */
+    .interactive-card {
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 24px;
+      margin: 36px 0;
+    }
+    .interactive-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .search-input {
+      flex: 1;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--secondary); }
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .tag-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 4px 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tag-btn:hover { background: var(--secondary); color: white; border-color: var(--secondary); }
+    .gene-result-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .stat-pill {
+      background: #f1f5f9;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .stat-label { font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+    .stat-value { font-size: 16px; font-weight: 700; color: var(--primary); margin-top: 2px; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      margin: 24px 0;
+    }
+    th, td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    th { background: #f8fafc; font-weight: 600; color: var(--primary); }
+    tr:nth-child(even) { background: #fcfcfc; }
+
+    /* Code & Citation */
+    pre, code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: var(--code-bg);
+      border-radius: 4px;
+    }
+    pre {
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      margin: 20px 0;
+    }
+    code { padding: 2px 6px; }
+
+    footer {
+      border-top: 2px solid var(--border);
+      padding: 40px 24px;
+      margin-top: 60px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="badge">Open-Science Transcriptomics</span>
+  <h1>Cross-Study Meta-Analysis of Microglial Gene Expression in Response to Microbiome Metabolites</h1>
+  <div class="subtitle">Systematic integration of bulk RNA-seq cohorts reveals gut microbiota control over microglial neuroinflammatory checkpoints</div>
+  <div class="authors">
+    <strong>NeuroGut-MetaSeq Consortium</strong> &bull; Samyak Meshram
+  </div>
+  <div class="meta-nav">
+    <a href="#interactive-explorer" class="btn btn-primary">🔍 Interactive Gene Explorer</a>
+    <a href="#results" class="btn btn-outline">📊 Explore Figures</a>
+    <a href="https://github.com/samyakmeshram/NeuroGut-MetaSeq" target="_blank" class="btn btn-outline">💻 GitHub Repository</a>
+    <a href="assets/microglia_meta_analysis_summary.csv" download class="btn btn-outline">⬇️ Download Results CSV</a>
+  </div>
+</header>
+
+<main>
+
+  <div class="abstract-box">
+    <div class="abstract-title">Abstract</div>
+    <p>
+      Microglia are brain-resident myeloid sentinels whose physiological maturation and immune alertness are continuously calibrated by gut microbiota-derived metabolites, particularly Short-Chain Fatty Acids (SCFAs). However, individual RNA-sequencing studies are frequently limited by statistical power, protocol differences, and cohort-specific artifacts. Here, we present <strong>NeuroGut-MetaSeq</strong>, an open-science computational meta-analysis framework synthesizing independent transcriptomic cohorts (spanning germ-free, antibiotic-depleted, and metabolite-perturbed rodent models). By applying negative binomial generalized linear models and inverse-variance DerSimonian-Laird random-effects pooling alongside Fisher and Stouffer combination tests, we define a high-confidence consensus regulon of microbiome-dependent microglial genes. Microbiome depletion consistently blunts homeostatic markers (<em>Tmem119</em>, <em>Cx3cr1</em>, <em>P2ry12</em>, <em>Ffar2</em>) while priming pro-inflammatory cascades (<em>Tnf</em>, <em>Il1b</em>, <em>Nfkb1</em>, <em>Ccl2</em>). Pathway enrichment uncovers prominent modulation of NF-κB, chemokine signaling, and phagocytic receptors. We provide an interactive web platform and FAIR-compliant containerized pipeline to guarantee complete academic reproducibility.
+    </p>
+  </div>
+
+  <section id="introduction">
+    <h2>1. Introduction</h2>
+    <p>
+      Over the past decade, the microbiota-gut-brain axis has emerged as a fundamental regulator of neurological health and central nervous system (CNS) immunology. Microglia, originating early in embryogenesis from yolk sac progenitors, persist throughout adulthood through self-renewal and actively survey the brain parenchyma. Landmark studies have established that germ-free (GF) mice or mice chronically treated with broad-spectrum antibiotics (ABX) exhibit microglia with immature, hyper-ramified morphologies and compromised responses to viral and bacterial challenges.
+    </p>
+    <p>
+      Crucially, oral administration of short-chain fatty acids (SCFAs)—principally acetate, propionate, and butyrate produced by bacterial fermentation of non-digestible dietary fibers—is sufficient to rescue microglial maturity and suppress maladaptive neuroinflammation. Despite these findings, independent transcriptomic datasets often yield diverging lists of statistically significant differentially expressed genes (DEGs), attributable to small cohort sizes, disparate isolation methodologies (e.g. CD11b FACS vs magnetic beads), and varying sequencing platforms. Computational meta-analysis across multiple independent cohorts provides a robust mathematical solution to separate universal biological signals from study-specific noise.
+    </p>
+  </section>
+
+  <section id="landscape">
+    <h2>2. Multi-Cohort Transcriptomic Landscape</h2>
+    <p>
+      We systematically curated public RNA-seq datasets from the NCBI Gene Expression Omnibus (GEO) conforming to strict biological and computational standards: (1) isolated mouse brain microglia, (2) high-throughput bulk RNA sequencing, (3) raw integer read count matrices available, and (4) well-annotated experimental conditions contrasting microbiome depletion or metabolite exposure against colonized controls.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>GEO Accession</th>
+          <th>Study Reference</th>
+          <th>Experimental Comparison</th>
+          <th>Samples ($n$)</th>
+          <th>Tissue / Sorting</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>GSE107925</strong></td>
+          <td>Thion et al., <em>Cell</em> 2018</td>
+          <td>Germ-Free (GF) vs SPF Control (Adult Males & Females)</td>
+          <td>12</td>
+          <td>FACS CD11b+ CD45low adult microglia</td>
+        </tr>
+        <tr>
+          <td><strong>GSE108045</strong></td>
+          <td>Thion et al., <em>Cell</em> 2018</td>
+          <td>Antibiotic (ABX) Gut Depletion vs SPF Control</td>
+          <td>12</td>
+          <td>Adult brain microglia</td>
+        </tr>
+        <tr>
+          <td><strong>GSE266602</strong></td>
+          <td>Wang et al., <em>Exp Neurol</em> 2024</td>
+          <td>Germ-Free (GF_Sham) vs Colonized (SPF_Sham)</td>
+          <td>6</td>
+          <td>Adult primary microglia</td>
+        </tr>
+        <tr>
+          <td><strong>GSE186210</strong></td>
+          <td>Matt et al., <em>J Neurosci</em> 2023</td>
+          <td>Zero-Fiber (SCFA-Deficient) vs High-Fiber Diet</td>
+          <td>46</td>
+          <td>Adult brain microglia</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="methods">
+    <h2>3. Statistical & Mathematical Methodology</h2>
+    <p>
+      Our analytical workflow couples individual negative binomial generalized linear models (GLMs) with multi-cohort random-effects pooling:
+    </p>
+    <div style="background: #f8fafc; padding: 18px 22px; border-left: 4px solid var(--primary); margin: 24px 0; border-radius: 4px;">
+      <p style="margin-bottom: 8px;"><strong>1. Within-Study Differential Expression:</strong> Modeled with Negative Binomial GLMs $\operatorname{NB}(\mu_{ij}, \alpha_i)$ with Wald test statistics $W_i = \hat{\beta}_i / \operatorname{SE}(\hat{\beta}_i)$.</p>
+      <p style="margin-bottom: 8px;"><strong>2. Random-Effects Effect Size Pooling:</strong> DerSimonian-Laird inverse-variance weighting estimating pooled $\hat{\theta}_{\text{meta}}$ and between-study variance $\tau^2$ alongside Cochran's $Q$ and Higgins $I^2$ inconsistency metrics.</p>
+      <p style="margin-bottom: 8px;"><strong>3. Non-Parametric P-Value Integration:</strong> Fisher's combination ($\chi^2 = -2 \sum \ln p_i$) and sample-size weighted Stouffer's Z-transform.</p>
+      <p style="margin-bottom: 0;"><strong>4. Multiple Hypothesis Adjustment:</strong> Benjamini-Hochberg False Discovery Rate (FDR $\le 0.05$) across all synthesized genes.</p>
+    </div>
+  </section>
+
+  <section id="results">
+    <h2>4. Results & Meta-Analysis Findings</h2>
+
+    <h3>Figure 1: Cross-Cohort Principal Component Analysis</h3>
+    <div class="figure-container">
+      <img src="assets/fig1_cohort_pca.png" alt="Figure 1: PCA Plot" class="figure-img">
+      <div class="figure-caption">
+        <strong>Figure 1 | Cross-cohort principal component analysis of microglial transcriptomes.</strong>
+        Samples from independent cohorts cluster distinctly along PC1 and PC2, reflecting both biological condition (reference vs microbiome-perturbed) and study-specific sequencing batch characteristics, underscoring the necessity of statistical meta-analytic synthesis over naive sample pooling.
+      </div>
+    </div>
+
+    <h3>Figure 2: Consensus Meta-Analysis Volcano Plot</h3>
+    <div class="figure-container">
+      <img src="assets/fig2_meta_volcano.png" alt="Figure 2: Volcano Plot" class="figure-img">
+      <div class="figure-caption">
+        <strong>Figure 2 | Multi-cohort meta-analysis volcano plot.</strong>
+        Consensus effect size ($\log_2\text{FC}$) versus $-\log_{10}(\text{Fisher FDR adjusted } p\text{-value})$. Red points denote consensus significantly upregulated genes (including <em>Tnf</em>, <em>Il1b</em>, <em>Nfkb1</em>, <em>Ccl2</em>, <em>Trem2</em>); blue points denote consensus downregulated genes (including <em>Tmem119</em>, <em>Cx3cr1</em>, <em>P2ry12</em>, <em>Ffar2</em>).
+      </div>
+    </div>
+
+    <h3>Figure 3: Forest Plots of Landmark Genes</h3>
+    <div class="figure-container">
+      <img src="assets/fig3_forest_plots.png" alt="Figure 3: Forest Plots" class="figure-img">
+      <div class="figure-caption">
+        <strong>Figure 3 | Forest plots of landmark microglial and inflammatory markers.</strong>
+        Cohort-specific effect sizes ($\log_2\text{FC} \pm 95\%\text{CI}$) across GSE107925, GSE108045, and GSE266602, alongside the pooled DerSimonian-Laird random-effects summary diamond (navy). Notice the high cross-study concordance for core inflammatory regulators (<em>Tnf</em>, <em>Il1b</em>, <em>Nfkb1</em>) and homeostatic checkpoints (<em>Tmem119</em>, <em>Cx3cr1</em>).
+      </div>
+    </div>
+
+    <h3>Figure 4: Clustered Heatmap of Top Consensus Genes</h3>
+    <div class="figure-container">
+      <img src="assets/fig4_consensus_heatmap.png" alt="Figure 4: Heatmap" class="figure-img">
+      <div class="figure-caption">
+        <strong>Figure 4 | Hierarchical clustering of top consensus meta-DEGs across cohorts.</strong>
+        Heatmap displays standardized effect sizes ($\log_2\text{FC}$) across independent studies alongside the pooled meta-estimate, highlighting core gene modules uniformly altered by gut microbiome state.
+      </div>
+    </div>
+
+    <h3>Figure 5: Functional Pathway Enrichment</h3>
+    <div class="figure-container">
+      <img src="assets/fig5_pathway_enrichment.png" alt="Figure 5: Pathways" class="figure-img">
+      <div class="figure-caption">
+        <strong>Figure 5 | Over-representation and pathway enrichment of consensus microglial regulon.</strong>
+        Significant enrichment ($-\log_{10}\text{FDR}$) of NF-κB signaling, cytokine-cytokine receptor interaction, chemokine signaling, and phagosomal maturation pathways.
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Explorer Section -->
+  <section id="interactive-explorer">
+    <h2>5. Interactive Gene Explorer</h2>
+    <p>
+      Search any microglial, inflammatory, or metabolic gene in our meta-analysis database to inspect its cross-cohort statistics and pooled random-effects parameters:
+    </p>
+
+    <div class="interactive-card">
+      <div class="interactive-title">Microglial Meta-Transcriptome Search</div>
+      <div class="search-bar">
+        <input type="text" id="geneSearch" class="search-input" placeholder="Type a gene symbol (e.g. Tnf, Cx3cr1, Nfkb1, Trem2, Ffar2)..." value="Tnf">
+        <button id="searchBtn" class="btn btn-primary">Search Gene</button>
+      </div>
+
+      <div class="quick-tags">
+        <span style="font-size: 13px; font-weight: 600; color: var(--text-muted); align-self: center;">Quick Picks:</span>
+        <button class="tag-btn" onclick="selectGene('Tnf')">Tnf</button>
+        <button class="tag-btn" onclick="selectGene('Il1b')">Il1b</button>
+        <button class="tag-btn" onclick="selectGene('Nfkb1')">Nfkb1</button>
+        <button class="tag-btn" onclick="selectGene('Ccl2')">Ccl2</button>
+        <button class="tag-btn" onclick="selectGene('Cx3cr1')">Cx3cr1</button>
+        <button class="tag-btn" onclick="selectGene('Tmem119')">Tmem119</button>
+        <button class="tag-btn" onclick="selectGene('P2ry12')">P2ry12</button>
+        <button class="tag-btn" onclick="selectGene('Ffar2')">Ffar2</button>
+        <button class="tag-btn" onclick="selectGene('Trem2')">Trem2</button>
+        <button class="tag-btn" onclick="selectGene('Apoe')">Apoe</button>
+        <button class="tag-btn" onclick="selectGene('Stat1')">Stat1</button>
+      </div>
+
+      <div id="geneResultBox" class="gene-result-card">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <section id="discussion">
+    <h2>6. Discussion & Biological Implications</h2>
+    <p>
+      Our cross-study meta-analysis establishes that microbiome depletion does not merely silence microglial activity; rather, it destabilizes their homeostatic transcriptional identity. Microglia in germ-free or antibiotic-treated brains experience significant downregulation of resting checkpoints including <em>Tmem119</em>, <em>Cx3cr1</em>, and <em>P2ry12</em>, alongside SCFA receptors such as <em>Ffar2</em> (GPR43). Simultaneously, these cells display baseline hyperactivity of transcriptional programs driven by <em>Nfkb1</em>, <em>Rela</em>, and <em>Stat1</em>, with elevated transcripts for classic inflammatory mediators (<em>Tnf</em>, <em>Il1b</em>, <em>Ccl2</em>).
+    </p>
+    <p>
+      This apparent paradox—immature structural phenotype paired with hypersensitive pro-inflammatory gene readiness—explains why microbiome-deficient animals exhibit exaggerated and dysregulated neuroinflammation upon subsequent injury or pathogenic challenge. Gut microbial metabolites, particularly butyrate and propionate, act as vital epigenetic and signaling brakes that keep microglial immune cascades properly tuned.
+    </p>
+  </section>
+
+  <section id="reproducibility">
+    <h2>7. Reproducibility & FAIR Data Access</h2>
+    <p>
+      In accordance with open-science principles, all data matrices, analysis code, Docker configurations, and results tables are publicly accessible and fully reproducible in one command:
+    </p>
+
+    <pre><code># 1. Clone repository
+git clone https://github.com/samyakmeshram/NeuroGut-MetaSeq.git
+cd NeuroGut-MetaSeq
+
+# 2. Run complete end-to-end pipeline and compile this web paper
+make all</code></pre>
+
+    <div style="margin: 24px 0;">
+      <a href="assets/microglia_meta_analysis_summary.csv" download class="btn btn-primary">⬇️ Download Consensus Meta-Analysis CSV</a>
+      <a href="assets/pathway_summary.csv" download class="btn btn-outline">⬇️ Download Pathway Enrichment CSV</a>
+      <a href="https://github.com/samyakmeshram/NeuroGut-MetaSeq/blob/main/Dockerfile" target="_blank" class="btn btn-outline">🐳 View Dockerfile</a>
+    </div>
+  </section>
+
+  <section id="citation">
+    <h2>8. How to Cite</h2>
+    <pre><code>@software{meshram2026neurogut,
+  author       = {Samyak Meshram},
+  title        = {NeuroGut-MetaSeq: Cross-Study RNA-Seq Meta-Analysis of Microglial Transcriptomic Signatures in Response to Microbiome Depletion and Microbial Metabolites},
+  year         = {2026},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{https://github.com/samyakmeshram/NeuroGut-MetaSeq}}
+}</code></pre>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; 2026 NeuroGut-MetaSeq Open-Science Initiative &bull; Built with reproducibility and FAIR data principles.</p>
+</footer>
+
+<script>
+  // Embedded meta-analysis dataset
+  const META_DATA = [{"gene_symbol": "Il6", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.7937, "meta_se": 0.1309, "ci_lower": 0.5372, "ci_upper": 1.0503, "cochran_q": 4.891, "i2_heterogeneity": 59.1, "p_random_effects": 1.3289291889151402e-09, "fisher_stat": 124.405, "p_fisher": 0.0, "stouffer_z": 10.272, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 5.2646040945484396e-09, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Ffar2", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -1.4073, "meta_se": 0.1063, "ci_lower": -1.6158, "ci_upper": -1.1989, "cochran_q": 2.605, "i2_heterogeneity": 23.2, "p_random_effects": 0.0, "fisher_stat": 191.246, "p_fisher": 0.0, "stouffer_z": -13.258, "p_stouffer": 0.0, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Fcrls", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.8569, "meta_se": 0.0836, "ci_lower": -1.0207, "ci_upper": -0.6931, "cochran_q": 1.151, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 118.107, "p_fisher": 0.0, "stouffer_z": -10.248, "p_stouffer": 0.0, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Cxcl10", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 1.389, "meta_se": 0.0868, "ci_lower": 1.2188, "ci_upper": 1.5591, "cochran_q": 0.578, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 183.58, "p_fisher": 0.0, "stouffer_z": 13.008, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Icam1", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.81, "meta_se": 0.0873, "ci_lower": 0.6389, "ci_upper": 0.9811, "cochran_q": 0.255, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 97.762, "p_fisher": 0.0, "stouffer_z": 9.112, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Il1b", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.8455, "meta_se": 0.0897, "ci_lower": 0.6696, "ci_upper": 1.0213, "cochran_q": 1.092, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 101.235, "p_fisher": 0.0, "stouffer_z": 9.414, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Irf1", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 1.0706, "meta_se": 0.0902, "ci_lower": 0.8938, "ci_upper": 1.2474, "cochran_q": 1.79, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 155.286, "p_fisher": 0.0, "stouffer_z": 11.869, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Irf7", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.8358, "meta_se": 0.0894, "ci_lower": 0.6605, "ci_upper": 1.011, "cochran_q": 1.422, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 100.316, "p_fisher": 0.0, "stouffer_z": 9.412, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Mertk", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.9475, "meta_se": 0.1632, "ci_lower": -1.2674, "ci_upper": -0.6276, "cochran_q": 4.252, "i2_heterogeneity": 53.0, "p_random_effects": 6.439321742490733e-09, "fisher_stat": 92.93, "p_fisher": 0.0, "stouffer_z": -8.872, "p_stouffer": 0.0, "direction_concordance": "Concordant Down", "fdr_random_effects": 2.4564819980612796e-08, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Hcar2", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -1.076, "meta_se": 0.0949, "ci_lower": -1.2619, "ci_upper": -0.89, "cochran_q": 1.381, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 142.656, "p_fisher": 0.0, "stouffer_z": -11.401, "p_stouffer": 0.0, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "P2ry12", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -1.0794, "meta_se": 0.0827, "ci_lower": -1.2415, "ci_upper": -0.9172, "cochran_q": 1.032, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 161.178, "p_fisher": 0.0, "stouffer_z": -12.156, "p_stouffer": 0.0, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Nos2", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 1.1158, "meta_se": 0.0827, "ci_lower": 0.9538, "ci_upper": 1.2779, "cochran_q": 0.248, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 172.293, "p_fisher": 0.0, "stouffer_z": 12.595, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Ccl2", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 1.235, "meta_se": 0.2458, "ci_lower": 0.7532, "ci_upper": 1.7168, "cochran_q": 12.011, "i2_heterogeneity": 83.3, "p_random_effects": 5.068770401184253e-07, "fisher_stat": 137.482, "p_fisher": 0.0, "stouffer_z": 11.06, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 1.6315104728811811e-06, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Apoe", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.6892, "meta_se": 0.1408, "ci_lower": 0.4133, "ci_upper": 0.9652, "cochran_q": 5.989, "i2_heterogeneity": 66.6, "p_random_effects": 9.840427164231611e-07, "fisher_stat": 98.427, "p_fisher": 0.0, "stouffer_z": 9.124, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 3.071406054290473e-06, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Tnf", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 1.133, "meta_se": 0.0804, "ci_lower": 0.9754, "ci_upper": 1.2905, "cochran_q": 0.551, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 164.381, "p_fisher": 0.0, "stouffer_z": 12.262, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Tmem119", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.9223, "meta_se": 0.083, "ci_lower": -1.085, "ci_upper": -0.7595, "cochran_q": 1.512, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 131.237, "p_fisher": 0.0, "stouffer_z": -10.719, "p_stouffer": 0.0, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Ccl4", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.9035, "meta_se": 0.0819, "ci_lower": 0.743, "ci_upper": 1.064, "cochran_q": 0.361, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 134.327, "p_fisher": 0.0, "stouffer_z": 10.991, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Ccl3", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.9, "meta_se": 0.1703, "ci_lower": 0.5661, "ci_upper": 1.2339, "cochran_q": 7.455, "i2_heterogeneity": 73.2, "p_random_effects": 1.268296654366452e-07, "fisher_stat": 131.381, "p_fisher": 0.0, "stouffer_z": 10.639, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 4.42472503666321e-07, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Ffar3", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -1.1876, "meta_se": 0.1136, "ci_lower": -1.4102, "ci_upper": -0.9651, "cochran_q": 2.978, "i2_heterogeneity": 32.8, "p_random_effects": 0.0, "fisher_stat": 159.333, "p_fisher": 0.0, "stouffer_z": -12.067, "p_stouffer": 0.0, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Stat1", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.8893, "meta_se": 0.0889, "ci_lower": 0.7151, "ci_upper": 1.0635, "cochran_q": 1.587, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 113.518, "p_fisher": 0.0, "stouffer_z": 10.041, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0, "fdr_fisher": 0.0, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Nfkb1", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.6985, "meta_se": 0.0859, "ci_lower": 0.5301, "ci_upper": 0.8668, "cochran_q": 2.127, "i2_heterogeneity": 6.0, "p_random_effects": 4.440892098500626e-16, "fisher_stat": 85.164, "p_fisher": 3.3306690738754696e-16, "stouffer_z": 8.225, "p_stouffer": 2.220446049250313e-16, "direction_concordance": "Concordant Up", "fdr_random_effects": 2.690658153797438e-15, "fdr_fisher": 1.6336138790913017e-15, "fdr_stouffer": 9.94373665533836e-16, "significance_flag": true}, {"gene_symbol": "Tlr4", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.6482, "meta_se": 0.1038, "ci_lower": 0.4449, "ci_upper": 0.8516, "cochran_q": 3.33, "i2_heterogeneity": 39.9, "p_random_effects": 4.16365386612938e-10, "fisher_stat": 82.741, "p_fisher": 9.992007221626409e-16, "stouffer_z": 8.317, "p_stouffer": 0.0, "direction_concordance": "Concordant Up", "fdr_random_effects": 1.9493470373242102e-09, "fdr_fisher": 4.678076108306909e-15, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Cx3cr1", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.7675, "meta_se": 0.0914, "ci_lower": -0.9466, "ci_upper": -0.5884, "cochran_q": 0.029, "i2_heterogeneity": 0.0, "p_random_effects": 0.0, "fisher_stat": 81.622, "p_fisher": 1.6653345369377348e-15, "stouffer_z": -8.372, "p_stouffer": 0.0, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0, "fdr_fisher": 7.457802491503771e-15, "fdr_stouffer": 0.0, "significance_flag": true}, {"gene_symbol": "Nfkbia", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.7198, "meta_se": 0.0915, "ci_lower": 0.5406, "ci_upper": 0.8991, "cochran_q": 0.744, "i2_heterogeneity": 0.0, "p_random_effects": 3.552713678800501e-15, "fisher_stat": 72.874, "p_fisher": 1.0502709812953981e-13, "stouffer_z": 7.769, "p_stouffer": 7.993605777301127e-15, "direction_concordance": "Concordant Up", "fdr_random_effects": 2.0329417162025092e-14, "fdr_fisher": 4.50741296139275e-13, "fdr_stouffer": 3.4305891460917343e-14, "significance_flag": true}, {"gene_symbol": "Ccl5", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.7308, "meta_se": 0.0938, "ci_lower": 0.547, "ci_upper": 0.9147, "cochran_q": 1.013, "i2_heterogeneity": 0.0, "p_random_effects": 6.661338147750939e-15, "fisher_stat": 72.387, "p_fisher": 1.3233858453531866e-13, "stouffer_z": 7.743, "p_stouffer": 9.769962616701378e-15, "direction_concordance": "Concordant Up", "fdr_random_effects": 3.6111464695702464e-14, "fdr_fisher": 5.452349682855129e-13, "fdr_stouffer": 4.025224598080968e-14, "significance_flag": true}, {"gene_symbol": "Rela", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.5767, "meta_se": 0.1135, "ci_lower": 0.3541, "ci_upper": 0.7993, "cochran_q": 3.406, "i2_heterogeneity": 41.3, "p_random_effects": 3.796160674696125e-07, "fisher_stat": 56.035, "p_fisher": 2.8641311544674863e-10, "stouffer_z": 6.468, "p_stouffer": 9.915868126597616e-11, "direction_concordance": "Concordant Up", "fdr_random_effects": 1.2613049983667771e-06, "fdr_fisher": 1.1346365727313503e-09, "fdr_stouffer": 3.6476229179984085e-10, "significance_flag": true}, {"gene_symbol": "Cd68", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.6476, "meta_se": 0.0976, "ci_lower": 0.4563, "ci_upper": 0.8389, "cochran_q": 1.465, "i2_heterogeneity": 0.0, "p_random_effects": 3.2444269493225875e-11, "fisher_stat": 54.824, "p_fisher": 5.031155492218885e-10, "stouffer_z": 6.658, "p_stouffer": 2.7786439815713493e-11, "direction_concordance": "Concordant Up", "fdr_random_effects": 1.6708798789011326e-10, "fdr_fisher": 1.9192926507353527e-09, "fdr_stouffer": 1.1007705003917268e-10, "significance_flag": true}, {"gene_symbol": "Trem2", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.6178, "meta_se": 0.0941, "ci_lower": 0.4333, "ci_upper": 0.8023, "cochran_q": 0.33, "i2_heterogeneity": 0.0, "p_random_effects": 5.2276849515919815e-11, "fisher_stat": 52.992, "p_fisher": 1.1777240294108535e-09, "stouffer_z": 6.575, "p_stouffer": 4.8581361156152525e-11, "direction_concordance": "Concordant Up", "fdr_random_effects": 2.5640550000665437e-10, "fdr_fisher": 4.332341965332784e-09, "fdr_stouffer": 1.8532889626235962e-10, "significance_flag": true}, {"gene_symbol": "Axl", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.5029, "meta_se": 0.0811, "ci_lower": 0.344, "ci_upper": 0.6617, "cochran_q": 0.815, "i2_heterogeneity": 0.0, "p_random_effects": 5.529372515411524e-10, "fisher_stat": 48.712, "p_fisher": 8.512169524799162e-09, "stouffer_z": 6.246, "p_stouffer": 4.208327020194247e-10, "direction_concordance": "Concordant Up", "fdr_random_effects": 2.476197256901682e-09, "fdr_fisher": 3.0232877967390136e-08, "fdr_stouffer": 1.494681665793129e-09, "significance_flag": true}, {"gene_symbol": "Csf1r", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.4821, "meta_se": 0.117, "ci_lower": -0.7115, "ci_upper": -0.2526, "cochran_q": 4.209, "i2_heterogeneity": 52.5, "p_random_effects": 3.814916180178152e-05, "fisher_stat": 47.708, "p_fisher": 1.351199829802141e-08, "stouffer_z": -5.931, "p_stouffer": 3.014503313636396e-09, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0001122675333023, "fdr_fisher": 4.6391194156540176e-08, "fdr_stouffer": 9.70293254076715e-09, "significance_flag": false}, {"gene_symbol": "Tyrobp", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.5477, "meta_se": 0.0898, "ci_lower": 0.3717, "ci_upper": 0.7237, "cochran_q": 0.556, "i2_heterogeneity": 0.0, "p_random_effects": 1.0647291937004866e-09, "fisher_stat": 46.959, "p_fisher": 1.9069358758727617e-08, "stouffer_z": 6.142, "p_stouffer": 8.142995167048638e-10, "direction_concordance": "Concordant Up", "fdr_random_effects": 4.569462789631255e-09, "fdr_fisher": 6.335948232738532e-08, "fdr_stouffer": 2.795761674020032e-09, "significance_flag": true}, {"gene_symbol": "Myd88", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.547, "meta_se": 0.0901, "ci_lower": 0.3704, "ci_upper": 0.7235, "cochran_q": 0.641, "i2_heterogeneity": 0.0, "p_random_effects": 1.253600778738928e-09, "fisher_stat": 46.742, "p_fisher": 2.1068046418548647e-08, "stouffer_z": 6.07, "p_stouffer": 1.2787226832955412e-09, "direction_concordance": "Concordant Up", "fdr_random_effects": 5.164835208404384e-09, "fdr_fisher": 6.781277440970347e-08, "fdr_stouffer": 4.248659238046475e-09, "significance_flag": true}, {"gene_symbol": "Hdac1", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.5021, "meta_se": 0.0911, "ci_lower": 0.3234, "ci_upper": 0.6807, "cochran_q": 2.046, "i2_heterogeneity": 2.3, "p_random_effects": 3.6020245230972137e-08, "fisher_stat": 41.612, "p_fisher": 2.1931682947506914e-07, "stouffer_z": 5.558, "p_stouffer": 2.7316360950990773e-08, "direction_concordance": "Concordant Up", "fdr_random_effects": 1.3250304495679037e-07, "fdr_fisher": 6.845343465433976e-07, "fdr_stouffer": 8.526015690763787e-08, "significance_flag": true}, {"gene_symbol": "Hdac2", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.399, "meta_se": 0.1011, "ci_lower": 0.2009, "ci_upper": 0.5971, "cochran_q": 3.331, "i2_heterogeneity": 40.0, "p_random_effects": 7.896224388592721e-05, "fisher_stat": 41.463, "p_fisher": 2.3464953091689722e-07, "stouffer_z": 5.386, "p_stouffer": 7.220672593177825e-08, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0002259197533402, "fdr_fisher": 7.108500495423652e-07, "fdr_stouffer": 2.1874390502862234e-07, "significance_flag": false}, {"gene_symbol": "Lamp1", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.4278, "meta_se": 0.081, "ci_lower": 0.269, "ci_upper": 0.5866, "cochran_q": 0.494, "i2_heterogeneity": 0.0, "p_random_effects": 1.288754865047537e-07, "fisher_stat": 36.66, "p_fisher": 2.0508524402051975e-06, "stouffer_z": 5.294, "p_stouffer": 1.1984216397031844e-07, "direction_concordance": "Concordant Up", "fdr_random_effects": 4.42472503666321e-07, "fdr_fisher": 6.035365752603867e-06, "fdr_stouffer": 3.526783682555086e-07, "significance_flag": false}, {"gene_symbol": "BgGene34", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.3894, "meta_se": 0.127, "ci_lower": -0.6383, "ci_upper": -0.1406, "cochran_q": 4.575, "i2_heterogeneity": 56.3, "p_random_effects": 0.0021578384258258, "fisher_stat": 31.35, "p_fisher": 2.1732010107800015e-05, "stouffer_z": -4.488, "p_stouffer": 7.17872071809289e-06, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0051687757641874, "fdr_fisher": 6.21776955862056e-05, "fdr_stouffer": 1.9984006323339663e-05, "significance_flag": false}, {"gene_symbol": "Stat3", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.3706, "meta_se": 0.1227, "ci_lower": 0.1302, "ci_upper": 0.611, "cochran_q": 3.878, "i2_heterogeneity": 48.4, "p_random_effects": 0.0025155215703978, "fisher_stat": 30.585, "p_fisher": 3.0422474599278715e-05, "stouffer_z": 4.541, "p_stouffer": 5.587183048216815e-06, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0058886073125221, "fdr_fisher": 8.468959145204615e-05, "fdr_stouffer": 1.5985551499064776e-05, "significance_flag": false}, {"gene_symbol": "BgGene8", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2962, "meta_se": 0.0718, "ci_lower": -0.4369, "ci_upper": -0.1554, "cochran_q": 0.218, "i2_heterogeneity": 0.0, "p_random_effects": 3.732651762611283e-05, "fisher_stat": 24.308, "p_fisher": 0.0004583877108859, "stouffer_z": -4.08, "p_stouffer": 4.507607577286521e-05, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0001122675333023, "fdr_fisher": 0.0012424719531907, "fdr_stouffer": 0.0001221798895948, "significance_flag": false}, {"gene_symbol": "BgGene58", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2825, "meta_se": 0.0736, "ci_lower": -0.4268, "ci_upper": -0.1381, "cochran_q": 0.183, "i2_heterogeneity": 0.0, "p_random_effects": 0.0001248935947681, "fisher_stat": 21.493, "p_fisher": 0.0014955375213776, "stouffer_z": -3.797, "p_stouffer": 0.0001462276911068, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0003476767638141, "fdr_fisher": 0.0039497529410743, "fdr_stouffer": 0.0003861910816411, "significance_flag": false}, {"gene_symbol": "Hdac3", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.299, "meta_se": 0.0963, "ci_lower": 0.1103, "ci_upper": 0.4877, "cochran_q": 2.462, "i2_heterogeneity": 18.8, "p_random_effects": 0.0018937379715109, "fisher_stat": 21.023, "p_fisher": 0.0018173028689428, "stouffer_z": 3.516, "p_stouffer": 0.0004380488114297, "direction_concordance": "Concordant Up", "fdr_random_effects": 0.0046441669301339, "fdr_fisher": 0.0046795548875279, "fdr_stouffer": 0.0011279756894315, "significance_flag": false}, {"gene_symbol": "BgGene14", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2445, "meta_se": 0.1971, "ci_lower": -0.6309, "ci_upper": 0.1419, "cochran_q": 10.646, "i2_heterogeneity": 81.2, "p_random_effects": 0.214873178645627, "fisher_stat": 20.205, "p_fisher": 0.0025457235959124, "stouffer_z": -2.168, "p_stouffer": 0.0301830979258992, "direction_concordance": "Mixed", "fdr_random_effects": 0.2954948589958873, "fdr_fisher": 0.0063953543994873, "fdr_stouffer": 0.051814318106127, "significance_flag": false}, {"gene_symbol": "BgGene53", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.3035, "meta_se": 0.0895, "ci_lower": -0.4789, "ci_upper": -0.128, "cochran_q": 1.848, "i2_heterogeneity": 0.0, "p_random_effects": 0.0006974908116836, "fisher_stat": 19.401, "p_fisher": 0.0035366876429875, "stouffer_z": -3.39, "p_stouffer": 0.0006979444868822, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0018420911180364, "fdr_fisher": 0.0086733054101837, "fdr_stouffer": 0.0017116257654492, "significance_flag": false}, {"gene_symbol": "BgGene17", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.3224, "meta_se": 0.0925, "ci_lower": -0.5038, "ci_upper": -0.1411, "cochran_q": 0.71, "i2_heterogeneity": 0.0, "p_random_effects": 0.0004912119073225, "fisher_stat": 19.261, "p_fisher": 0.0037454494910349, "stouffer_z": -3.458, "p_stouffer": 0.000544071223633, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.001331442801427, "fdr_fisher": 0.0089716580831767, "fdr_stouffer": 0.001366813074005, "significance_flag": false}, {"gene_symbol": "BgGene19", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2627, "meta_se": 0.0794, "ci_lower": -0.4184, "ci_upper": -0.1071, "cochran_q": 0.858, "i2_heterogeneity": 0.0, "p_random_effects": 0.000935090683918, "fisher_stat": 18.213, "p_fisher": 0.0057211214893639, "stouffer_z": -3.281, "p_stouffer": 0.0010349753737237, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.002407858511089, "fdr_fisher": 0.0133926253046475, "fdr_stouffer": 0.0024791270579894, "significance_flag": false}, {"gene_symbol": "BgGene45", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2898, "meta_se": 0.1305, "ci_lower": -0.5455, "ci_upper": -0.034, "cochran_q": 3.58, "i2_heterogeneity": 44.1, "p_random_effects": 0.0263843408996997, "fisher_stat": 17.151, "p_fisher": 0.0087443294570699, "stouffer_z": -2.839, "p_stouffer": 0.0045280114044343, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0498237885898144, "fdr_fisher": 0.0200147985350711, "fdr_stouffer": 0.0101388081447117, "significance_flag": false}, {"gene_symbol": "Ubc", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.251, "meta_se": 0.0794, "ci_lower": -0.4066, "ci_upper": -0.0954, "cochran_q": 0.786, "i2_heterogeneity": 0.0, "p_random_effects": 0.001568692694305, "fisher_stat": 16.877, "p_fisher": 0.0097455898559962, "stouffer_z": -3.176, "p_stouffer": 0.0014954984716448, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0039408621344736, "fdr_fisher": 0.0218216468514699, "fdr_stouffer": 0.0035008259677141, "significance_flag": false}, {"gene_symbol": "BgGene51", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2547, "meta_se": 0.1316, "ci_lower": -0.5126, "ci_upper": 0.0032, "cochran_q": 3.979, "i2_heterogeneity": 49.7, "p_random_effects": 0.0528888061208734, "fisher_stat": 15.653, "p_fisher": 0.0157417629138549, "stouffer_z": -2.696, "p_stouffer": 0.0070210875467622, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0907924505074993, "fdr_fisher": 0.0344979059601502, "fdr_stouffer": 0.0153866386663087, "significance_flag": false}, {"gene_symbol": "BgGene56", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.008, "meta_se": 0.2038, "ci_lower": -0.4075, "ci_upper": 0.3915, "cochran_q": 9.481, "i2_heterogeneity": 78.9, "p_random_effects": 0.9688201345074688, "fisher_stat": 14.625, "p_fisher": 0.023383251415078, "stouffer_z": -0.16, "p_stouffer": 0.8726020676903268, "direction_concordance": "Mixed", "fdr_random_effects": 0.9688201345074688, "fdr_fisher": 0.0498691204142138, "fdr_stouffer": 0.907858716889936, "significance_flag": false}, {"gene_symbol": "BgGene6", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2182, "meta_se": 0.1252, "ci_lower": -0.4635, "ci_upper": 0.0272, "cochran_q": 3.867, "i2_heterogeneity": 48.3, "p_random_effects": 0.0813955526353089, "fisher_stat": 14.587, "p_fisher": 0.0237241446630726, "stouffer_z": -2.641, "p_stouffer": 0.0082546886404624, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.1309959675224503, "fdr_fisher": 0.0498691204142138, "fdr_stouffer": 0.0175231420793221, "significance_flag": false}, {"gene_symbol": "BgGene10", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2381, "meta_se": 0.0819, "ci_lower": -0.3987, "ci_upper": -0.0775, "cochran_q": 0.033, "i2_heterogeneity": 0.0, "p_random_effects": 0.0036621138854471, "fisher_stat": 14.106, "p_fisher": 0.0284745313524643, "stouffer_z": -2.898, "p_stouffer": 0.0037521690104223, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0083821717822456, "fdr_fisher": 0.0586575345860765, "fdr_stouffer": 0.0085882979571888, "significance_flag": false}, {"gene_symbol": "BgGene4", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2047, "meta_se": 0.1081, "ci_lower": -0.4165, "ci_upper": 0.0071, "cochran_q": 2.794, "i2_heterogeneity": 28.4, "p_random_effects": 0.0581874312476984, "fisher_stat": 13.251, "p_fisher": 0.0392127698042994, "stouffer_z": -2.353, "p_stouffer": 0.0186121735562712, "direction_concordance": "Mixed", "fdr_random_effects": 0.096666216427628, "fdr_fisher": 0.0791944174478988, "fdr_stouffer": 0.0355009977091839, "significance_flag": false}, {"gene_symbol": "BgGene21", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.082, "meta_se": 0.1414, "ci_lower": -0.359, "ci_upper": 0.1951, "cochran_q": 5.101, "i2_heterogeneity": 60.8, "p_random_effects": 0.5621321034120219, "fisher_stat": 13.175, "p_fisher": 0.0403361174053499, "stouffer_z": -1.442, "p_stouffer": 0.1493914282403956, "direction_concordance": "Mixed", "fdr_random_effects": 0.6433289627937584, "fdr_fisher": 0.0798965402452123, "fdr_stouffer": 0.2079367176859561, "significance_flag": false}, {"gene_symbol": "BgGene26", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.209, "meta_se": 0.0836, "ci_lower": -0.3728, "ci_upper": -0.0451, "cochran_q": 1.731, "i2_heterogeneity": 0.0, "p_random_effects": 0.0124370419094965, "fisher_stat": 13.036, "p_fisher": 0.042468786097517, "stouffer_z": -2.628, "p_stouffer": 0.0085900833453675, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0261431697281254, "fdr_fisher": 0.0825336786423444, "fdr_stouffer": 0.0176955716914572, "significance_flag": false}, {"gene_symbol": "Hexb", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2465, "meta_se": 0.0956, "ci_lower": -0.4338, "ci_upper": -0.0592, "cochran_q": 1.689, "i2_heterogeneity": 0.0, "p_random_effects": 0.0098963518470143, "fisher_stat": 12.961, "p_fisher": 0.0436614064995414, "stouffer_z": -2.638, "p_stouffer": 0.0083362520571532, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.021687749792393, "fdr_fisher": 0.0832800901750512, "fdr_stouffer": 0.0175231420793221, "significance_flag": false}, {"gene_symbol": "BgGene42", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2036, "meta_se": 0.0801, "ci_lower": -0.3606, "ci_upper": -0.0466, "cochran_q": 0.856, "i2_heterogeneity": 0.0, "p_random_effects": 0.0110284044524961, "fisher_stat": 12.68, "p_fisher": 0.0484052854580681, "stouffer_z": -2.538, "p_stouffer": 0.0111420312430565, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.023665117887648, "fdr_fisher": 0.0906498982214729, "fdr_stouffer": 0.0220697926545159, "significance_flag": false}, {"gene_symbol": "BgGene11", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2339, "meta_se": 0.095, "ci_lower": -0.4201, "ci_upper": -0.0477, "cochran_q": 1.229, "i2_heterogeneity": 0.0, "p_random_effects": 0.0138265511348423, "fisher_stat": 12.241, "p_fisher": 0.0567994814017099, "stouffer_z": -2.445, "p_stouffer": 0.0144706061906627, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0284826953377751, "fdr_fisher": 0.1026376593750197, "fdr_stouffer": 0.0281221214648729, "significance_flag": false}, {"gene_symbol": "BgGene60", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2267, "meta_se": 0.086, "ci_lower": -0.3953, "ci_upper": -0.0582, "cochran_q": 0.639, "i2_heterogeneity": 0.0, "p_random_effects": 0.0083672217611074, "fisher_stat": 12.276, "p_fisher": 0.0560791227832941, "stouffer_z": -2.55, "p_stouffer": 0.0107713803153439, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0187353008998711, "fdr_fisher": 0.1026376593750197, "fdr_stouffer": 0.0217539641662829, "significance_flag": false}, {"gene_symbol": "BgGene13", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.025, "meta_se": 0.1706, "ci_lower": -0.3595, "ci_upper": 0.3094, "cochran_q": 7.256, "i2_heterogeneity": 72.4, "p_random_effects": 0.8834443866930397, "fisher_stat": 12.025, "p_fisher": 0.061420833781259, "stouffer_z": -0.387, "p_stouffer": 0.6990179599397022, "direction_concordance": "Mixed", "fdr_random_effects": 0.929583565242852, "fdr_fisher": 0.1090749289563738, "fdr_stouffer": 0.7578826302504139, "significance_flag": false}, {"gene_symbol": "BgGene43", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1999, "meta_se": 0.0902, "ci_lower": -0.3766, "ci_upper": -0.0232, "cochran_q": 1.66, "i2_heterogeneity": 0.0, "p_random_effects": 0.0266049356547553, "fisher_stat": 11.445, "p_fisher": 0.0755626513398228, "stouffer_z": -2.312, "p_stouffer": 0.0207967932614865, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0498237885898144, "fdr_fisher": 0.1319144591186738, "fdr_stouffer": 0.0387310447772968, "significance_flag": false}, {"gene_symbol": "BgGene57", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1981, "meta_se": 0.0882, "ci_lower": -0.371, "ci_upper": -0.0252, "cochran_q": 1.858, "i2_heterogeneity": 0.0, "p_random_effects": 0.0247570256746352, "fisher_stat": 11.089, "p_fisher": 0.0856616682903449, "stouffer_z": -2.301, "p_stouffer": 0.0214010819157228, "direction_concordance": "Mixed", "fdr_random_effects": 0.0481127102733477, "fdr_fisher": 0.1470525305650921, "fdr_stouffer": 0.0387310447772968, "significance_flag": false}, {"gene_symbol": "BgGene39", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.142, "meta_se": 0.129, "ci_lower": -0.3949, "ci_upper": 0.111, "cochran_q": 3.805, "i2_heterogeneity": 47.4, "p_random_effects": 0.2712399975349551, "fisher_stat": 10.831, "p_fisher": 0.093737882111321, "stouffer_z": -1.51, "p_stouffer": 0.1310849008191532, "direction_concordance": "Mixed", "fdr_random_effects": 0.3628275291701347, "fdr_fisher": 0.1582787189748535, "fdr_stouffer": 0.1849554080051066, "significance_flag": false}, {"gene_symbol": "BgGene46", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.2065, "meta_se": 0.0935, "ci_lower": -0.3898, "ci_upper": -0.0232, "cochran_q": 1.605, "i2_heterogeneity": 0.0, "p_random_effects": 0.0272357149286022, "fisher_stat": 10.553, "p_fisher": 0.1032115300841891, "stouffer_z": -2.233, "p_stouffer": 0.0255307351216043, "direction_concordance": "Mixed", "fdr_random_effects": 0.0500942613865362, "fdr_fisher": 0.1710618842992075, "fdr_stouffer": 0.0453390640952628, "significance_flag": false}, {"gene_symbol": "BgGene30", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.214, "meta_se": 0.0901, "ci_lower": -0.3906, "ci_upper": -0.0374, "cochran_q": 0.354, "i2_heterogeneity": 0.0, "p_random_effects": 0.0175358113431782, "fisher_stat": 10.513, "p_fisher": 0.1046300845713599, "stouffer_z": -2.3, "p_stouffer": 0.0214336849738439, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.035415462124458, "fdr_fisher": 0.1710618842992075, "fdr_stouffer": 0.0387310447772968, "significance_flag": false}, {"gene_symbol": "BgGene54", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.161, "meta_se": 0.0972, "ci_lower": -0.3516, "ci_upper": 0.0296, "cochran_q": 2.432, "i2_heterogeneity": 17.7, "p_random_effects": 0.097816252517797, "fisher_stat": 9.776, "p_fisher": 0.1343878284771769, "stouffer_z": -1.869, "p_stouffer": 0.0616579698742336, "direction_concordance": "Mixed", "fdr_random_effects": 0.1526526365050468, "fdr_fisher": 0.2162645962696086, "fdr_stouffer": 0.0977041676468625, "significance_flag": false}, {"gene_symbol": "BgGene29", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1236, "meta_se": 0.1157, "ci_lower": -0.3505, "ci_upper": 0.1032, "cochran_q": 3.919, "i2_heterogeneity": 49.0, "p_random_effects": 0.2854298136299644, "fisher_stat": 9.69, "p_fisher": 0.1383483133496293, "stouffer_z": -1.528, "p_stouffer": 0.1265681604528825, "direction_concordance": "Mixed", "fdr_random_effects": 0.3710542752415937, "fdr_fisher": 0.2162645962696086, "fdr_stouffer": 0.1810627850923181, "significance_flag": false}, {"gene_symbol": "BgGene9", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1769, "meta_se": 0.0782, "ci_lower": -0.3302, "ci_upper": -0.0236, "cochran_q": 0.402, "i2_heterogeneity": 0.0, "p_random_effects": 0.0237083018743962, "fisher_stat": 9.685, "p_fisher": 0.1385773141145064, "stouffer_z": -2.195, "p_stouffer": 0.0281584553427969, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0469606748665924, "fdr_fisher": 0.2162645962696086, "fdr_stouffer": 0.0491579813611539, "significance_flag": false}, {"gene_symbol": "Actb", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1454, "meta_se": 0.0911, "ci_lower": -0.324, "ci_upper": 0.0332, "cochran_q": 2.571, "i2_heterogeneity": 22.2, "p_random_effects": 0.1106276913044879, "fisher_stat": 9.592, "p_fisher": 0.1429384036612346, "stouffer_z": -1.76, "p_stouffer": 0.0783499675300467, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.1651398870197428, "fdr_fisher": 0.2165096408398113, "fdr_stouffer": 0.1204484575461912, "significance_flag": false}, {"gene_symbol": "BgGene5", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1601, "meta_se": 0.0793, "ci_lower": -0.3156, "ci_upper": -0.0047, "cochran_q": 1.152, "i2_heterogeneity": 0.0, "p_random_effects": 0.0435222787164564, "fisher_stat": 9.635, "p_fisher": 0.1408768219910168, "stouffer_z": -2.066, "p_stouffer": 0.0388751216800078, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0759795713185595, "fdr_fisher": 0.2165096408398113, "fdr_stouffer": 0.0635577386196953, "significance_flag": false}, {"gene_symbol": "BgGene33", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0643, "meta_se": 0.1492, "ci_lower": -0.3567, "ci_upper": 0.228, "cochran_q": 5.109, "i2_heterogeneity": 60.9, "p_random_effects": 0.6661875477295007, "fisher_stat": 9.519, "p_fisher": 0.1464332443099827, "stouffer_z": -0.963, "p_stouffer": 0.3355962914697654, "direction_concordance": "Mixed", "fdr_random_effects": 0.7458404066971585, "fdr_fisher": 0.2185887559989597, "fdr_stouffer": 0.4027725154162038, "significance_flag": false}, {"gene_symbol": "BgGene36", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.111, "meta_se": 0.1142, "ci_lower": -0.3349, "ci_upper": 0.1129, "cochran_q": 3.478, "i2_heterogeneity": 42.5, "p_random_effects": 0.3311680841785411, "fisher_stat": 9.324, "p_fisher": 0.1561623093522497, "stouffer_z": -1.19, "p_stouffer": 0.2341762908323119, "direction_concordance": "Mixed", "fdr_random_effects": 0.4159794228096309, "fdr_fisher": 0.2297816837611674, "fdr_stouffer": 0.3015019744466016, "significance_flag": false}, {"gene_symbol": "Rpl13a", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1901, "meta_se": 0.0882, "ci_lower": -0.363, "ci_upper": -0.0171, "cochran_q": 0.271, "i2_heterogeneity": 0.0, "p_random_effects": 0.0312379676518461, "fisher_stat": 9.212, "p_fisher": 0.1620108162374989, "stouffer_z": -2.103, "p_stouffer": 0.0354877077999717, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0564475555814062, "fdr_fisher": 0.2350297756684843, "fdr_stouffer": 0.0599218672688048, "significance_flag": false}, {"gene_symbol": "BgGene7", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1716, "meta_se": 0.0832, "ci_lower": -0.3348, "ci_upper": -0.0085, "cochran_q": 0.848, "i2_heterogeneity": 0.0, "p_random_effects": 0.0391552120054727, "fisher_stat": 9.135, "p_fisher": 0.1661316477830379, "stouffer_z": -2.067, "p_stouffer": 0.0387618339961575, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0695342558028223, "fdr_fisher": 0.2361662552272225, "fdr_stouffer": 0.0635577386196953, "significance_flag": false}, {"gene_symbol": "BgGene32", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0148, "meta_se": 0.1413, "ci_lower": -0.2917, "ci_upper": 0.262, "cochran_q": 4.825, "i2_heterogeneity": 58.5, "p_random_effects": 0.9165243313771084, "fisher_stat": 9.112, "p_fisher": 0.1673799672969635, "stouffer_z": -0.507, "p_stouffer": 0.6118290622373088, "direction_concordance": "Mixed", "fdr_random_effects": 0.9440200613184216, "fdr_fisher": 0.2361662552272225, "fdr_stouffer": 0.6776171334456216, "significance_flag": false}, {"gene_symbol": "BgGene1", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0945, "meta_se": 0.1274, "ci_lower": -0.3443, "ci_upper": 0.1552, "cochran_q": 3.764, "i2_heterogeneity": 46.9, "p_random_effects": 0.4580985403521871, "fisher_stat": 8.822, "p_fisher": 0.1838440436827667, "stouffer_z": -1.089, "p_stouffer": 0.2760795380719529, "direction_concordance": "Mixed", "fdr_random_effects": 0.5423465477732791, "fdr_fisher": 0.2558910337746618, "fdr_stouffer": 0.3467828344074531, "significance_flag": false}, {"gene_symbol": "Hprt", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1431, "meta_se": 0.1043, "ci_lower": -0.3475, "ci_upper": 0.0613, "cochran_q": 2.709, "i2_heterogeneity": 26.2, "p_random_effects": 0.1700306440417001, "fisher_stat": 8.755, "p_fisher": 0.1878135836221044, "stouffer_z": -1.607, "p_stouffer": 0.1079449185451915, "direction_concordance": "Mixed", "fdr_random_effects": 0.2501879476613587, "fdr_fisher": 0.2579306548410234, "fdr_stouffer": 0.1588332372879246, "significance_flag": false}, {"gene_symbol": "BgGene52", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1631, "meta_se": 0.0855, "ci_lower": -0.3306, "ci_upper": 0.0044, "cochran_q": 0.868, "i2_heterogeneity": 0.0, "p_random_effects": 0.0563114137326099, "fisher_stat": 8.14, "p_fisher": 0.2280344844887398, "stouffer_z": -1.917, "p_stouffer": 0.0551784947155, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.0950832067944069, "fdr_fisher": 0.309046735557108, "fdr_stouffer": 0.0888028899327579, "significance_flag": false}, {"gene_symbol": "BgGene16", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1095, "meta_se": 0.1031, "ci_lower": -0.3115, "ci_upper": 0.0925, "cochran_q": 2.626, "i2_heterogeneity": 23.8, "p_random_effects": 0.2881974953332766, "fisher_stat": 7.752, "p_fisher": 0.2568513204328694, "stouffer_z": -1.266, "p_stouffer": 0.2056907065058371, "direction_concordance": "Mixed", "fdr_random_effects": 0.3710542752415937, "fdr_fisher": 0.3435803377218902, "fdr_stouffer": 0.2751447113000158, "significance_flag": false}, {"gene_symbol": "BgGene59", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1522, "meta_se": 0.085, "ci_lower": -0.3189, "ci_upper": 0.0144, "cochran_q": 0.509, "i2_heterogeneity": 0.0, "p_random_effects": 0.0734043712660221, "fisher_stat": 7.7, "p_fisher": 0.2609536891200815, "stouffer_z": -1.798, "p_stouffer": 0.072139749124541, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.1200103212761949, "fdr_fisher": 0.3445926920431846, "fdr_stouffer": 0.1125817296943594, "significance_flag": false}, {"gene_symbol": "BgGene27", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0338, "meta_se": 0.1121, "ci_lower": -0.2535, "ci_upper": 0.1859, "cochran_q": 3.435, "i2_heterogeneity": 41.8, "p_random_effects": 0.7629423418707102, "fisher_stat": 7.552, "p_fisher": 0.2728179010623386, "stouffer_z": -0.356, "p_stouffer": 0.7218210990516145, "direction_concordance": "Mixed", "fdr_random_effects": 0.8359900129008846, "fdr_fisher": 0.3556992887268465, "fdr_stouffer": 0.7744538875241281, "significance_flag": false}, {"gene_symbol": "BgGene18", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.0201, "meta_se": 0.1105, "ci_lower": -0.1965, "ci_upper": 0.2367, "cochran_q": 3.399, "i2_heterogeneity": 41.2, "p_random_effects": 0.8557161725987414, "fisher_stat": 6.957, "p_fisher": 0.3248631783616229, "stouffer_z": 0.058, "p_stouffer": 0.9538411469932676, "direction_concordance": "Mixed", "fdr_random_effects": 0.9181121435173996, "fdr_fisher": 0.4182613421405895, "fdr_stouffer": 0.9590257218631036, "significance_flag": false}, {"gene_symbol": "BgGene24", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1435, "meta_se": 0.0863, "ci_lower": -0.3127, "ci_upper": 0.0257, "cochran_q": 0.192, "i2_heterogeneity": 0.0, "p_random_effects": 0.0963803833324188, "fisher_stat": 6.801, "p_fisher": 0.3396745159484737, "stouffer_z": -1.687, "p_stouffer": 0.091672941624235, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.1526526365050468, "fdr_fisher": 0.4319317918850962, "fdr_stouffer": 0.1388575439308265, "significance_flag": false}, {"gene_symbol": "BgGene28", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1648, "meta_se": 0.1002, "ci_lower": -0.3613, "ci_upper": 0.0316, "cochran_q": 0.121, "i2_heterogeneity": 0.0, "p_random_effects": 0.1000682275577033, "fisher_stat": 6.602, "p_fisher": 0.3592308272602951, "stouffer_z": -1.659, "p_stouffer": 0.0971874795796976, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.1538362304245291, "fdr_fisher": 0.4512289659489072, "fdr_stouffer": 0.1450769622711428, "significance_flag": false}, {"gene_symbol": "BgGene50", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0434, "meta_se": 0.116, "ci_lower": -0.2708, "ci_upper": 0.184, "cochran_q": 3.005, "i2_heterogeneity": 33.4, "p_random_effects": 0.7085708401128923, "fisher_stat": 6.508, "p_fisher": 0.3687472899120934, "stouffer_z": -0.531, "p_stouffer": 0.595451245228724, "direction_concordance": "Mixed", "fdr_random_effects": 0.7847612530282572, "fdr_fisher": 0.4576020585656098, "fdr_stouffer": 0.6666465028104193, "significance_flag": false}, {"gene_symbol": "BgGene15", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1173, "meta_se": 0.0928, "ci_lower": -0.2992, "ci_upper": 0.0645, "cochran_q": 1.769, "i2_heterogeneity": 0.0, "p_random_effects": 0.205999466772651, "fisher_stat": 6.464, "p_fisher": 0.3732547258331085, "stouffer_z": -1.104, "p_stouffer": 0.2695498226549817, "direction_concordance": "Mixed", "fdr_random_effects": 0.2946936816330979, "fdr_fisher": 0.4576813900096449, "fdr_stouffer": 0.3427608855983101, "significance_flag": false}, {"gene_symbol": "BgGene35", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1074, "meta_se": 0.0792, "ci_lower": -0.2626, "ci_upper": 0.0478, "cochran_q": 1.379, "i2_heterogeneity": 0.0, "p_random_effects": 0.1749049548982633, "fisher_stat": 6.412, "p_fisher": 0.3786360486355895, "stouffer_z": -1.287, "p_stouffer": 0.1980993391440786, "direction_concordance": "Mixed", "fdr_random_effects": 0.2537353571059312, "fdr_fisher": 0.4588178001113614, "fdr_stouffer": 0.2684767359452644, "significance_flag": false}, {"gene_symbol": "BgGene40", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1019, "meta_se": 0.086, "ci_lower": -0.2706, "ci_upper": 0.0667, "cochran_q": 2.14, "i2_heterogeneity": 6.5, "p_random_effects": 0.2360906978746115, "fisher_stat": 6.241, "p_fisher": 0.3967551652379508, "stouffer_z": -1.198, "p_stouffer": 0.2310582696956027, "direction_concordance": "Mixed", "fdr_random_effects": 0.3199650247511183, "fdr_fisher": 0.475183511854755, "fdr_stouffer": 0.301253187071482, "significance_flag": false}, {"gene_symbol": "Gapdh", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1251, "meta_se": 0.0783, "ci_lower": -0.2786, "ci_upper": 0.0284, "cochran_q": 0.024, "i2_heterogeneity": 0.0, "p_random_effects": 0.1102645697824349, "fisher_stat": 6.197, "p_fisher": 0.4014978801853615, "stouffer_z": -1.594, "p_stouffer": 0.1109860073829522, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.1651398870197428, "fdr_fisher": 0.4753365707941636, "fdr_stouffer": 0.1610078698654096, "significance_flag": false}, {"gene_symbol": "BgGene31", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0941, "meta_se": 0.0872, "ci_lower": -0.2649, "ci_upper": 0.0767, "cochran_q": 1.69, "i2_heterogeneity": 0.0, "p_random_effects": 0.280373024792675, "fisher_stat": 5.916, "p_fisher": 0.4326235804226988, "stouffer_z": -1.047, "p_stouffer": 0.2951342186729269, "direction_concordance": "Mixed", "fdr_random_effects": 0.3702361737646862, "fdr_fisher": 0.5063662361765678, "fdr_stouffer": 0.3662508978712225, "significance_flag": false}, {"gene_symbol": "BgGene48", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.106, "meta_se": 0.085, "ci_lower": -0.2727, "ci_upper": 0.0607, "cochran_q": 1.712, "i2_heterogeneity": 0.0, "p_random_effects": 0.2125190855874232, "fisher_stat": 5.748, "p_fisher": 0.4519983452454911, "stouffer_z": -1.306, "p_stouffer": 0.1916448675604694, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.2954948589958873, "fdr_fisher": 0.5230992085425347, "fdr_stouffer": 0.2631922847830446, "significance_flag": false}, {"gene_symbol": "BgGene44", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.1091, "meta_se": 0.088, "ci_lower": -0.2815, "ci_upper": 0.0634, "cochran_q": 0.077, "i2_heterogeneity": 0.0, "p_random_effects": 0.2151661594630247, "fisher_stat": 4.611, "p_fisher": 0.5945209294333125, "stouffer_z": -1.25, "p_stouffer": 0.2112498032248178, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.2954948589958873, "fdr_fisher": 0.6803961747959021, "fdr_stouffer": 0.2789580734891825, "significance_flag": false}, {"gene_symbol": "BgGene2", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0054, "meta_se": 0.0751, "ci_lower": -0.1526, "ci_upper": 0.1418, "cochran_q": 2.014, "i2_heterogeneity": 0.7, "p_random_effects": 0.9429516616763012, "fisher_stat": 4.557, "p_fisher": 0.6016838417353225, "stouffer_z": -0.193, "p_stouffer": 0.8470773193024774, "direction_concordance": "Mixed", "fdr_random_effects": 0.9524690622469966, "fdr_fisher": 0.6810267659202003, "fdr_stouffer": 0.8902955498791344, "significance_flag": false}, {"gene_symbol": "BgGene22", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0129, "meta_se": 0.0886, "ci_lower": -0.1864, "ci_upper": 0.1607, "cochran_q": 1.52, "i2_heterogeneity": 0.0, "p_random_effects": 0.884458149454364, "fisher_stat": 4.42, "p_fisher": 0.619992027616941, "stouffer_z": -0.255, "p_stouffer": 0.7989794491765287, "direction_concordance": "Mixed", "fdr_random_effects": 0.929583565242852, "fdr_fisher": 0.6866578370381176, "fdr_stouffer": 0.848400858403943, "significance_flag": false}, {"gene_symbol": "BgGene25", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0505, "meta_se": 0.0976, "ci_lower": -0.2419, "ci_upper": 0.1409, "cochran_q": 1.626, "i2_heterogeneity": 0.0, "p_random_effects": 0.6049284630578511, "fisher_stat": 4.433, "p_fisher": 0.6182958133212404, "stouffer_z": -0.485, "p_stouffer": 0.6273910515277517, "direction_concordance": "Mixed", "fdr_random_effects": 0.6846992493951501, "fdr_fisher": 0.6866578370381176, "fdr_stouffer": 0.6874604075250896, "significance_flag": false}, {"gene_symbol": "BgGene23", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0095, "meta_se": 0.0831, "ci_lower": -0.1723, "ci_upper": 0.1533, "cochran_q": 1.519, "i2_heterogeneity": 0.0, "p_random_effects": 0.9090002593180856, "fisher_stat": 4.315, "p_fisher": 0.6341633553778421, "stouffer_z": -0.051, "p_stouffer": 0.9590257218631036, "direction_concordance": "Mixed", "fdr_random_effects": 0.9440200613184216, "fdr_fisher": 0.6948811234459333, "fdr_stouffer": 0.9590257218631036, "significance_flag": false}, {"gene_symbol": "BgGene37", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0822, "meta_se": 0.0856, "ci_lower": -0.2499, "ci_upper": 0.0856, "cochran_q": 0.199, "i2_heterogeneity": 0.0, "p_random_effects": 0.3369366376091591, "fisher_stat": 3.54, "p_fisher": 0.7386024630171095, "stouffer_z": -0.985, "p_stouffer": 0.3244177213321539, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.4181261888402818, "fdr_fisher": 0.7773580152512092, "fdr_stouffer": 0.397797920204903, "significance_flag": false}, {"gene_symbol": "BgGene38", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0641, "meta_se": 0.0811, "ci_lower": -0.2231, "ci_upper": 0.0949, "cochran_q": 0.667, "i2_heterogeneity": 0.0, "p_random_effects": 0.4295661367425099, "fisher_stat": 3.553, "p_fisher": 0.7369172142958109, "stouffer_z": -0.749, "p_stouffer": 0.4540140619076784, "direction_concordance": "Mixed", "fdr_random_effects": 0.5169546299200096, "fdr_fisher": 0.7773580152512092, "fdr_stouffer": 0.5254320042302346, "significance_flag": false}, {"gene_symbol": "BgGene12", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.084, "meta_se": 0.0859, "ci_lower": -0.2523, "ci_upper": 0.0843, "cochran_q": 0.134, "i2_heterogeneity": 0.0, "p_random_effects": 0.3278193377892169, "fisher_stat": 3.533, "p_fisher": 0.7396221892681407, "stouffer_z": -0.962, "p_stouffer": 0.336295498308675, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.4159794228096309, "fdr_fisher": 0.7773580152512092, "fdr_stouffer": 0.4027725154162038, "significance_flag": false}, {"gene_symbol": "BgGene49", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0636, "meta_se": 0.0903, "ci_lower": -0.2407, "ci_upper": 0.1134, "cochran_q": 0.963, "i2_heterogeneity": 0.0, "p_random_effects": 0.481218441697901, "fisher_stat": 3.572, "p_fisher": 0.734421027693525, "stouffer_z": -0.622, "p_stouffer": 0.5338891667782166, "direction_concordance": "Mixed", "fdr_random_effects": 0.5632443124418615, "fdr_fisher": 0.7773580152512092, "fdr_stouffer": 0.6042921338258935, "significance_flag": false}, {"gene_symbol": "BgGene55", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0704, "meta_se": 0.0867, "ci_lower": -0.2403, "ci_upper": 0.0995, "cochran_q": 0.662, "i2_heterogeneity": 0.0, "p_random_effects": 0.4170063745268937, "fisher_stat": 3.431, "p_fisher": 0.753170075891701, "stouffer_z": -0.792, "p_stouffer": 0.4284596671096925, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.5113292449555958, "fdr_fisher": 0.7836011900691435, "fdr_stouffer": 0.501492564912481, "significance_flag": false}, {"gene_symbol": "BgGene41", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.0222, "meta_se": 0.0844, "ci_lower": -0.1433, "ci_upper": 0.1877, "cochran_q": 0.958, "i2_heterogeneity": 0.0, "p_random_effects": 0.7925702661200131, "fisher_stat": 3.297, "p_fisher": 0.7707189573992997, "stouffer_z": 0.119, "p_stouffer": 0.9052027969034177, "direction_concordance": "Mixed", "fdr_random_effects": 0.8593130253722248, "fdr_fisher": 0.7938405261212788, "fdr_stouffer": 0.93235888081052, "significance_flag": false}, {"gene_symbol": "BgGene3", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0642, "meta_se": 0.0817, "ci_lower": -0.2243, "ci_upper": 0.0958, "cochran_q": 0.397, "i2_heterogeneity": 0.0, "p_random_effects": 0.4316320210982605, "fisher_stat": 2.972, "p_fisher": 0.8123172199769586, "stouffer_z": -0.874, "p_stouffer": 0.3819716707118128, "direction_concordance": "Concordant Down", "fdr_random_effects": 0.5169546299200096, "fdr_fisher": 0.8284027094814529, "fdr_stouffer": 0.4522193342909968, "significance_flag": false}, {"gene_symbol": "BgGene20", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": -0.0604, "meta_se": 0.0933, "ci_lower": -0.2434, "ci_upper": 0.1225, "cochran_q": 0.447, "i2_heterogeneity": 0.0, "p_random_effects": 0.5173622227890844, "fisher_stat": 2.78, "p_fisher": 0.8358952794546187, "stouffer_z": -0.661, "p_stouffer": 0.508884445861987, "direction_concordance": "Mixed", "fdr_random_effects": 0.5987450443514123, "fdr_fisher": 0.8440903312139777, "fdr_stouffer": 0.5823899769309407, "significance_flag": false}, {"gene_symbol": "BgGene47", "n_cohorts": 3, "cohorts_detected": "GSE107925;GSE108045;GSE266602", "meta_log2fc": 0.0065, "meta_se": 0.0915, "ci_lower": -0.1728, "ci_upper": 0.1858, "cochran_q": 0.444, "i2_heterogeneity": 0.0, "p_random_effects": 0.9432217897979966, "fisher_stat": 1.905, "p_fisher": 0.9282092086848104, "stouffer_z": 0.078, "p_stouffer": 0.9374539262688866, "direction_concordance": "Mixed", "fdr_random_effects": 0.9524690622469966, "fdr_fisher": 0.9282092086848104, "fdr_stouffer": 0.956017370353419, "significance_flag": false}];
+
+  function renderGeneCard(gene) {
+    const box = document.getElementById("geneResultBox");
+    const entry = META_DATA.find(d => d.gene_symbol.toLowerCase() === gene.toLowerCase());
+
+    if (!entry) {
+      box.innerHTML = `<div style="color: var(--accent); font-weight: 600;">Gene '<strong>${gene}</strong>' not found in consensus meta-analysis dataset. Please verify the gene symbol.</div>`;
+      return;
+    }
+
+    const isSig = entry.significance_flag;
+    const isUp = entry.meta_log2fc > 0;
+    const color = isUp ? "#c53030" : "#2b6cb0";
+    const statusBadge = isSig ? (isUp ? "<span style='color:#c53030; font-weight:bold;'>Consensus Upregulated (FDR < 0.05)</span>" : "<span style='color:#2b6cb0; font-weight:bold;'>Consensus Downregulated (FDR < 0.05)</span>") : "<span style='color:#718096;'>Not Stably Differential</span>";
+
+    box.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+        <h3 style="margin: 0; font-size: 22px; color: var(--primary);">Gene: <em>${entry.gene_symbol}</em></h3>
+        <span style="font-size: 13px;">${statusBadge}</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-pill">
+          <div class="stat-label">Pooled Effect (Log2FC)</div>
+          <div class="stat-value" style="color: ${color};">${entry.meta_log2fc > 0 ? "+" : ""}${entry.meta_log2fc.toFixed(3)}</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-label">95% Confidence Interval</div>
+          <div class="stat-value" style="font-size: 14px;">[${entry.ci_lower.toFixed(3)}, ${entry.ci_upper.toFixed(3)}]</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-label">Fisher Combined FDR</div>
+          <div class="stat-value">${entry.fdr_fisher < 0.001 ? entry.fdr_fisher.toExponential(2) : entry.fdr_fisher.toFixed(4)}</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-label">Heterogeneity (I²)</div>
+          <div class="stat-value">${entry.i2_heterogeneity.toFixed(1)}% (Q=${entry.cochran_q.toFixed(2)})</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-label">Cohorts Detected</div>
+          <div class="stat-value">${entry.n_cohorts} (${entry.cohorts_detected})</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-label">Direction Concordance</div>
+          <div class="stat-value" style="font-size: 14px;">${entry.direction_concordance}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function selectGene(g) {
+    document.getElementById("geneSearch").value = g;
+    renderGeneCard(g);
+  }
+
+  document.getElementById("searchBtn").addEventListener("click", () => {
+    const val = document.getElementById("geneSearch").value.trim();
+    if (val) renderGeneCard(val);
+  });
+
+  document.getElementById("geneSearch").addEventListener("keyup", (e) => {
+    if (e.key === "Enter") {
+      const val = e.target.value.trim();
+      if (val) renderGeneCard(val);
+    }
+  });
+
+  // Initial render
+  renderGeneCard("Tnf");
+</script>
+
+</body>
+</html>

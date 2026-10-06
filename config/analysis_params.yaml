@@ -1,0 +1,50 @@
+# NeuroGut-MetaSeq Analysis Parameters
+version: "1.0"
+
+quality_control:
+  min_counts_per_gene: 10
+  min_samples_expressing: 3
+  cooks_cutoff: true
+  independent_filtering: true
+
+differential_expression:
+  alpha: 0.05
+  log2fc_threshold: 0.585   # corresponding to ~1.5x fold change; 1.0 = 2.0x
+  lfc_shrinkage_method: "normal" # or "apeglm" in R
+  test_type: "Wald"
+
+meta_analysis:
+  method: "random_effects"   # DerSimonian-Laird inverse-variance
+  heterogeneity_metric: "I2" # Cochran's Q and Higgins I2
+  p_combination_methods:
+    - "fisher"               # Chi-square: -2 * sum(ln p)
+    - "stouffer"             # Sample-size weighted Z-score
+  fdr_method: "fdr_bh"       # Benjamini-Hochberg
+  min_cohorts_present: 2     # Gene must be detected in at least 2 independent cohorts
+  significance_cutoffs:
+    meta_fdr: 0.05
+    meta_log2fc: 0.5
+
+pathway_enrichment:
+  organism: "mouse"
+  gene_set_databases:
+    - "GO_Biological_Process_2023"
+    - "GO_Molecular_Function_2023"
+    - "GO_Cellular_Component_2023"
+    - "KEGG_2021_Mouse"
+    - "Reactome_2022"
+  significance_fdr: 0.05
+  highlight_pathways:
+    - "NF-kappa B signaling pathway"
+    - "Cytokine-cytokine receptor interaction"
+    - "TNF signaling pathway"
+    - "Chemokine signaling pathway"
+    - "Toll-like receptor signaling pathway"
+    - "Phagosome"
+    - "Inflammatory response"
+    - "Microglial cell activation"
+
+visualization:
+  dpi: 300
+  formats: ["png", "svg"]
+  theme: "publication"
