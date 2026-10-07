@@ -73,14 +73,18 @@ python scripts/03b_pydeseq2_analysis.py
 ```
 *Outputs*: `results/de_results/*_deg.csv`, `results/figures/fig_volcano_*.png`.
 
-### Step 2.3: Cross-Study Statistical Meta-Analysis (Horizon 3)
+### Step 2.3: Cross-Study Statistical Meta-Analysis & Subgroup Decomposition
 ```bash
-# DerSimonian-Laird Random Effects, Cochran's Q, Higgins I², and LOO sensitivity
+# Restricted Maximum Likelihood (REML) with Hartung-Knapp-Sidik-Jonkman (HKSJ) adjustment,
+# DerSimonian-Laird benchmark, Cochran's Q, Higgins I², and Leave-One-Out (LOO) sensitivity
 python scripts/04_meta_analysis.py
-```
-*Outputs*: `results/meta_results/microglia_meta_analysis_summary.csv`, `results/meta_results/core_consensus_signature.csv`, `results/meta_results/microglia_meta_analysis_loo.csv`.
 
-### Step 2.4: Systems Biology, Networks & Rescue Modeling (Horizon 4)
+# Subgroup meta-regression and two-tier biological decomposition (GF vs ABX vs Fiber Starvation)
+python scripts/04c_perturbation_subgroups.py
+```
+*Outputs*: `results/meta_results/microglia_meta_analysis_summary.csv`, `results/meta_results/core_consensus_signature.csv`, `results/meta_results/microglia_meta_analysis_loo.csv`, `results/meta_results/perturbation_subgroup_decomposition.csv`, and subgroup forest plots.
+
+### Step 2.4: Systems Biology, Networks, Deconvolution & Rescue Modeling
 ```bash
 # 1. Cache reference gene set databases (MSigDB Hallmarks, KEGG, TRRUST, phenotypes)
 python scripts/05a_cache_gene_sets.py
@@ -94,13 +98,16 @@ python scripts/05b_tf_regulon_analysis.py
 # 4. Construct WGCNA co-expression network and identify hub genes
 python scripts/05c_coexpression_network.py
 
-# 5. In silico SCFA metabolite rescue modeling & signature inversion
+# 5. In vivo SCFA metabolite rescue modeling (GSE64977) & 1,000-permutation null model
 python scripts/05d_metabolite_rescue.py
 
-# 6. Render 300 DPI publication diagnostic figures
+# 6. Single-cell subpopulation deconvolution & ISG-to-lineage normalization
+python scripts/05f_single_cell_deconvolution.py
+
+# 7. Render publication diagnostic figures (PNG & SVG vector formats)
 python scripts/05e_systems_diagnostics.py
 ```
-*Outputs*: `results/pathways/`, `results/networks/`, and 5 high-resolution figures in `results/pathways/figures/`.
+*Outputs*: `results/pathways/`, `results/networks/`, and publication-quality raster (300 DPI PNG) and vector (SVG) figures in `results/pathways/figures/` and `results/figures/`.
 
 ---
 
@@ -109,33 +116,51 @@ python scripts/05e_systems_diagnostics.py
 ### A. Meta-Analysis Statistics (`results/meta_results/microglia_meta_analysis_summary.csv`)
 | Metric | Interpretation |
 |---|---|
-| `meta_log2fc` | Pooled effect size across all cohorts using DerSimonian-Laird random effects. Positive values indicate upregulation in microbiome-depleted or perturbed microglia. |
-| `[ci_lower, ci_upper]` | 95% Confidence Interval for the pooled effect size. If the interval excludes 0, the effect is statistically significant at $\alpha = 0.05$. |
+| `meta_log2fc` | Primary pooled effect size across cohorts estimated via Restricted Maximum Likelihood (REML). Positive values indicate upregulation in microbiome-depleted microglia. |
+| `[ci_lower, ci_upper]` | Hartung-Knapp-Sidik-Jonkman (HKSJ) adjusted 95% Confidence Interval ($t_{k-1}$ distribution). Protects against false positives under small cohort count ($k=4$). |
+| `tau2` | REML between-study variance parameter ($\tau^2$). |
+| `p_hksj` | Robust p-value under the HKSJ $t$-distribution adjustment. |
+| `meta_log2fc_dl` | Benchmark DerSimonian-Laird pooled effect size, provided for historical and methodological comparison. |
 | `i2_heterogeneity` | Higgins $I^2$ inconsistency metric ($0 - 100\%$). $I^2 < 25\%$ indicates low across-study heterogeneity; $I^2 > 50\%$ indicates substantial biological or technical heterogeneity across studies. |
-| `fdr_random_effects` | Benjamini-Hochberg FDR under random-effects model. |
+| `fdr_random_effects` | Benjamini-Hochberg FDR under the primary REML random-effects model. |
 | `fdr_fisher` | Combined p-value FDR via Fisher's $\chi^2$ method. Prioritizes genes with consistent evidence of differential expression across independent studies. |
 | `direction_concordance` | Indicates whether the gene was consistently upregulated (`Concordant Up`), downregulated (`Concordant Down`), or had opposing directions (`Mixed`) across cohorts. |
 
-### B. Upstream TF Regulons (`results/pathways/tf_regulon_activity_summary.csv`)
+### B. Perturbation Subgroup Decomposition (`results/meta_results/perturbation_subgroup_decomposition.csv`)
+| Metric / Column | Interpretation |
+|---|---|
+| `subgroup_axis` | Biological stratification: `Shared Microbial Core` (invariant across all models), `Developmental Absence Specific` (GF-restricted), `Acute Antibiotic Shock Specific` (ABX-restricted), or `Model-Heterogeneous`. |
+| `q_between_models` | Cochran's $Q_{\text{between}}$ statistic quantifying variance between developmental and acute perturbation classes. |
+| `p_q_between` | Chi-square p-value for model discordance ($p < 0.05$ indicates significant model heterogeneity, e.g., for *Tsc22d3*). |
+
+### C. Upstream TF Regulons (`results/pathways/tf_regulon_activity_summary.csv`)
 | Metric | Interpretation |
 |---|---|
 | `activity_z_score` | Standardized shift in downstream target effect sizes relative to the background transcriptome. Negative $Z$ indicates repressed TF activity (e.g., `Irf1` $Z = -2.28$). |
 | `fdr_welch` | Benjamini-Hochberg FDR of Welch's two-sample $t$-test. TFs with $\text{FDR} \le 0.05$ are considered master drivers of the perturbation state. |
 | `target_count` | Number of empirically measured target genes evaluated in the regulon ($\ge 5$). |
 
-### C. WGCNA Co-Expression Networks (`results/networks/`)
+### D. WGCNA Co-Expression Networks (`results/networks/`)
 | Metric | Interpretation |
 |---|---|
 | `module_name` | Name of the discrete co-expression cluster (e.g., `M_Quiescence`). |
 | `k_in` | Intramodular connectivity. High $k_{\text{in}}$ identifies module hub genes that coordinate cluster expression. |
 | `module_trait_correlations` | Pearson correlation between the Module Eigengene (ME) and specific experimental traits (GF, ABX, Dietary Fiber Starvation). |
 
-### D. In Silico SCFA Metabolite Rescue (`results/pathways/scfa_metabolite_rescue_modeling.csv`)
+### E. In Vivo SCFA Metabolite Rescue (`results/pathways/scfa_metabolite_rescue_modeling.csv`)
 | Metric | Interpretation |
 |---|---|
-| `in_silico_rescue_index` | Direction-adjusted In Silico Rescue Index ($\text{ISRI} = -\operatorname{sign}(\hat{\theta}_{\text{depletion}}) \times \hat{\theta}_{\text{rescue}}$). Values $>0$ indicate successful restoration toward homeostatic baseline. |
+| `in_silico_rescue_index` | Direction-adjusted In Silico Rescue Index ($\text{ISRI} = -\operatorname{sign}(\hat{\theta}_{\text{depletion}}) \times \hat{\theta}_{\text{rescue}}$) grounded in empirical in vivo RNA-seq (Erny 2015 GSE64977). Values $>0$ indicate restoration toward homeostatic baseline. |
 | `rescue_percentage` | Proportion of the depletion-induced transcriptomic shift reversed by SCFA administration (clamped between $0\%$ and $100\%$). |
 | `rescue_status` | Classification: `Metabolite-Reversible Responder` vs. `Irreversible/Non-responder`. |
+| 1,000-Permutation Null | Tests specificity against 1,000 random non-DEG gene sets ($p_{\text{perm}} = 0.00399$). Confirms rescue is specific to the depletion signature rather than a non-specific HDAC inhibition effect. |
+
+### F. Microglia Subpopulation Deconvolution (`results/pathways/microglia_subpopulation_deconvolution.csv`)
+| Metric | Interpretation |
+|---|---|
+| `sig_Interferon-Responsive (IRM)` | Mean CPM expression score for single-cell-validated IRM marker panel (*Oas1a*, *Stat1*, *Gbp2*, *Tap1*, *Ifit1*, etc.). |
+| `lineage_pan_score` | Mean CPM expression score of invariant pan-microglial lineage markers (*Hexb*, *Csf1r*, *Tmem119*). |
+| `isg_to_lineage_ratio` | Normalized ratio of ISG expression to microglial lineage markers. Demonstrates uniform per-cell ISG downregulation rather than selective loss of microglial cell numbers. |
 
 ---
 
@@ -161,8 +186,19 @@ The web paper is pre-configured for automated deployment with **GitHub Pages**:
 Execute the automated test suite covering metadata validation, count matrix integrity, random-effects mathematics, and systems biology models:
 
 ```bash
-# Run all 42 unit tests with verbose reporting
+# Run all 53 unit tests with verbose reporting
 pytest tests/ -v
 ```
 
-All 42 tests should report `PASSED` in ~1.1 seconds.
+All 53 tests should report `PASSED` in ~1.3 seconds across 11 test modules:
+- `test_academic_upgrades.py` (REML, HKSJ, subgroups, deconvolution, vector SVGs, zero-jargon)
+- `test_count_matrix_integrity.py` (count matrix structure & types)
+- `test_data_audit.py` (microglial purity & dissociation stress tests)
+- `test_de_results.py` (DESeq2 tables and volcanic distributions)
+- `test_framework_doc.py` (framework integrity)
+- `test_horizon5_narrative.py` (web assets & manuscript structure)
+- `test_meta_analysis_real.py` (full meta-analysis scale & bounds)
+- `test_metadata_schema.py` (experimental sample attributes)
+- `test_statistical_pipeline.py` (mathematical algorithm unit checks)
+- `test_systems_biology_real.py` (pathways, regulons, WGCNA, rescue)
+- `test_web_paper_build.py` (DOM integrity and literature review depth)

@@ -183,8 +183,27 @@ The Living Lab Notebook is the chronological memory of the project. It adheres t
 
 ---
 
-## 6. Summary: The Golden Rule of the Framework
+## 6. Translating Exploratory Frameworks into Academic Disciplinary Standards
 
-> **"Anchor in reproducible code; steer with rigorous statistics; explore with biological curiosity."**
+While the **Adaptive Discovery Framework (ADF)**, Macro Horizons, and Micro "Blooms" serve as powerful internal scaffolding for guiding autonomous computational workflows, formal peer-reviewed life sciences journals (*Nature Neuroscience*, *Cell Reports*, *Genome Biology*, *Immunity*) expect established disciplinary structures.
+
+### The Decoupling Standard:
+To ensure both computational rigor and seamless peer-review alignment, the repository maintains a strict separation of concerns:
+- **Internal Lab Artifacts** (`docs/ADAPTIVE_DISCOVERY_FRAMEWORK.md`, `docs/LAB_NOTEBOOK.md`): Preserve the full chronological history, agile sprint checkpoints, and serendipitous discovery notes.
+- **Formal Peer-Reviewed Artifacts** (`docs/MANUSCRIPT.md`, `docs/index.html`): Adhere strictly to biomedical editorial standards, with zero engineering sprint jargon:
+
+| Internal Framework Scaffold | Formal Disciplinary Manuscript Section | Key Scientific Focus |
+|---|---|---|
+| **Horizon 1** | Lineage Purity & Ex Vivo Dissociation Quality Control | Audit immediate-early stress genes (*Fos*, *Jun*, *Atf3*) and verify >99% microglial purity |
+| **Horizon 2** | Cross-Cohort Differential Expression Modeling | Negative binomial GLMs (`PyDESeq2`), sex covariate adjustment, and perturbation divergence |
+| **Horizon 3** | Random-Effects Meta-Analysis & Two-Tier Subgroup Decomposition | REML variance estimation, Hartung-Knapp-Sidik-Jonkman (HKSJ) CIs, and $Q_{\text{between}}$ testing |
+| **Horizon 4** | Upstream Transcription Factor Regulons & Single-Cell Deconvolution | TRRUST v2 regulon analysis (IRF1 shutoff) and ISG-to-lineage normalization index |
+| **Horizon 5** | In Vivo Metabolite Reversibility & Specificity Null Modeling | Empirical SCFA response vectors (GSE64977) and 1,000-permutation specificity null testing |
+
+---
+
+## 7. Summary: The Golden Rule of the Framework
+
+> **"Anchor in reproducible code; steer with rigorous statistics; explore with biological curiosity; publish with disciplinary elegance."**
 
 By adhering to the Adaptive Discovery Framework, **NeuroGut-MetaSeq** avoids both the sterility of rigid software engineering and the chaos of undisciplined exploratory analysis. The project moves forward with relentless momentum, delivering concrete milestones while remaining vibrant, creative, and scientifically profound.

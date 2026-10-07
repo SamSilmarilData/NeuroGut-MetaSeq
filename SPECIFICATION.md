@@ -45,35 +45,44 @@ P-values are computed as $p_{ik} = 2 \left( 1 - \Phi(|W_{ik}|) \right)$.
 
 ---
 
-### 2.2 Effect Size Meta-Analysis (Inverse-Variance Random-Effects)
+### 2.2 Effect Size Meta-Analysis (REML & Hartung-Knapp-Sidik-Jonkman)
 
 To pool effect sizes $\hat{\theta}_k = \hat{\beta}_{\text{cond}, ik}$ across $K$ independent cohorts with estimated variances $v_k = \operatorname{SE}(\hat{\beta}_{\text{cond}, ik})^2$:
 
-Under the random-effects assumption:
+Under the random-effects model:
 
 $$\hat{\theta}_k = \theta + u_k + \epsilon_k, \quad u_k \sim \mathcal{N}(0, \tau^2), \quad \epsilon_k \sim \mathcal{N}(0, v_k)$$
 
-#### DerSimonian-Laird Estimator for Between-Study Variance ($\tau^2$):
-First compute the fixed-effects weights $w_k = \frac{1}{v_k}$ and Cochran's heterogeneity statistic $Q$:
+#### 1. Restricted Maximum Likelihood (REML) Estimator for $\tau^2$:
+When the number of studies is small ($K < 5$), the classical DerSimonian-Laird (DL) method systematically underestimates between-study variance $\tau^2$, yielding anti-conservative confidence intervals. NeuroGut-MetaSeq employs **Restricted Maximum Likelihood (REML)** by minimizing the negative restricted log-likelihood via bounded scalar optimization:
 
-$$Q = \sum_{k=1}^K w_k (\hat{\theta}_k - \bar{\theta}_{\text{FE}})^2, \quad \bar{\theta}_{\text{FE}} = \frac{\sum_{k=1}^K w_k \hat{\theta}_k}{\sum_{k=1}^K w_k}$$
+$$-2 l_R(\tau^2) = \sum_{k=1}^K \ln(v_k + \tau^2) + \ln \left( \sum_{k=1}^K \frac{1}{v_k + \tau^2} \right) + \sum_{k=1}^K \frac{(\hat{\theta}_k - \hat{\theta}_{\text{RE}}(\tau^2))^2}{v_k + \tau^2}$$
 
-The between-study variance $\tau^2$ is estimated as:
+subject to $\tau^2 \ge 0$, where $\hat{\theta}_{\text{RE}}(\tau^2) = \frac{\sum_{k=1}^K w_k^*(\tau^2) \hat{\theta}_k}{\sum_{k=1}^K w_k^*(\tau^2)}$ and $w_k^*(\tau^2) = \frac{1}{v_k + \tau^2}$.
 
-$$\tau^2 = \max\left( 0, \frac{Q - (K - 1)}{\sum_{k=1}^K w_k - \frac{\sum_{k=1}^K w_k^2}{\sum_{k=1}^K w_k}} \right)$$
+#### 2. Hartung-Knapp-Sidik-Jonkman (HKSJ) Adjustment:
+To account for uncertainty in the variance component estimate $\hat{\tau}^2_{\text{REML}}$, we apply the Hartung-Knapp-Sidik-Jonkman (HKSJ) quadratic variance adjustment factor:
 
-Higgins & Thompson's $I^2$ inconsistency metric:
+$$q_{\text{HKSJ}} = \frac{1}{K - 1} \sum_{k=1}^K w_k^* (\hat{\theta}_k - \hat{\theta}_{\text{meta}})^2$$
+
+$$\operatorname{SE}_{\text{HKSJ}}(\hat{\theta}_{\text{meta}}) = \sqrt{\frac{\max(1, q_{\text{HKSJ}})}{\sum_{k=1}^K w_k^*}}$$
+
+Critical values follow Student's $t$-distribution with $K - 1$ degrees of freedom. For $K = 4$ cohorts ($\text{df} = 3$), the two-tailed 95% critical threshold is:
+
+$$t_{\text{crit}} = t_{0.975, 3} = 3.1824$$
+
+$$95\% \text{ CI}_{\text{HKSJ}} = \left[ \hat{\theta}_{\text{meta}} - t_{\text{crit}} \cdot \operatorname{SE}_{\text{HKSJ}}(\hat{\theta}_{\text{meta}}), \; \hat{\theta}_{\text{meta}} + t_{\text{crit}} \cdot \operatorname{SE}_{\text{HKSJ}}(\hat{\theta}_{\text{meta}}) \right]$$
+
+$$p_{\text{HKSJ}} = 2 \left( 1 - F_{t_3}\left( \frac{|\hat{\theta}_{\text{meta}}|}{\operatorname{SE}_{\text{HKSJ}}(\hat{\theta}_{\text{meta}})} \right) \right)$$
+
+#### 3. DerSimonian-Laird Estimator (Supplementary Benchmark):
+For backward comparability and sensitivity benchmarking, between-study variance is also estimated via method of moments:
+
+$$Q = \sum_{k=1}^K w_k (\hat{\theta}_k - \bar{\theta}_{\text{FE}})^2, \quad \bar{\theta}_{\text{FE}} = \frac{\sum w_k \hat{\theta}_k}{\sum w_k}, \quad w_k = \frac{1}{v_k}$$
+
+$$\tau^2_{\text{DL}} = \max\left( 0, \frac{Q - (K - 1)}{\sum_{k=1}^K w_k - \frac{\sum_{k=1}^K w_k^2}{\sum_{k=1}^K w_k}} \right)$$
 
 $$I^2 = \max\left( 0, \frac{Q - (K - 1)}{Q} \right) \times 100\%$$
-
-#### Random-Effects Weights and Pooled Effect:
-$$w_k^* = \frac{1}{v_k + \tau^2}$$
-
-$$\hat{\theta}_{\text{meta}} = \frac{\sum_{k=1}^K w_k^* \hat{\theta}_k}{\sum_{k=1}^K w_k^*}, \quad \operatorname{SE}(\hat{\theta}_{\text{meta}}) = \sqrt{\frac{1}{\sum_{k=1}^K w_k^*}}$$
-
-$$95\% \text{ CI} = \left[ \hat{\theta}_{\text{meta}} - 1.96 \cdot \operatorname{SE}(\hat{\theta}_{\text{meta}}), \; \hat{\theta}_{\text{meta}} + 1.96 \cdot \operatorname{SE}(\hat{\theta}_{\text{meta}}) \right]$$
-
-$$Z_{\text{meta}} = \frac{\hat{\theta}_{\text{meta}}}{\operatorname{SE}(\hat{\theta}_{\text{meta}})}, \quad p_{\text{meta, RE}} = 2 \left( 1 - \Phi(|Z_{\text{meta}}|) \right)$$
 
 ---
 
@@ -91,17 +100,44 @@ $$Z_{\text{Stouffer}} = \frac{\sum_{k=1}^K \sqrt{n_k} Z_k}{\sqrt{\sum_{k=1}^K n_
 
 ---
 
-### 2.4 Multiple Hypothesis Correction
+### 2.4 Two-Tier Subgroup Decomposition & Multi-Study Factor Analysis
+
+To address biological heterogeneity across distinct experimental models (lifelong germ-free absence, acute broad-spectrum antibiotic shock, dietary fiber starvation), we implement a Two-Tier Subgroup Decomposition.
+
+#### 1. Between-Subgroup Heterogeneity Test:
+For each gene $i$, we pool model-specific effect sizes $\hat{\theta}_g$ ($g \in \{\text{GF}, \text{ABX}, \text{Fiber}\}$) with inverse-variance weights $w_g = 1 / v_g$:
+
+$$Q_{\text{between}} = \sum_{g=1}^G w_g (\hat{\theta}_g - \bar{\theta}_{\text{pooled}})^2 \sim \chi^2_{G - 1}$$
+
+Where $\bar{\theta}_{\text{pooled}} = \frac{\sum w_g \hat{\theta}_g}{\sum w_g}$. The between-model heterogeneity p-value is $p_{Q} = 1 - F_{\chi^2_{G-1}}(Q_{\text{between}})$.
+
+#### 2. Transcriptome Classification Partitioning:
+- **Shared Microbial Core**: Directionally concordant across models, low between-study heterogeneity ($I^2 < 35\%$), invariant between perturbation classes ($p_Q > 0.05$). Exemplars: *Llgl2*, *Slfn2*, *Clu*.
+- **ABX Mucosal Shock**: Disproportionate pharmacological effect in acute antibiotic cocktail ($|\hat{\theta}_{\text{ABX}}| \ge 1.0$) with extreme heterogeneity ($I^2 > 60\%$). Exemplars: *Tsc22d3* ($I^2 = 95.4\%$), *Ddit4* ($I^2 = 97.8\%$).
+- **Fiber Dietary Starvation**: Metabolic substrate shock in zero-fiber diet ($|\hat{\theta}_{\text{Fiber}}| \ge 0.8, I^2 > 50\%$). Exemplar: *Plin3* ($I^2 = 96.5\%$).
+- **Developmental Germ-Free**: Lifelong embryonic absence effect ($|\hat{\theta}_{\text{GF}}| \ge 0.8, I^2 > 50\%$).
+- **Model-Divergent Mixed Axis**: Opposing directional regulation across perturbation models.
+
+#### 3. Multi-Study Factor Analysis (SVD PCA):
+We standardize log2 CPM expression $Z_{ij}$ within each cohort to remove baseline technical shifts and perform Singular Value Decomposition (SVD):
+
+$$\mathbf{Z} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$$
+
+Decomposing sample variance into Factor 1 (Microbial Tonic Surveillance Axis) and Factor 2 (Model Modality / Acute Stress Axis).
+
+---
+
+### 2.5 Multiple Hypothesis Correction
 
 All raw p-values ($m$ tested genes) are corrected using the Benjamini-Hochberg False Discovery Rate (FDR) procedure:
 
 $$q_{(i)} = \min_{j \ge i} \left( \frac{m \cdot p_{(j)}}{j} \right)$$
 
-Genes with $q \le 0.05$ and $|\hat{\theta}_{\text{meta}}| \ge 0.5$ are designated as statistically significant meta-DEGs.
+For genome-wide screening across 23,096 common genes under small study numbers ($K=4$), discovery testing is conducted on the REML Wald statistic $Z = \hat{\theta}_{\text{REML}} / \operatorname{SE}_{\text{REML}}$ (`fdr_random_effects`), with HKSJ providing conservative degrees-of-freedom adjusted standard errors, 95% confidence intervals, and nominal $p_{\text{hksj}} < 0.05$ checks.
 
 ---
 
-### 2.5 Pathway Enrichment Statistics
+### 2.6 Pathway Enrichment Statistics
 
 #### Hypergeometric Over-Representation Analysis (ORA):
 For a gene set of size $S$, genome size $N$, and DEG list of size $k$ containing $x$ intersecting genes:
@@ -113,7 +149,7 @@ Uses the non-parametric running-sum Kolmogorov-Smirnov-like statistic across the
 
 ---
 
-### 2.6 Upstream Transcription Factor Regulon Deconvolution
+### 2.7 Upstream Transcription Factor Regulon Deconvolution
 
 To determine whether the downstream targets of transcription factor $t$ are coordinately shifted in microbiome-depleted microglia, we project meta-analysis effect sizes onto curated transcriptional regulatory networks (TRRUST v2 mouse):
 
@@ -123,66 +159,71 @@ For transcription factor $t$ with $n_t$ measured downstream target genes having 
 $$Z_{\text{activity}, t} = \frac{\bar{\theta}_t - \bar{\theta}_{\text{bg}}}{\sqrt{\frac{s_t^2}{n_t} + \frac{s_{\text{bg}}^2}{n_{\text{bg}}}}}$$
 
 #### 2. Hypothesis Testing:
-- **Welch's Two-Sample $t$-Test**: Accounts for unequal target vs background variance with Welch-Satterthwaite degrees of freedom $\nu$:
-  $$\nu = \frac{\left( \frac{s_t^2}{n_t} + \frac{s_{\text{bg}}^2}{n_{\text{bg}}} \right)^2}{\frac{(s_t^2 / n_t)^2}{n_t - 1} + \frac{(s_{\text{bg}}^2 / n_{\text{bg}})^2}{n_{\text{bg}} - 1}}$$
+- **Welch's Two-Sample $t$-Test**: Accounts for unequal target vs background variance with Welch-Satterthwaite degrees of freedom $\nu$.
 - **Mann-Whitney $U$ Test**: Non-parametric test for location shift without distributional assumptions.
-- **Two-Sample Kolmogorov-Smirnov Test**: Tests whether target effect sizes follow the background distribution $F_{\text{bg}}(\theta)$:
-  $$D = \sup_\theta |F_t(\theta) - F_{\text{bg}}(\theta)|$$
+- **Two-Sample Kolmogorov-Smirnov Test**: Tests whether target effect sizes follow the background distribution $F_{\text{bg}}(\theta)$.
 - **Target Overlap Fisher's Exact Test**: Evaluates significant enrichment among consensus DEGs.
 - Multiple testing correction applied via Benjamini-Hochberg FDR ($\text{FDR} \le 0.05$).
 
 ---
 
-### 2.7 Weighted Gene Co-Expression Network Analysis (WGCNA)
+### 2.8 Weighted Gene Co-Expression Network Analysis (WGCNA)
 
 To identify modular co-expression architectures and hub effectors across all 60 biological samples:
 
 #### 1. Similarity & Soft-Thresholded Adjacency:
-Between gene $i$ and gene $j$, Pearson correlation $s_{ij} = \operatorname{cor}(x_i, x_j)$ is converted to a signed co-expression adjacency using soft-threshold power $\beta$:
+Between gene $i$ and gene $j$, Pearson correlation $s_{ij} = \operatorname{cor}(x_i, x_j)$ is converted to a signed co-expression adjacency using soft-threshold power $\beta = 6$ ($R^2 \ge 0.80$):
 
 $$a_{ij} = \left( \frac{1 + s_{ij}}{2} \right)^\beta$$
-
-Where $\beta = 6$ satisfies Zhang & Horvath's scale-free topology criterion:
-
-$$R^2(\log p(k), \log k) \ge 0.80$$
 
 #### 2. Topological Overlap Matrix (TOM):
 Quantifies interconnectedness based on shared network neighbors:
 
 $$\omega_{ij} = \operatorname{TOM}_{ij} = \frac{l_{ij} + a_{ij}}{\min(k_i, k_j) + 1 - a_{ij}}$$
 
-Where $l_{ij} = \sum_u a_{iu} a_{uj}$ and node connectivity $k_i = \sum_u a_{iu}$. Dissimilarity is defined as $d_{ij}^{\text{TOM}} = 1 - \omega_{ij}$.
-
 #### 3. Module Eigengenes & Intramodular Connectivity:
-For each detected module $q$, the Module Eigengene (ME) $E^{(q)}$ is defined as the first principal component of the standardized module expression matrix:
-
-$$E^{(q)} = \mathbf{v}_1, \quad \text{where } \mathbf{X}^{(q)} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$$
-
-Intramodular connectivity $k_{\text{in}}^{(i)}$ for gene $i \in \text{Module } q$ identifies hub genes:
-
-$$k_{\text{in}}^{(i)} = \sum_{j \in \text{Module } q, j \ne i} a_{ij}$$
+For each detected module $q$, the Module Eigengene (ME) $E^{(q)}$ is defined as the first principal component of the standardized module expression matrix. Hub genes are identified by intramodular connectivity $k_{\text{in}}^{(i)}$.
 
 ---
 
-### 2.8 In Silico SCFA Metabolite Rescue Modeling
+### 2.9 Empirical In Vivo SCFA Metabolite Reversibility & Specificity Null Model
 
-To quantitatively evaluate whether microbial metabolite restoration (short-chain fatty acids: acetate, propionate, butyrate) inverts the depletion transcriptomic defect:
+To quantitatively model candidate transcriptional reversibility by short-chain fatty acids (acetate, propionate, butyrate), vectors are grounded in empirical in vivo microglial RNA-seq from SCFA-supplemented germ-free mice (Erny et al. 2015 *Nature Neuroscience*, GSE64977, $N=6$):
 
 #### 1. In Silico Rescue Index (ISRI):
-$$\text{ISRI}_i = -\operatorname{sign}(\hat{\theta}_{\text{depletion}, i}) \times \hat{\theta}_{\text{rescue}, i}$$
+$$\text{ISRI}_i = -\frac{\hat{\theta}_{\text{depletion}, i} \cdot \hat{\theta}_{\text{scfa}, i}}{|\hat{\theta}_{\text{depletion}, i}|}$$
 
 - $\text{ISRI}_i > 0$: Successful reciprocal signature inversion (repressed genes restored upward; activated cytokines suppressed downward).
-- $\text{ISRI}_i \le 0$: Irreversible, refractory, or compensatory exacerbation.
+- $\text{ISRI}_i \le 0$: Refractory, priming-locked, or non-reversible.
 
-#### 2. Clamped Percentage Rescue:
-$$\operatorname{Rescue}\%_i = \max\left( 0\%, \; \min\left( 100\%, \; -\frac{\hat{\theta}_{\text{rescue}, i}}{\hat{\theta}_{\text{depletion}, i}} \times 100\% \right) \right)$$
+#### 2. Percentage Rescue:
+$$\operatorname{Rescue}\%_i = \max\left( 0\%, \; \min\left( 150\%, \; \frac{\text{ISRI}_i}{|\hat{\theta}_{\text{depletion}, i}|} \times 100\% \right) \right)$$
 
 #### 3. Global Signature Inversion Metric:
-Calculated as the Pearson correlation coefficient between meta-analysis depletion effect sizes and SCFA rescue effect sizes across all landmark test genes:
+$$r_{\text{inversion}} = \operatorname{cor}\left( \hat{\boldsymbol{\theta}}_{\text{depletion}}, \; \hat{\boldsymbol{\theta}}_{\text{scfa}} \right)$$
 
-$$r_{\text{inversion}} = \operatorname{cor}\left( \hat{\boldsymbol{\theta}}_{\text{depletion}}, \; \hat{\boldsymbol{\theta}}_{\text{rescue}} \right)$$
+#### 4. 1,000-Permutation Genomic Specificity Null Model:
+To test whether the observed rescue index is specific to microbiome-depleted signatures rather than a non-specific artifact of HDAC inhibition, we draw $B = 1,000$ independent random subsets of size $n = 19$ from non-differentially expressed background genes ($|\hat{\theta}| < 0.2, \text{FDR} > 0.5$):
 
-Where $r_{\text{inversion}} < -0.5$ indicates strong global transcriptional rescue.
+$$p_{\text{perm}} = \frac{1 + \sum_{b=1}^B \mathbb{I}(\overline{\text{ISRI}}_{\text{null}}^{(b)} \ge \overline{\text{ISRI}}_{\text{obs}})}{1 + B}$$
+
+---
+
+### 2.10 Single-Cell Subpopulation Deconvolution & Lineage Normalization
+
+To resolve the bulk RNA-seq bottleneck and evaluate whether interferon collapse reflects per-cell transcriptional shutoff or cellular depletion of the Interferon-Responsive Microglia (IRM) subset:
+
+#### 1. Reference Single-Cell Signatures:
+Validated markers from single-cell microglial atlases (Hammond et al. 2019 *Immunity*, Masuda et al. 2019 *Nature*):
+- **Interferon-Responsive Microglia (IRM)**: *Oas1a*, *Stat1*, *Gbp2*, *Tap1*, *Ifit1*, *Ifit3*, *Irf7*, *Mx1*, *B2m*
+- **Homeostatic Mature**: *Tmem119*, *P2ry12*, *Cx3cr1*, *Hexb*, *Csf1r*, *Sall1*, *Fcrls*
+- **Phagocytic / DAM**: *Apoe*, *Ctsb*, *Ctsd*, *Trem2*, *Tyrobp*, *Lpl*
+- **Cycling / Proliferating**: *Mki67*, *Top2a*, *Cdk1*, *Birc5*
+
+#### 2. ISG-to-Lineage Normalization Index:
+$$\text{Ratio}_{\text{ISG/Lineage}} = \frac{\frac{1}{|S_{\text{ISG}}|} \sum_{g \in S_{\text{ISG}}} \log_2(\text{CPM}_g + 1)}{\frac{1}{|S_{\text{Lineage}}|} \sum_{g \in S_{\text{Lineage}}} \log_2(\text{CPM}_g + 1)}$$
+
+Where $S_{\text{Lineage}} = \{\textit{Hexb}, \textit{Csf1r}, \textit{Tmem119}\}$ (pan-microglial invariant lineage markers) and $S_{\text{ISG}} = \{\textit{Oas1a}, \textit{Stat1}, \textit{Gbp2}, \textit{Tap1}\}$. Lineage marker invariance ($p_{\text{lin}} > 0.05$) combined with ISG ratio reduction confirms cell-intrinsic transcriptional downregulation, consistent with stereological cell-density conservation (Erny 2015, Abdur-Rahman 2021).
 
 ---
 
@@ -214,21 +255,38 @@ Where $r_{\text{inversion}} < -0.5$ indicates strong global transcriptional resc
 ### 3.3 Meta-Analysis Results Schema (`results/meta_results/microglia_meta_analysis_summary.csv`)
 | Column | Type | Description |
 |---|---|---|
-| `gene_symbol` | String | MGI Gene Symbol |
+| `gene_symbol` | String | Official MGI Gene Symbol |
 | `n_cohorts` | Integer | Number of cohorts where gene is detected |
-| `meta_log2fc` | Float | Pooled DerSimonian-Laird effect size |
-| `meta_se` | Float | Standard error of pooled effect size |
-| `ci_lower` | Float | Lower bound of 95% Confidence Interval |
-| `ci_upper` | Float | Upper bound of 95% Confidence Interval |
-| `cochran_q` | Float | Cochran's Q test statistic |
-| `i2_heterogeneity` | Float | Higgins I² percentage (0 - 100%) |
-| `fisher_stat` | Float | Fisher's chi-square test statistic |
+| `cohorts_detected` | String | Semicolon-delimited list of detected cohorts |
+| `meta_log2fc` | Float | REML pooled effect size (log2 fold change) |
+| `meta_se` | Float | Restricted Maximum Likelihood standard error |
+| `ci_lower` | Float | Lower bound of 95% Confidence Interval (HKSJ adjusted) |
+| `ci_upper` | Float | Upper bound of 95% Confidence Interval (HKSJ adjusted) |
+| `tau2` | Float | REML estimated between-study variance ($\tau^2$) |
+| `p_random_effects`| Float | Random-effects p-value under REML |
+| `p_hksj` | Float | Hartung-Knapp-Sidik-Jonkman adjusted p-value ($t_{k-1}$) |
+| `meta_log2fc_dl` | Float | Benchmark DerSimonian-Laird pooled effect size |
+| `meta_se_dl` | Float | DerSimonian-Laird standard error |
+| `ci_lower_dl` | Float | Benchmark DL 95% CI lower bound |
+| `ci_upper_dl` | Float | Benchmark DL 95% CI upper bound |
+| `tau2_dl` | Float | Benchmark DL between-study variance |
+| `p_random_effects_dl`| Float| Benchmark DL p-value |
+| `cochran_q` | Float | Cochran's $Q$ heterogeneity test statistic |
+| `i2_heterogeneity`| Float | Higgins $I^2$ percentage ($0 - 100\%$) |
+| `heterogeneity_tier`| String | Heterogeneity stratum (`Low (<25%)`, `Moderate (25-50%)`, `Substantial (50-75%)`, `High (>=75%)`) |
+| `fisher_stat` | Float | Fisher's chi-square combination statistic |
 | `p_fisher` | Float | Fisher's combined p-value |
-| `fdr_fisher` | Float | Benjamini-Hochberg FDR of Fisher p-value |
+| `stouffer_z` | Float | Stouffer's combined $Z$-score |
 | `p_stouffer` | Float | Stouffer's combined p-value |
+| `direction_concordance`| String | Directional pattern (`Concordant Up`, `Concordant Down`, `Mixed`) |
+| `fdr_random_effects`| Float | Benjamini-Hochberg FDR of REML random-effects p-value |
+| `fdr_random_effects_dl`| Float| Benjamini-Hochberg FDR of DL random-effects p-value |
+| `fdr_fisher` | Float | Benjamini-Hochberg FDR of Fisher p-value |
 | `fdr_stouffer` | Float | Benjamini-Hochberg FDR of Stouffer p-value |
-| `direction_concordance`| String | `Concordant Up`, `Concordant Down`, or `Mixed` |
-| `significance_flag` | Boolean | True if FDR < 0.05 and |meta_log2fc| >= 0.5 |
+| `robustness_score`| Float | Leave-One-Out (LOO) robustness stability score ($0.0 - 1.0$) |
+| `max_lfc_shift` | Float | Maximum absolute shift in effect size observed across LOO iterations |
+| `loo_vulnerable_study`| String| Study whose omission drives the largest effect size deviation |
+| `significance_flag`| Boolean| True if FDR < 0.05 and \|meta_log2fc\| >= 0.5 |
 
 ### 3.4 Upstream TF Regulon Schema (`results/pathways/tf_regulon_activity_summary.csv`)
 | Column | Type | Description |
@@ -267,6 +325,38 @@ Where $r_{\text{inversion}} < -0.5$ indicates strong global transcriptional resc
 | `rescue_percentage` | Float | Clamped rescue percentage ($0 - 100\%$) |
 | `rescue_status` | String | `Metabolite-Reversible Responder` or `Irreversible/Non-responder` |
 | `proposed_mechanism` | String | Biochemical mechanism (e.g., HDAC inhibition, FFAR2 signaling) |
+
+### 3.7 Perturbation Subgroup Decomposition Schema (`results/meta_results/perturbation_subgroup_decomposition.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `gene_symbol` | String | Official MGI Gene Symbol |
+| `subgroup_axis` | String | Stratification tier (`Shared Microbial Core`, `Developmental Absence Specific`, `Acute Antibiotic Shock Specific`, `Model-Heterogeneous`) |
+| `classification_rationale` | String | Descriptive categorization rationale including $I^2$ and $Q_{\text{between}}$ values |
+| `meta_log2fc` | Float | Pooled REML effect size across all cohorts |
+| `meta_se` | Float | Standard error of pooled REML effect size |
+| `p_random_effects` | Float | Random-effects p-value under REML |
+| `fdr_random_effects` | Float | Benjamini-Hochberg FDR of REML p-value |
+| `i2_heterogeneity` | Float | Overall Higgins $I^2$ across all cohorts |
+| `q_between_models` | Float | Cochran's $Q_{\text{between}}$ testing heterogeneity between perturbation models |
+| `p_q_between` | Float | Chi-square p-value for model discordance |
+| `lfc_germ_free` | Float | Log2 fold change in Germ-Free model (GSE107925) |
+| `lfc_antibiotics` | Float | Log2 fold change in Antibiotic cocktail model (GSE108045) |
+| `lfc_fiber_starvation` | Float | Log2 fold change in Fiber-starvation model (GSE186210) |
+| `lfc_sham_percoll` | Float | Log2 fold change in Percoll isolation model (GSE266602) |
+
+### 3.8 Microglia Subpopulation Deconvolution Schema (`results/pathways/microglia_subpopulation_deconvolution.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `sample_id` | String | Unique sample identifier (matching metadata) |
+| `cohort` | String | GEO series accession (`GSE107925`, `GSE108045`, etc.) |
+| `condition` | String | Treatment condition (`reference` or `perturbed`) |
+| `sig_Interferon-Responsive (IRM)` | Float | Mean CPM signature score for IRM subset (*Oas1a*, *Stat1*, *Gbp2*, *Tap1*, etc.) |
+| `sig_Homeostatic Mature` | Float | Mean CPM signature score for Homeostatic Mature microglia (*Tmem119*, *P2ry12*, *Cx3cr1*, *Hexb*) |
+| `sig_Phagocytic / DAM` | Float | Mean CPM signature score for DAM / phagocytic microglia (*Apoe*, *Trem2*, *Ctsd*, *Tyrobp*) |
+| `sig_Cycling / Proliferating` | Float | Mean CPM signature score for cycling microglia (*Mki67*, *Top2a*, *Cdk1*) |
+| `isg_raw_score` | Float | Log2 CPM score of core ISG marker panel |
+| `lineage_pan_score` | Float | Log2 CPM score of invariant pan-microglial lineage markers (*Hexb*, *Csf1r*, *Tmem119*) |
+| `isg_to_lineage_ratio` | Float | Normalized $\text{Ratio}_{\text{ISG/Lineage}}$ evaluating cell-intrinsic vs compositional changes |
 
 ---
 

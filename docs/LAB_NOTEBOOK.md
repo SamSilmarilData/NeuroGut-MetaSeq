@@ -23,6 +23,20 @@ Each research session follows the standardized 5-stage Micro Discovery Loop:
 
 ---
 
+## Directory of Research Entries
+
+| Entry | Date | Phase / Milestone | Key Focus & Discoveries |
+|:---:|:---:|---|---|
+| [**Entry 000**](#entry-000--2026-10-07--horizon-0-project-charter--foundational-setup) | 2026-10-07 | Horizon 0: Project Charter | Foundational architecture, statistical engine, 5,200-word literature review |
+| [**Entry 001**](#entry-001--2026-10-07--horizon-1-the-raw-reality--diagnostic-landscape-audit) | 2026-10-07 | Horizon 1: Data Ingestion & QC | Full 60-sample ingestion, >99% microglial purity, dissociation stress audit ($p \ge 0.18$) |
+| [**Entry 002**](#entry-002--2026-10-07--horizon-2-the-individual-voices-cohort-level-phenotypic-deep-dives) | 2026-10-07 | Horizon 2: Cohort Differential Expression | PyDESeq2 GLMs, sex covariates, discovery of *Tsc22d3* ABX collapse and *Plin3* fiber drop |
+| [**Entry 003**](#entry-003--2026-10-07--horizon-3-the-consensus-symphony-cross-study-statistical-synthesis) | 2026-10-07 | Horizon 3: Statistical Meta-Analysis | 23,096-gene pooling, invariant core *Llgl2* ($k=4$) & *Clu*, loss of quiescence (*Slfn2*, *Sap30*) |
+| [**Entry 004**](#entry-004--2026-10-07--horizon-4-the-mechanistic-bloom-systems-biology-regulon-networks--scfa-rescue) | 2026-10-07 | Horizon 4: Systems Biology & Networks | GSEA tonic interferon collapse (NES = -2.39), IRF1 regulon shutoff, WGCNA 4 modules |
+| [**Entry 005**](#entry-005--2026-10-07--horizon-5-the-living-narrative-interactive-web-paper-academic-manuscript--v100-gold-release) | 2026-10-07 | Horizon 5: Interactive Web Paper | Distill.pub production site, full preprint manuscript, v1.0.0 Gold Master Release |
+| [**Entry 006**](#entry-006--2026-10-08--academic-peer-review-overhaul-reml-hksj-estimation-two-tier-subgroup-decomposition-in-vivo-scfa-grounding-and-single-cell-deconvolution-v110-release) | 2026-10-08 | Academic Peer-Review Overhaul | REML-HKSJ estimation, two-tier subgroup decomposition, in vivo SCFA null test, sc-deconvolution, v1.1.0 |
+
+---
+
 ## Chronological Research Entries
 
 ### Entry 000 | 2026-10-07 | Horizon 0: Project Charter & Foundational Setup

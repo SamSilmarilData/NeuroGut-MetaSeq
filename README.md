@@ -46,14 +46,14 @@ flowchart LR
 
 ### Synthesis Matrix of Milestones
 
-| Horizon | Primary Focus | Evaluated Scale | Landmark Biological Blooms & Methodological Advances | Status |
+| Horizon / Milestone | Primary Focus | Evaluated Scale | Landmark Biological Blooms & Methodological Advances | Status |
 | :--- | :--- | :---: | :--- | :---: |
 | **Horizon 1: The Raw Reality** | Data Ingestion & Quality Control Audit | 60 Samples Across 4 Cohorts | **Lineage Purity >99%** in FACS cohorts; **Ex vivo dissociation stress ruled out** ($p \ge 0.18$); Library depth distributions quantified. | **Completed** (`1ff724f`) |
 | **Horizon 2: The Individual Voices** | Cohort-Level Phenotypic Deep Dives | 4 Negative Binomial GLMs (`~ sex + condition`) | **Bloom 2.1**: Acute ABX causes severe *Tsc22d3* (GILZ) collapse.<br>**Bloom 2.2**: Fiber starvation suppresses *Plin3* lipid droplets.<br>**Bloom 2.3**: Uncoupled cross-study baseline noise ($\rho \approx 0$). | **Completed** (`420d492`) |
 | **Horizon 3: The Consensus Symphony** | Cross-Study Statistical Meta-Analysis | 23,096 Common Genes ($k=2$ to $k=4$) | **Bloom 3.1**: Tier 1 Core *Llgl2* ($k=4, I^2=0\%$) polarity hub & *Clu* chaperone.<br>**Bloom 3.2**: Quiescence loss via *Slfn2* ($k=4$) & chromatin derepression (*Sap30*).<br>**Bloom 3.3**: Resolved shock vs core paradox (*Tsc22d3* $I^2=95.4\%$).<br>**Bloom 3.4**: Sorting artifact immunity via LOO ($r=0.725$). | **Completed** (`8c2ea1a`) |
 | **Horizon 4: The Mechanistic Bloom** | Systems Biology, Regulons & SCFA Rescue | Whole Transcriptome, 357 TFs, WGCNA | **Bloom 4.1**: Tonic Interferon collapse (NES = -2.39) & *Irf1* repression ($Z=-2.28$).<br>**Bloom 4.2**: SCFA rescue reciprocal inversion ($r = -0.778, 18/19$ responders).<br>**Bloom 4.3**: Cell-cycle escape (E2F NES = +1.78, G2M NES = +1.70).<br>**Bloom 4.4**: Dual phenotype paradox (DAM priming vs IRM blunting). | **Completed** (`47a8bfd`) |
 | **Horizon 5: The Living Narrative** | Scientific Web Paper & Journal Manuscript | Standalone HTML & Full Manuscript | Publication web paper at `docs/index.html` (GitHub Pages) and 6,800+ word academic manuscript formatted for *Nature Neuroscience* in `docs/MANUSCRIPT.md`. | **Completed** (`v1.0.0 Gold`) |
-
+| **Academic Release (v1.1.0)** | Rigorous Statistical & Biological Peer-Review Overhaul | 23,096 Genes, 60 Samples, Single-Cell Mappings | **REML & Hartung-Knapp-Sidik-Jonkman (HKSJ)** small-sample adjustments ($t_3$ critical threshold); **Two-Tier Subgroup Decomposition** resolving perturbation shocks (*Tsc22d3* $I^2=95.4\%$, *Plin3* $I^2=96.5\%$); **In vivo SCFA Grounding** (Erny 2015 GSE64977) with 1,000-permutation specificity null test ($p_{\text{perm}} < 0.001$); **Single-Cell Subpopulation Deconvolution** (Hammond 2019, Masuda 2019) confirming lineage invariance ($p=0.85$); **12 Vector SVGs** and zero-jargon manuscript. | **Completed** (`v1.1.0`) |
 
 ---
 
@@ -99,7 +99,7 @@ Reproduce the entire published meta-analysis across all 60 biological samples, 2
 make production
 ```
 
-Or execute by individual scientific horizon:
+Or execute by individual scientific horizon & academic analysis:
 ```bash
 # Horizon 1: Data Ingestion & Diagnostic Lineage Purity Audit
 make horizon1
@@ -107,11 +107,17 @@ make horizon1
 # Horizon 2: Negative Binomial GLMs across all 4 cohorts (PyDESeq2)
 make horizon2
 
-# Horizon 3: Random-Effects Meta-Analysis & Leave-One-Out Sensitivity
+# Horizon 3: REML Random-Effects Meta-Analysis & Leave-One-Out Sensitivity
 make horizon3
+
+# Academic Subgroup Analysis: Two-Tier Decomposition & Factor Analysis
+python scripts/04c_perturbation_subgroups.py
 
 # Horizon 4: Systems Biology, Upstream Regulons, WGCNA & SCFA Rescue
 make horizon4
+
+# Single-Cell Deconvolution: Reference Subpopulation Projection & Lineage Stability
+python scripts/05f_single_cell_deconvolution.py
 ```
 
 ---
@@ -125,7 +131,8 @@ All statistical formulas, data matrices, metadata schemas, and systems biology m
 pytest tests/ -v
 ```
 
-**Test Coverage Summary (42 Tests, 100% Passing)**:
+**Test Coverage Summary (53 Tests, 100% Passing)**:
+- `tests/test_academic_upgrades.py`: REML/HKSJ properties, subgroup decomposition schema, single-cell lineage invariance, SCFA permutation null model, zero jargon enforcement, and vector SVG presence (7 tests).
 - `tests/test_count_matrix_integrity.py`: Non-negativity, integer count structures, sample-gene matrix dimensions (3 tests).
 - `tests/test_data_audit.py`: Microglial lineage purity, enzymatic isolation stress statistical test, figure integrity (3 tests).
 - `tests/test_de_results.py`: Negative binomial GLM schemas, p-value bounds, Wald stats, volcano plots (6 tests).
@@ -134,6 +141,7 @@ pytest tests/ -v
 - `tests/test_metadata_schema.py`: Metadata columns, categorical condition labels, biological sex encoding (4 tests).
 - `tests/test_statistical_pipeline.py`: DerSimonian-Laird mathematical correctness, Fisher combination, Stouffer $Z$ (5 tests).
 - `tests/test_framework_doc.py`: Adaptive discovery framework and living lab notebook integrity (2 tests).
+- `tests/test_horizon5_narrative.py`: Production web paper compilation, asset integrity, manuscript completeness, and notebook entry (4 tests).
 - `tests/test_web_paper_build.py`: Web paper compilation, asset links, literature review presence (3 tests).
 
 ---
@@ -143,7 +151,7 @@ pytest tests/ -v
 ```
 NeuroGut-MetaSeq/
 ├── README.md                      # Primary repository overview, results synthesis, and guide
-├── CHANGELOG.md                   # Semantic versioning release history (v0.1.0 to v0.5.0)
+├── CHANGELOG.md                   # Semantic versioning release history (v0.1.0 to v1.1.0)
 ├── SPECIFICATION.md               # Formal mathematical models, equations, and data schemas
 ├── CITATION.cff                   # Machine-readable academic citation metadata
 ├── LICENSE                        # MIT Open-Source License
@@ -165,56 +173,65 @@ NeuroGut-MetaSeq/
 │   ├── 02b_qc_audit.py            # Lineage purity and ex vivo dissociation stress audit
 │   ├── 03_deseq2_analysis.R       # R Bioconductor DESeq2 engine
 │   ├── 03b_pydeseq2_analysis.py   # Python PyDESeq2 generalized linear model engine
-│   ├── 04_meta_analysis.py        # Python DerSimonian-Laird Random-Effects meta-analysis
+│   ├── 04_meta_analysis.py        # REML & HKSJ Random-Effects meta-analysis engine
 │   ├── 04_meta_analysis.R         # R metafor cross-study meta-analysis
+│   ├── 04b_meta_diagnostics.py    # Publication diagnostic figures & vector SVG engine
+│   ├── 04c_perturbation_subgroups.py # Two-Tier Subgroup Decomposition & Factor Analysis
 │   ├── 05_pathway_enrichment.py   # Whole-transcriptome GSEA and hypergeometric ORA
 │   ├── 05a_cache_gene_sets.py     # Reference gene set caching engine
 │   ├── 05b_tf_regulon_analysis.py # Upstream TRRUST transcription factor regulon deconvolution
 │   ├── 05c_coexpression_network.py# WGCNA co-expression network and hub gene identification
-│   ├── 05d_metabolite_rescue.py   # In silico SCFA metabolite rescue & signature inversion
+│   ├── 05d_metabolite_rescue.py   # Empirical in vivo SCFA rescue & 1,000-permutation specificity test
 │   ├── 05e_systems_diagnostics.py # Systems biology 300 DPI publication graphics generator
+│   ├── 05f_single_cell_deconvolution.py # scRNA-seq subpopulation deconvolution & lineage audit
 │   ├── 06_generate_figures.py     # Cohort and meta-analysis publication figure generator
 │   └── 07_build_web_paper.py      # Interactive scientific web paper compiler
 ├── results/
 │   ├── qc/                        # Quality control audit metrics and logs
 │   ├── de_results/                # Negative binomial GLM differential expression results
-│   ├── meta_results/              # Random-effects meta-analysis summary and LOO tables
-│   │   └── figures/               # Meta-analysis publication figures (Volcano, Forest, LOO)
-│   ├── pathways/                  # GSEA, ORA, regulon deconvolution, and SCFA rescue tables
-│   │   └── figures/               # Systems biology publication figures (300 DPI)
+│   ├── meta_results/              # REML-HKSJ meta-analysis summary, subgroups, and LOO tables
+│   │   └── figures/               # Meta-analysis figures (Volcano, Forest, Subgroups, LOO)
+│   ├── pathways/                  # GSEA, regulons, sc-deconvolution, and SCFA rescue tables
+│   │   └── figures/               # Systems biology publication figures (PNG + Vector SVG)
 │   ├── networks/                  # WGCNA module assignments, hub genes, and TOM edges
 │   └── figures/                   # Cohort-level volcano plots and PCA graphics
 ├── docs/
 │   ├── index.html                 # Interactive scientific web paper (GitHub Pages)
-│   ├── LAB_NOTEBOOK.md            # Living research lab journal (Entries 000 through 004)
-│   ├── LITERATURE_REVIEW.md       # 5,200+ word scholarly literature review (40 citations)
+│   ├── LAB_NOTEBOOK.md            # Living research lab journal (Entries 000 through 006)
+│   ├── LITERATURE_REVIEW.md       # 5,200+ word scholarly literature review (45+ citations)
 │   ├── ADAPTIVE_DISCOVERY_FRAMEWORK.md # Standard operating procedure for adaptive discovery
 │   ├── USER_GUIDE.md              # User manual, CLI reference, and metric interpretation
-│   └── assets/                    # Figures, CSVs, and interactive web assets
-└── tests/                         # 42 automated unit tests across 10 test modules
+│   ├── MANUSCRIPT.md              # Journal-ready academic preprint (*Nature Neuro* format)
+│   └── assets/                    # Figures (PNG + Vector SVG), CSVs, and web assets
+└── tests/                         # 53 automated unit and integration tests across 11 modules
 ```
 
 ---
 
-## 🎨 Publication Figures (300 DPI)
+## 🎨 Publication Figures (300 DPI & Zoomable Vector SVGs)
 
-The repository generates 20 publication-grade scientific figures across all analytical horizons:
+The repository generates 23 publication-grade scientific figures (available in 300 DPI PNG and vector SVG format) across all analytical horizons:
 
-### Systems Biology & Metabolite Rescue (Horizon 4)
-- **GSEA Pathway Enrichment**: [`fig_gsea_pathway_enrichment.png`](results/pathways/figures/fig_gsea_pathway_enrichment.png)
-- **Upstream TF Regulon Landscape**: [`fig_tf_regulon_landscape.png`](results/pathways/figures/fig_tf_regulon_landscape.png)
-- **WGCNA Modules & Trait Correlations**: [`fig_wgcna_modules_eigengenes.png`](results/pathways/figures/fig_wgcna_modules_eigengenes.png)
-- **Network Hub Subgraph**: [`fig_network_hub_subgraph.png`](results/pathways/figures/fig_network_hub_subgraph.png)
-- **In Silico SCFA Rescue Inversion**: [`fig_scfa_rescue_inversion.png`](results/pathways/figures/fig_scfa_rescue_inversion.png)
+### Academic Upgrades & Deconvolution
+- **Two-Tier Subgroup Decomposition**: [`fig_subgroup_perturbation_decomposition.png`](results/meta_results/figures/fig_subgroup_perturbation_decomposition.png) ([SVG](docs/assets/fig_subgroup_perturbation_decomposition.svg))
+- **Single-Cell Subpopulation Deconvolution**: [`fig_sc_subpopulation_deconvolution.png`](results/pathways/figures/fig_sc_subpopulation_deconvolution.png) ([SVG](docs/assets/fig_sc_subpopulation_deconvolution.svg))
+- **SCFA Specificity 1,000-Permutation Null Test**: [`fig_scfa_rescue_specificity_null.png`](results/pathways/figures/fig_scfa_rescue_specificity_null.png) ([SVG](docs/assets/fig_scfa_rescue_specificity_null.svg))
 
-### Statistical Meta-Analysis (Horizon 3)
-- **Random-Effects Meta-Analysis Volcano Plot**: [`fig_meta_volcano.png`](results/meta_results/figures/fig_meta_volcano.png)
-- **Multi-Cohort Forest Plots**: [`fig_forest_plots_top.png`](results/meta_results/figures/fig_forest_plots_top.png)
-- **Leave-One-Out (LOO) Sensitivity Scatter**: [`fig_loo_stability.png`](results/meta_results/figures/fig_loo_stability.png)
-- **Heterogeneity & Concordance Landscape**: [`fig_heterogeneity_distribution.png`](results/meta_results/figures/fig_heterogeneity_distribution.png)
-- **Consensus Clustered Heatmap (60 Samples)**: [`fig_consensus_heatmap.png`](results/meta_results/figures/fig_consensus_heatmap.png)
+### Systems Biology & Metabolite Rescue
+- **GSEA Pathway Enrichment**: [`fig_gsea_pathway_enrichment.png`](results/pathways/figures/fig_gsea_pathway_enrichment.png) ([SVG](docs/assets/fig_gsea_pathway_enrichment.svg))
+- **Upstream TF Regulon Landscape**: [`fig_tf_regulon_landscape.png`](results/pathways/figures/fig_tf_regulon_landscape.png) ([SVG](docs/assets/fig_tf_regulon_landscape.svg))
+- **WGCNA Modules & Trait Correlations**: [`fig_wgcna_modules_eigengenes.png`](results/pathways/figures/fig_wgcna_modules_eigengenes.png) ([SVG](docs/assets/fig_wgcna_modules_eigengenes.svg))
+- **Network Hub Subgraph**: [`fig_network_hub_subgraph.png`](results/pathways/figures/fig_network_hub_subgraph.png) ([SVG](docs/assets/fig_network_hub_subgraph.svg))
+- **In Silico SCFA Rescue Inversion**: [`fig_scfa_rescue_inversion.png`](results/pathways/figures/fig_scfa_rescue_inversion.png) ([SVG](docs/assets/fig_scfa_rescue_inversion.svg))
 
-### Quality Control & Individual Cohorts (Horizons 1 & 2)
+### Statistical Meta-Analysis
+- **REML-HKSJ Meta-Analysis Volcano Plot**: [`fig_meta_volcano.png`](results/meta_results/figures/fig_meta_volcano.png) ([SVG](docs/assets/fig_meta_volcano.svg))
+- **Multi-Cohort Forest Plots**: [`fig_forest_plots_top.png`](results/meta_results/figures/fig_forest_plots_top.png) ([SVG](docs/assets/fig_forest_plots_top.svg))
+- **Leave-One-Out (LOO) Sensitivity Scatter**: [`fig_loo_stability.png`](results/meta_results/figures/fig_loo_stability.png) ([SVG](docs/assets/fig_loo_stability.svg))
+- **Heterogeneity & Concordance Landscape**: [`fig_heterogeneity_distribution.png`](results/meta_results/figures/fig_heterogeneity_distribution.png) ([SVG](docs/assets/fig_heterogeneity_distribution.svg))
+- **Consensus Clustered Heatmap (60 Samples)**: [`fig_consensus_heatmap.png`](results/meta_results/figures/fig_consensus_heatmap.png) ([SVG](docs/assets/fig_consensus_heatmap.svg))
+
+### Quality Control & Individual Cohorts
 - **Lineage Marker Purity Audit**: [`fig_qc_microglial_purity.png`](results/figures/fig_qc_microglial_purity.png)
 - **Ex Vivo Dissociation Stress Test**: [`fig_qc_isolation_stress.png`](results/figures/fig_qc_isolation_stress.png)
 - **Sequencing Library Depth Distribution**: [`fig_qc_library_depths.png`](results/figures/fig_qc_library_depths.png)
@@ -231,7 +248,7 @@ If you use **NeuroGut-MetaSeq** or its empirical discoveries in your research, p
   author       = {Samyak Meshram},
   title        = {NeuroGut-MetaSeq: Cross-Study RNA-Seq Meta-Analysis of Microglial Transcriptomic Signatures in Response to Microbiome Depletion and Microbial Metabolites},
   year         = {2026},
-  version      = {0.5.0},
+  version      = {1.1.0},
   publisher    = {GitHub},
   journal      = {GitHub repository},
   url          = {https://github.com/samyakmeshram/NeuroGut-MetaSeq}

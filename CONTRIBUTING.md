@@ -10,14 +10,14 @@ We welcome contributions from computational biologists, bioinformaticians, and n
    - Suggest or integrate newly published microglial RNA-seq datasets examining microbiome perturbations, specific microbial metabolites (e.g., indole-3-propionic acid, deoxycholic acid, acetate), or diet-induced dysbiosis.
 2. **Improving Statistical Meta-Analysis**:
    - Enhancing random-effects models (e.g., meta-regression on sex or age, robust variance estimation with small-sample corrections, empirical Bayes shrinkage).
-3. **Multi-Omics & Epigenomic Expansion**:
+3. **Multi-Omics & Spatial Transcriptomics Expansion**:
    - Integrating microglial ATAC-seq chromatin accessibility data to validate TF regulon predictions (e.g., chromatin openness at *Irf1* and AP-1 binding sites).
-   - Single-cell RNA-seq (scRNA-seq) subpopulation deconvolution to map consensus hits to specific microglial states (homeostatic M0, DAM, IRM).
+   - Spatial transcriptomics (e.g., 10x Visium, MERFISH, Stereo-seq) to map consensus hits (*Llgl2*, *Clu*, *Slfn2*) across anatomical brain regions.
+   - Extending single-cell subpopulation deconvolution (implemented in v1.1.0) with single-cell trajectory and RNA-velocity modeling.
 4. **Cross-Species Translation**:
    - Extending the cross-study meta-analysis framework to human post-mortem brain transcriptomics in gut dysbiosis cohorts (e.g., Parkinson's, Alzheimer's, ASD).
 5. **Enhancing the Interactive Web Paper**:
    - Adding interactive volcano plot tooltips or dynamic pathway network graphs using D3.js or Plotly for GitHub Pages.
-
 
 ---
 
@@ -35,7 +35,7 @@ source .venv/bin/activate
 ### 2. Run the Test Suite
 Ensure all existing tests pass before making modifications:
 ```bash
-make test
+pytest tests/ -v  # Verify 53/53 tests passing
 ```
 
 ### 3. Adding a New Dataset
