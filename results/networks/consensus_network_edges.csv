@@ -1,0 +1,8 @@
+source,target,tom_weight
+Fosb,Sall1,0.0052
+Fosb,Fos,0.2589
+Llgl2,Ffar2,0.01
+Slfn2,Sap30,0.0078
+Sap30,Ddit4,0.0112
+Sall1,Ffar2,0.0061
+Sall1,Tmem119,0.0118

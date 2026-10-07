@@ -1,0 +1,12 @@
+pathway,pathway_size,core_overlap,core_p_value,core_odds_ratio,core_overlap_genes,shock_overlap,shock_p_value,shock_odds_ratio,shock_overlap_genes,up_overlap,up_p_value,up_overlap_genes,core_fdr,shock_fdr,up_fdr
+SCFA_Metabolite_Responsive_Regulon,16,3,2.7253267342561824e-09,2662.85,Clu;Fosb;Llgl2,4,0.0002860043893853279,15.66,Ddit4;Hcar2;Plin3;Tsc22d3,3,2.28541063669939e-08,Clu;Fosb;Llgl2,2.9978594076818e-08,0.0031460482832386064,2.513951700369329e-07
+TNF-alpha Signaling via NF-kB,200,0,1.0,0.0,,1,0.9859224730904659,0.23,F3,0,1.0,,1.0,0.985922473090466,1.0
+Hypoxia,200,0,1.0,0.0,,1,0.9859224730904659,0.23,F3,0,1.0,,1.0,0.985922473090466,1.0
+Complement,200,0,1.0,0.0,,1,0.9859224730904659,0.23,F3,0,1.0,,1.0,0.985922473090466,1.0
+Inflammatory Response,200,0,1.0,0.0,,1,0.9859224730904659,0.23,F3,0,1.0,,1.0,0.985922473090466,1.0
+UV Response Dn,144,0,1.0,0.0,,1,0.9533789947705621,0.32,F3,0,1.0,,1.0,0.985922473090466,1.0
+Coagulation,138,0,1.0,0.0,,1,0.9470061152663348,0.34,F3,0,1.0,,1.0,0.985922473090466,1.0
+Microglia_Homeostatic_Signature,17,0,1.0,0.0,,1,0.3029625622736111,2.92,Sall1,0,1.0,,1.0,0.6665176370019446,1.0
+Disease_Associated_Microglia_DAM,17,0,1.0,0.0,,3,0.005025878963416791,10.05,Anxa3;Csf1;Lpl,0,1.0,,1.0,0.018428222865861568,1.0
+Interferon_Responsive_Microglia_IRM,15,0,1.0,0.0,,1,0.27271836962616036,3.33,Oas1a,0,1.0,,1.0,0.6665176370019446,1.0
+LPS_Acute_Neuroinflammatory_Shock,17,0,1.0,0.0,,3,0.005025878963416791,10.05,Ccl3;Il1a;Nfkbiz,0,1.0,,1.0,0.018428222865861568,1.0
