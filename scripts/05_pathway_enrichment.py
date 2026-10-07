@@ -19,6 +19,7 @@ Outputs:
 import os
 import sys
 import json
+import argparse
 import logging
 import numpy as np
 import pandas as pd
@@ -187,5 +188,21 @@ def run_pathway_analysis(meta_path: str = "results/meta_results/microglia_meta_a
         logger.info(f"  * Phenotype: {r['pathway']} (NES={r['normalized_enrichment_score']:.2f}, FDR={r['fdr_q_value']:.2e})")
     logger.info("=" * 65)
 
+def main():
+    parser = argparse.ArgumentParser(description="Pathway and phenotype enrichment analysis")
+    parser.add_argument("--meta_path", default="results/meta_results/microglia_meta_analysis_summary.csv", help="Meta-analysis summary CSV")
+    parser.add_argument("--core_path", default="results/meta_results/core_consensus_signature.csv", help="Core signature CSV")
+    parser.add_argument("--ref_dir", default="data/reference", help="Reference pathway JSON directory")
+    parser.add_argument("--out_dir", default="results/pathways", help="Output directory")
+    parser.add_argument("--demo", action="store_true", help="Run on demo dataset")
+    args = parser.parse_args()
+
+    run_pathway_analysis(
+        meta_path=args.meta_path,
+        core_path=args.core_path,
+        ref_dir=args.ref_dir,
+        out_dir=args.out_dir
+    )
+
 if __name__ == "__main__":
-    run_pathway_analysis()
+    main()

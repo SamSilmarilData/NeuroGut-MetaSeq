@@ -343,9 +343,14 @@ def main():
     parser.add_argument("--deg_dir", default="results/de_results", help="Directory with DEG CSV files")
     parser.add_argument("--meta_dir", default="data/metadata", help="Directory with sample metadata")
     parser.add_argument("--out_dir", default="results/meta_results", help="Output directory")
+    parser.add_argument("--demo", action="store_true", help="Run meta-analysis on bundled demo dataset")
     args = parser.parse_args()
 
-    run_meta_analysis(deg_dir=args.deg_dir, meta_dir=args.meta_dir, out_dir=args.out_dir)
+    meta_dir = args.meta_dir
+    if args.demo and os.path.exists("data/demo"):
+        meta_dir = "data/demo"
+
+    run_meta_analysis(deg_dir=args.deg_dir, meta_dir=meta_dir, out_dir=args.out_dir)
 
 if __name__ == "__main__":
     main()

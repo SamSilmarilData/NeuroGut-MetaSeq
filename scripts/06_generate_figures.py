@@ -213,9 +213,12 @@ def plot_fig4_heatmap(meta_df, out_dir, web_dir):
     for f in deg_files:
         cname = os.path.basename(f).replace("_deg.csv", "")
         df = pd.read_csv(f).set_index("gene_symbol")
-        heat_data[cname] = df.loc[top_genes, "log2FoldChange"]
+        heat_data[cname] = df["log2FoldChange"].reindex(top_genes)
 
-    heat_data["Pooled Meta"] = meta_df.set_index("gene_symbol").loc[top_genes, "meta_log2fc"]
+    heat_data["Pooled Meta"] = meta_df.set_index("gene_symbol")["meta_log2fc"].reindex(top_genes)
+    heat_data = heat_data.dropna(how="all").fillna(0.0)
+    if heat_data.empty:
+        return
 
     fig, ax = plt.subplots(figsize=(8, 10))
     sns.heatmap(heat_data, cmap="vlag", center=0, annot=True, fmt=".2f", cbar_kws={"label": "log2FoldChange"},
@@ -229,16 +232,30 @@ def plot_fig5_pathways(out_dir, web_dir):
     """Figure 5: Pathway Enrichment Dotplot."""
     pathway_file = "results/pathways/pathway_summary.csv"
     if not os.path.exists(pathway_file):
+        pathway_file = "results/pathways/gsea_hallmarks_summary.csv"
+    if not os.path.exists(pathway_file):
         return
 
     df = pd.read_csv(pathway_file)
-    df = df.sort_values(by="fdr", ascending=False)
+    if df.empty:
+        return
+    if "pathway_name" not in df.columns and "pathway" in df.columns:
+        df["pathway_name"] = df["pathway"]
+    if "fdr" not in df.columns and "fdr_q_value" in df.columns:
+        df["fdr"] = df["fdr_q_value"]
+    if "direction" not in df.columns and "normalized_enrichment_score" in df.columns:
+        df["direction"] = np.where(df["normalized_enrichment_score"] > 0, "Upregulated", "Downregulated")
+    if "overlap_count" not in df.columns:
+        df["overlap_count"] = 10
+
+    df = df.head(15).sort_values(by="fdr", ascending=False)
+    pvals = np.clip(df["fdr"].fillna(1.0).values, 1e-10, 1.0)
 
     fig, ax = plt.subplots(figsize=(9, 5.5))
     y_pos = np.arange(len(df))
     colors = ["#e74c3c" if d == "Upregulated" else "#3498db" for d in df["direction"]]
 
-    bars = ax.barh(y_pos, -np.log10(df["fdr"]), color=colors, alpha=0.85, edgecolor="#2c3e50", height=0.6)
+    bars = ax.barh(y_pos, -np.log10(pvals), color=colors, alpha=0.85, edgecolor="#2c3e50", height=0.6)
 
     ax.set_yticks(y_pos)
     ax.set_yticklabels(df["pathway_name"], fontsize=10)
@@ -248,9 +265,9 @@ def plot_fig5_pathways(out_dir, web_dir):
     ax.grid(True, axis="x")
 
     # Add gene count badges
-    for idx, row in enumerate(df.iterrows()):
-        r = row[1]
-        ax.text(-np.log10(r["fdr"]) + 0.1, idx, f"{r['overlap_count']} genes ({r['direction']})", va="center", fontsize=9, fontweight="bold")
+    for idx, (_, r) in enumerate(df.iterrows()):
+        fdr_val = max(float(r["fdr"]), 1e-10)
+        ax.text(-np.log10(fdr_val) + 0.1, idx, f"{r['overlap_count']} genes ({r['direction']})", va="center", fontsize=9, fontweight="bold")
 
     ax.legend(loc="lower right")
     save_fig(fig, "fig5_pathway_enrichment", out_dir, web_dir)

@@ -45,10 +45,11 @@ jobs:
           python scripts/04_meta_analysis.py --demo
           python scripts/05_pathway_enrichment.py --demo
           python scripts/06_generate_figures.py --demo
-          python scripts/07_build_web_paper.py
 
-      - name: Verify Web Paper Build
+      - name: Restore Production Results & Build Web Paper
         run: |
+          git checkout -- results/ data/metadata/
+          python scripts/07_build_web_paper.py
           test -f docs/index.html || exit 1
           echo "Web paper built successfully!"
 

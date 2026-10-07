@@ -75,7 +75,7 @@ horizon4:
 
 systems: horizon4
 
-production: horizon1 horizon2 horizon3 horizon4 test
+production: horizon1 horizon2 horizon3 horizon4 test paper
 
 data:
 	$(PYTHON) scripts/01_download_geo.py
@@ -90,7 +90,10 @@ pathways:
 figures:
 	$(PYTHON) scripts/06_generate_figures.py
 
-paper: demo
+paper:
+	@echo "[*] Building interactive scientific web paper..."
+	$(PYTHON) scripts/07_build_web_paper.py
+	@echo "[SUCCESS] Web paper complete! View at docs/index.html"
 
 test:
 	$(PYTEST) tests/ -v
@@ -105,5 +108,5 @@ docker-build:
 docker-run:
 	docker run --rm -v $(PWD)/docs:/workspace/docs -v $(PWD)/results:/workspace/results neurogut-metaseq:latest
 
-all: demo test
+all: demo test paper
 
