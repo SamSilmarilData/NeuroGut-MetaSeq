@@ -1,7 +1,7 @@
 # NeuroGut-MetaSeq Makefile
 # Publication & Reproducibility Orchestration
 
-.PHONY: help setup demo data deseq meta pathways figures paper test clean docker-build docker-run all
+.PHONY: help setup demo data deseq meta pathways figures paper test clean docker-build docker-run all horizon1 horizon2 horizon3 horizon4 systems production
 
 PYTHON ?= .venv/bin/python
 PIP ?= .venv/bin/pip
@@ -11,19 +11,23 @@ help:
 	@echo "======================================================================"
 	@echo "NeuroGut-MetaSeq: Computational Meta-Analysis Pipeline"
 	@echo "======================================================================"
-	@echo "Available commands:"
-	@echo "  make setup        : Create Python venv and install dependencies"
-	@echo "  make demo         : Run full end-to-end pipeline on bundled demo data"
+	@echo "Quickstart (Demo):"
+	@echo "  make demo         : Run end-to-end pipeline on bundled demo data (10s)"
 	@echo "  make paper        : Compile publication web paper in docs/index.html"
-	@echo "  make data         : Download real RNA-seq cohorts from NCBI GEO"
-	@echo "  make deseq        : Run cohort-level differential expression analysis"
-	@echo "  make meta         : Run cross-study statistical meta-analysis"
-	@echo "  make pathways     : Run GO and KEGG pathway enrichment"
-	@echo "  make figures      : Generate publication-ready figures in results/figures"
-	@echo "  make test         : Run automated test suite"
+	@echo ""
+	@echo "Scientific Reproduction (Real 60-Sample Cohorts):"
+	@echo "  make horizon1     : Ingest & audit 60 samples across 4 cohorts (QC)"
+	@echo "  make horizon2     : Run full-transcriptome GLMs (~ sex + condition)"
+	@echo "  make horizon3     : Run Random-Effects meta-analysis across 23,096 genes"
+	@echo "  make horizon4     : Run Systems Biology (GSEA, Regulons, WGCNA, Rescue)"
+	@echo "  make systems      : Alias for make horizon4"
+	@echo "  make production   : Run full real-cohort pipeline end-to-end"
+	@echo ""
+	@echo "Validation & Containerization:"
+	@echo "  make test         : Run full 42-test automated unit test suite"
 	@echo "  make docker-build : Build reproducible Docker container"
 	@echo "  make docker-run   : Run pipeline inside Docker container"
-	@echo "  make all          : Full pipeline execution and web paper generation"
+	@echo "  make clean        : Remove intermediate generated results"
 	@echo "======================================================================"
 
 setup:
@@ -46,14 +50,39 @@ demo:
 	$(PYTHON) scripts/07_build_web_paper.py
 	@echo "[SUCCESS] Demo workflow and web paper complete! View at docs/index.html"
 
+horizon1:
+	@echo "[*] Horizon 1: Curating 60 biological samples and running lineage QC..."
+	$(PYTHON) scripts/02_curate_metadata.py
+	$(PYTHON) scripts/02b_qc_audit.py
+
+horizon2:
+	@echo "[*] Horizon 2: Running negative binomial GLMs across 4 cohorts..."
+	$(PYTHON) scripts/03b_pydeseq2_analysis.py
+
+horizon3:
+	@echo "[*] Horizon 3: Running DerSimonian-Laird Random-Effects meta-analysis..."
+	$(PYTHON) scripts/04_meta_analysis.py
+
+horizon4:
+	@echo "[*] Horizon 4: Executing Systems Biology & Regulon Networks..."
+	$(PYTHON) scripts/05a_cache_gene_sets.py
+	$(PYTHON) scripts/05_pathway_enrichment.py
+	$(PYTHON) scripts/05b_tf_regulon_analysis.py
+	$(PYTHON) scripts/05c_coexpression_network.py
+	$(PYTHON) scripts/05d_metabolite_rescue.py
+	$(PYTHON) scripts/05e_systems_diagnostics.py
+	@echo "[SUCCESS] Horizon 4 complete! Figures in results/pathways/figures/"
+
+systems: horizon4
+
+production: horizon1 horizon2 horizon3 horizon4 test
+
 data:
 	$(PYTHON) scripts/01_download_geo.py
 
-deseq:
-	$(PYTHON) scripts/03b_pydeseq2_analysis.py
+deseq: horizon2
 
-meta:
-	$(PYTHON) scripts/04_meta_analysis.py
+meta: horizon3
 
 pathways:
 	$(PYTHON) scripts/05_pathway_enrichment.py
@@ -77,3 +106,4 @@ docker-run:
 	docker run --rm -v $(PWD)/docs:/workspace/docs -v $(PWD)/results:/workspace/results neurogut-metaseq:latest
 
 all: demo test
+

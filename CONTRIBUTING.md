@@ -7,13 +7,17 @@ We welcome contributions from computational biologists, bioinformaticians, and n
 ## 🔬 How You Can Contribute
 
 1. **Adding New RNA-Seq Datasets**:
-   - Suggest or integrate newly published bulk or single-cell microglial datasets examining microbiome perturbations, specific microbial metabolites (e.g. indole-3-propionic acid, deoxycholic acid, acetate), or diet-induced dysbiosis.
+   - Suggest or integrate newly published microglial RNA-seq datasets examining microbiome perturbations, specific microbial metabolites (e.g., indole-3-propionic acid, deoxycholic acid, acetate), or diet-induced dysbiosis.
 2. **Improving Statistical Meta-Analysis**:
-   - Enhancing random-effects models (e.g., meta-regression, robust variance estimation with small-sample corrections, empirical Bayes shrinkage).
-3. **Extending Pathway & Network Analysis**:
-   - Integrating weighted gene co-expression network analysis (WGCNA) or transcription factor regulon inferencing (e.g., SCENIC / pySCENIC).
-4. **Enhancing the Interactive Web Paper**:
-   - Adding interactive volcano plot tooltips or dynamic pathway network graphs using D3.js or Plotly.
+   - Enhancing random-effects models (e.g., meta-regression on sex or age, robust variance estimation with small-sample corrections, empirical Bayes shrinkage).
+3. **Multi-Omics & Epigenomic Expansion**:
+   - Integrating microglial ATAC-seq chromatin accessibility data to validate TF regulon predictions (e.g., chromatin openness at *Irf1* and AP-1 binding sites).
+   - Single-cell RNA-seq (scRNA-seq) subpopulation deconvolution to map consensus hits to specific microglial states (homeostatic M0, DAM, IRM).
+4. **Cross-Species Translation**:
+   - Extending the cross-study meta-analysis framework to human post-mortem brain transcriptomics in gut dysbiosis cohorts (e.g., Parkinson's, Alzheimer's, ASD).
+5. **Enhancing the Interactive Web Paper**:
+   - Adding interactive volcano plot tooltips or dynamic pathway network graphs using D3.js or Plotly for GitHub Pages.
+
 
 ---
 

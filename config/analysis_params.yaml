@@ -48,3 +48,24 @@ visualization:
   dpi: 300
   formats: ["png", "svg"]
   theme: "publication"
+
+tf_regulon_analysis:
+  database: "trrust_v2_mouse"
+  min_target_count: 5
+  statistical_tests: ["welch", "mann_whitney", "kolmogorov_smirnov", "fisher_exact"]
+  fdr_threshold: 0.05
+
+coexpression_network:
+  method: "wgcna"
+  top_variable_genes: 3500
+  soft_thresholding_power: 6
+  scale_free_r2_target: 0.80
+  network_type: "signed"
+  min_module_size: 20
+
+metabolite_rescue:
+  metabolites: ["acetate", "propionate", "butyrate"]
+  in_silico_rescue_index_threshold: 0.0
+  hyper_rescue_threshold: 1.5
+  reversibility_criterion: "inverse_direction"
+

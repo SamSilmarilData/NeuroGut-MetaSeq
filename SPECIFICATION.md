@@ -113,6 +113,79 @@ Uses the non-parametric running-sum Kolmogorov-Smirnov-like statistic across the
 
 ---
 
+### 2.6 Upstream Transcription Factor Regulon Deconvolution
+
+To determine whether the downstream targets of transcription factor $t$ are coordinately shifted in microbiome-depleted microglia, we project meta-analysis effect sizes onto curated transcriptional regulatory networks (TRRUST v2 mouse):
+
+#### 1. Regulon Activity $Z$-Score:
+For transcription factor $t$ with $n_t$ measured downstream target genes having sample mean effect size $\bar{\theta}_t$ and sample variance $s_t^2$, compared against background genes ($n_{\text{bg}}, \bar{\theta}_{\text{bg}}, s_{\text{bg}}^2$):
+
+$$Z_{\text{activity}, t} = \frac{\bar{\theta}_t - \bar{\theta}_{\text{bg}}}{\sqrt{\frac{s_t^2}{n_t} + \frac{s_{\text{bg}}^2}{n_{\text{bg}}}}}$$
+
+#### 2. Hypothesis Testing:
+- **Welch's Two-Sample $t$-Test**: Accounts for unequal target vs background variance with Welch-Satterthwaite degrees of freedom $\nu$:
+  $$\nu = \frac{\left( \frac{s_t^2}{n_t} + \frac{s_{\text{bg}}^2}{n_{\text{bg}}} \right)^2}{\frac{(s_t^2 / n_t)^2}{n_t - 1} + \frac{(s_{\text{bg}}^2 / n_{\text{bg}})^2}{n_{\text{bg}} - 1}}$$
+- **Mann-Whitney $U$ Test**: Non-parametric test for location shift without distributional assumptions.
+- **Two-Sample Kolmogorov-Smirnov Test**: Tests whether target effect sizes follow the background distribution $F_{\text{bg}}(\theta)$:
+  $$D = \sup_\theta |F_t(\theta) - F_{\text{bg}}(\theta)|$$
+- **Target Overlap Fisher's Exact Test**: Evaluates significant enrichment among consensus DEGs.
+- Multiple testing correction applied via Benjamini-Hochberg FDR ($\text{FDR} \le 0.05$).
+
+---
+
+### 2.7 Weighted Gene Co-Expression Network Analysis (WGCNA)
+
+To identify modular co-expression architectures and hub effectors across all 60 biological samples:
+
+#### 1. Similarity & Soft-Thresholded Adjacency:
+Between gene $i$ and gene $j$, Pearson correlation $s_{ij} = \operatorname{cor}(x_i, x_j)$ is converted to a signed co-expression adjacency using soft-threshold power $\beta$:
+
+$$a_{ij} = \left( \frac{1 + s_{ij}}{2} \right)^\beta$$
+
+Where $\beta = 6$ satisfies Zhang & Horvath's scale-free topology criterion:
+
+$$R^2(\log p(k), \log k) \ge 0.80$$
+
+#### 2. Topological Overlap Matrix (TOM):
+Quantifies interconnectedness based on shared network neighbors:
+
+$$\omega_{ij} = \operatorname{TOM}_{ij} = \frac{l_{ij} + a_{ij}}{\min(k_i, k_j) + 1 - a_{ij}}$$
+
+Where $l_{ij} = \sum_u a_{iu} a_{uj}$ and node connectivity $k_i = \sum_u a_{iu}$. Dissimilarity is defined as $d_{ij}^{\text{TOM}} = 1 - \omega_{ij}$.
+
+#### 3. Module Eigengenes & Intramodular Connectivity:
+For each detected module $q$, the Module Eigengene (ME) $E^{(q)}$ is defined as the first principal component of the standardized module expression matrix:
+
+$$E^{(q)} = \mathbf{v}_1, \quad \text{where } \mathbf{X}^{(q)} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$$
+
+Intramodular connectivity $k_{\text{in}}^{(i)}$ for gene $i \in \text{Module } q$ identifies hub genes:
+
+$$k_{\text{in}}^{(i)} = \sum_{j \in \text{Module } q, j \ne i} a_{ij}$$
+
+---
+
+### 2.8 In Silico SCFA Metabolite Rescue Modeling
+
+To quantitatively evaluate whether microbial metabolite restoration (short-chain fatty acids: acetate, propionate, butyrate) inverts the depletion transcriptomic defect:
+
+#### 1. In Silico Rescue Index (ISRI):
+$$\text{ISRI}_i = -\operatorname{sign}(\hat{\theta}_{\text{depletion}, i}) \times \hat{\theta}_{\text{rescue}, i}$$
+
+- $\text{ISRI}_i > 0$: Successful reciprocal signature inversion (repressed genes restored upward; activated cytokines suppressed downward).
+- $\text{ISRI}_i \le 0$: Irreversible, refractory, or compensatory exacerbation.
+
+#### 2. Clamped Percentage Rescue:
+$$\operatorname{Rescue}\%_i = \max\left( 0\%, \; \min\left( 100\%, \; -\frac{\hat{\theta}_{\text{rescue}, i}}{\hat{\theta}_{\text{depletion}, i}} \times 100\% \right) \right)$$
+
+#### 3. Global Signature Inversion Metric:
+Calculated as the Pearson correlation coefficient between meta-analysis depletion effect sizes and SCFA rescue effect sizes across all landmark test genes:
+
+$$r_{\text{inversion}} = \operatorname{cor}\left( \hat{\boldsymbol{\theta}}_{\text{depletion}}, \; \hat{\boldsymbol{\theta}}_{\text{rescue}} \right)$$
+
+Where $r_{\text{inversion}} < -0.5$ indicates strong global transcriptional rescue.
+
+---
+
 ## 3. Data Schemas
 
 ### 3.1 Metadata Schema (`data/metadata/<cohort>_metadata.csv`)
@@ -157,6 +230,44 @@ Uses the non-parametric running-sum Kolmogorov-Smirnov-like statistic across the
 | `direction_concordance`| String | `Concordant Up`, `Concordant Down`, or `Mixed` |
 | `significance_flag` | Boolean | True if FDR < 0.05 and |meta_log2fc| >= 0.5 |
 
+### 3.4 Upstream TF Regulon Schema (`results/pathways/tf_regulon_activity_summary.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `tf_symbol` | String | MGI Symbol of transcription factor (e.g., `Irf1`, `Fos`) |
+| `target_count` | Integer | Number of measured downstream targets ($\ge 5$) |
+| `mean_target_log2fc` | Float | Mean meta-analysis $\log_2\text{FC}$ of target genes |
+| `median_target_log2fc` | Float | Median meta-analysis $\log_2\text{FC}$ of target genes |
+| `activity_z_score` | Float | Standardized regulon activity $Z$-score |
+| `p_welch` | Float | Welch's two-sample $t$-test p-value |
+| `p_mann_whitney` | Float | Two-sided Mann-Whitney $U$ test p-value |
+| `p_ks_test` | Float | Two-sample Kolmogorov-Smirnov test p-value |
+| `p_fisher_overlap` | Float | Fisher's exact test p-value for DEG overlap |
+| `fdr_welch` | Float | Benjamini-Hochberg adjusted FDR of Welch p-value |
+| `regulon_status` | String | `Significantly Activated`, `Significantly Repressed`, or `Unchanged` |
+
+### 3.5 WGCNA Module Assignments Schema (`results/networks/coexpression_module_assignments.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `gene_symbol` | String | Official MGI Gene Symbol |
+| `cluster_id` | Integer | Hierarchical cluster identification index |
+| `k_in` | Float | Intramodular connectivity within assigned module |
+| `module_name` | String | Assigned module name (e.g., `M_Quiescence`) |
+
+### 3.6 SCFA Metabolite Rescue Schema (`results/pathways/scfa_metabolite_rescue_modeling.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `gene_symbol` | String | Official MGI Gene Symbol |
+| `depletion_meta_log2fc` | Float | Pooled meta-analysis effect size under microbiome depletion |
+| `depletion_se` | Float | Standard error of depletion effect size |
+| `depletion_fdr` | Float | Random-effects or Fisher FDR under depletion |
+| `i2_heterogeneity` | Float | Higgins $I^2$ across depletion cohorts |
+| `scfa_rescue_log2fc` | Float | Effect size under SCFA metabolite supplementation |
+| `net_post_rescue_log2fc` | Float | Residual difference $\hat{\theta}_{\text{depletion}} + \hat{\theta}_{\text{rescue}}$ |
+| `in_silico_rescue_index` | Float | Direction-adjusted In Silico Rescue Index (ISRI) |
+| `rescue_percentage` | Float | Clamped rescue percentage ($0 - 100\%$) |
+| `rescue_status` | String | `Metabolite-Reversible Responder` or `Irreversible/Non-responder` |
+| `proposed_mechanism` | String | Biochemical mechanism (e.g., HDAC inhibition, FFAR2 signaling) |
+
 ---
 
 ## 4. FAIR Principles & Reproducibility Guarantees
@@ -164,3 +275,4 @@ Uses the non-parametric running-sum Kolmogorov-Smirnov-like statistic across the
 - **Accessibility**: Data downloads automated via NCBI E-utilities / FTP with automatic fallback to bundled demo matrices.
 - **Interoperability**: Standardized Ensembl-to-MGI identifier mappings with tidy CSV tables.
 - **Reusability**: Dockerfile containerization and GitHub Actions workflow for zero-dependency execution.
+

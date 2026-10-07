@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use NeuroGut-MetaSeq or its findings in your research, please cite it as below."
 title: "NeuroGut-MetaSeq: Cross-Study RNA-Seq Meta-Analysis of Microglial Transcriptomic Signatures in Response to Microbiome Depletion and Microbial Metabolites"
-version: 0.1.0
+version: 0.5.0
 date-released: 2026-10-07
 url: "https://github.com/samyakmeshram/NeuroGut-MetaSeq"
 authors:
@@ -17,4 +17,9 @@ keywords:
   - "RNA-seq"
   - "DESeq2"
   - "meta-analysis"
+  - "systems-biology"
+  - "WGCNA"
+  - "regulon-deconvolution"
+  - "IRF1"
 license: "MIT"
+
