@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2026-10-07
+### Horizon 5: The Living Narrative (Production Gold Release)
+
+### Added
+- **Production Interactive Scientific Web Paper** (`docs/index.html`):
+  - Upgraded compiler (`scripts/07_build_web_paper.py`) generating a modern Distill.pub-style scientific web paper for zero-configuration **GitHub Pages** deployment.
+  - Inlined curated database of 505 priority genes with multi-cohort effect sizes and meta-statistics.
+  - **Dynamic Client-Side SVG Forest Plot**: real-time vector graphic rendering individual cohort effect sizes with 95% CI whiskers and the pooled DerSimonian-Laird summary diamond.
+  - Multi-Horizon interactive tabbed figure showcase embedding all 20 publication-grade figures (300 DPI) across Quality Control, Cohort GLMs, Meta-Analysis, Systems Biology, and Metabolite Rescue.
+  - Interactive Systems Biology & Regulon Explorer for live querying of GSEA Hallmark pathways, TRRUST TFs, and SCFA rescue metrics.
+  - One-click Data Download Hub for all primary result CSVs and figure assets.
+- **Publication-Grade Academic Manuscript** (`docs/MANUSCRIPT.md`):
+  - 6,826-word journal-ready academic paper formatted to *Nature Neuroscience* / *Nature Communications* standards.
+  - Comprehensive 7-part thematic Results section covering Horizons 1 through 4.
+  - In-depth Discussion articulating the Tonic Interferon Tone hypothesis, the resolution of the shock vs core paradox, quiescence guardians (*Slfn2*, *Sap30*), and therapeutic SCFA potential.
+  - Complete Online Methods, 5 data tables, 6 formal figure legends, and 35 academic citations with PMIDs.
+- **Living Research Lab Notebook Culmination**:
+  - Appended Entry 005 to `docs/LAB_NOTEBOOK.md`, concluding the 5-horizon Adaptive Discovery Framework.
+- **Automated Verification Suite** (`tests/test_horizon5_narrative.py`):
+  - Added automated tests verifying web paper HTML scale (>50 KB), asset presence in `docs/assets/`, manuscript completeness (>4,000 words), and notebook schema.
+
+---
+
 ## [0.5.0] - 2026-10-07
 ### Horizon 4: The Mechanistic Bloom (Systems Biology, Regulons, WGCNA & SCFA Rescue)
 

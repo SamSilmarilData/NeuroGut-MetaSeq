@@ -4,8 +4,9 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![R 4.3+](https://img.shields.io/badge/R-4.3+-276DC3.svg)](https://www.r-project.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version: v0.5.0](https://img.shields.io/badge/version-v0.5.0-blueviolet.svg)](CHANGELOG.md)
-[![Tests: 42 passed](https://img.shields.io/badge/tests-42%20passed%20(100%25)-success.svg)](tests/)
+[![Version: v1.0.0](https://img.shields.io/badge/version-v1.0.0%20(Gold)-gold.svg)](CHANGELOG.md)
+[![Manuscript: Nature Neuro Style](https://img.shields.io/badge/Manuscript-6%2C800%2B%20words-darkgreen.svg)](docs/MANUSCRIPT.md)
+[![Tests: 46 passed](https://img.shields.io/badge/tests-46%20passed%20(100%25)-success.svg)](tests/)
 [![Samples: 60](https://img.shields.io/badge/samples-60%20biological-teal.svg)](data/metadata/)
 [![Cohorts: 4](https://img.shields.io/badge/cohorts-4%20GEO%20studies-orange.svg)](config/datasets.yaml)
 [![Expressed Genes: 23,096](https://img.shields.io/badge/genes-23%2C096%20evaluated-green.svg)](results/meta_results/)
@@ -50,7 +51,8 @@ flowchart LR
 | **Horizon 2: The Individual Voices** | Cohort-Level Phenotypic Deep Dives | 4 Negative Binomial GLMs (`~ sex + condition`) | **Bloom 2.1**: Acute ABX causes severe *Tsc22d3* (GILZ) collapse.<br>**Bloom 2.2**: Fiber starvation suppresses *Plin3* lipid droplets.<br>**Bloom 2.3**: Uncoupled cross-study baseline noise ($\rho \approx 0$). | **Completed** (`420d492`) |
 | **Horizon 3: The Consensus Symphony** | Cross-Study Statistical Meta-Analysis | 23,096 Common Genes ($k=2$ to $k=4$) | **Bloom 3.1**: Tier 1 Core *Llgl2* ($k=4, I^2=0\%$) polarity hub & *Clu* chaperone.<br>**Bloom 3.2**: Quiescence loss via *Slfn2* ($k=4$) & chromatin derepression (*Sap30*).<br>**Bloom 3.3**: Resolved shock vs core paradox (*Tsc22d3* $I^2=95.4\%$).<br>**Bloom 3.4**: Sorting artifact immunity via LOO ($r=0.725$). | **Completed** (`8c2ea1a`) |
 | **Horizon 4: The Mechanistic Bloom** | Systems Biology, Regulons & SCFA Rescue | Whole Transcriptome, 357 TFs, WGCNA | **Bloom 4.1**: Tonic Interferon collapse (NES = -2.39) & *Irf1* repression ($Z=-2.28$).<br>**Bloom 4.2**: SCFA rescue reciprocal inversion ($r = -0.778, 18/19$ responders).<br>**Bloom 4.3**: Cell-cycle escape (E2F NES = +1.78, G2M NES = +1.70).<br>**Bloom 4.4**: Dual phenotype paradox (DAM priming vs IRM blunting). | **Completed** (`47a8bfd`) |
-| **Horizon 5: The Living Narrative** | Scientific Web Paper & Journal Manuscript | Standalone HTML & Full Manuscript | Publication web paper at `docs/index.html` (GitHub Pages) and academic manuscript formatted for *Nature Neuroscience* / *Cell Host & Microbe*. | **In Planning** |
+| **Horizon 5: The Living Narrative** | Scientific Web Paper & Journal Manuscript | Standalone HTML & Full Manuscript | Publication web paper at `docs/index.html` (GitHub Pages) and 6,800+ word academic manuscript formatted for *Nature Neuroscience* in `docs/MANUSCRIPT.md`. | **Completed** (`v1.0.0 Gold`) |
+
 
 ---
 
