@@ -240,6 +240,23 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- MathJax 3 Engine for Mathematical & Statistical Notation -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      chtml: {
+        scale: 0.95
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     :root {
       --primary: #0f172a;
@@ -1293,6 +1310,12 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
         ${forestSvg}
       </div>
     `;
+
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise([area]).catch(function(err) {
+        console.warn('MathJax typesetting error:', err);
+      });
+    }
   }
 
   function buildSvgForestPlot(data) {
