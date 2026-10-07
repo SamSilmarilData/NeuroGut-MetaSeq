@@ -7,6 +7,8 @@
 [![Reproducibility: Docker](https://img.shields.io/badge/reproducibility-Docker-2496ED.svg)](Dockerfile)
 [![FAIR Data](https://img.shields.io/badge/FAIR-Compliant-brightgreen.svg)](SPECIFICATION.md)
 [![Literature Review](https://img.shields.io/badge/Literature%20Review-5%2C200%2B%20words-purple.svg)](docs/LITERATURE_REVIEW.md)
+[![Discovery Framework](https://img.shields.io/badge/Framework-Adaptive%20Discovery-orange.svg)](docs/ADAPTIVE_DISCOVERY_FRAMEWORK.md)
+[![Lab Notebook](https://img.shields.io/badge/Lab%20Notebook-Living%20Journal-teal.svg)](docs/LAB_NOTEBOOK.md)
 [![GitHub Pages](https://img.shields.io/badge/Web%20Paper-Live-success.svg)](docs/index.html)
 
 ---
@@ -228,6 +230,8 @@ NeuroGut-MetaSeq/
 ├── docs/
 │   ├── index.html                 # Interactive scientific web paper
 │   ├── LITERATURE_REVIEW.md       # Comprehensive academic literature review (5,200+ words)
+│   ├── ADAPTIVE_DISCOVERY_FRAMEWORK.md # Standard operating procedure for adaptive discovery
+│   ├── LAB_NOTEBOOK.md            # Living research lab journal (chronological entries)
 │   ├── USER_GUIDE.md              # User and deployment manual
 │   └── assets/                    # Figures, CSVs, and interactive assets
 └── tests/

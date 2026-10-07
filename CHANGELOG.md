@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2026-10-07
 
 ### Added
+- **Adaptive Discovery Framework (ADF)** (`docs/ADAPTIVE_DISCOVERY_FRAMEWORK.md`):
+  - Standard Operating Procedure establishing a structured serendipity methodology for iterative computational biology.
+  - Dual-layer architecture: Macro Map (5 progressive horizons) and Micro Engine (5-stage discovery loops).
+  - Checkpoint decision protocols for following biological "blooms" versus consolidating.
+- **Living Research Lab Notebook** (`docs/LAB_NOTEBOOK.md`):
+  - Active, timestamped scientific journal tracking hypotheses, quantitative findings, visual observations, and candidate gene leads across all horizons.
+  - Initialized with Entry 000 documenting baseline project charter and v0.1.0 validation results.
 - **Comprehensive Academic Literature Review** (`docs/LITERATURE_REVIEW.md`):
   - 5,200+ word, 3-pillar scholarly review with 40 formal academic citations (PMIDs/DOIs).
   - Deep coverage of microglial ontogeny, homeostatic checkpoints (*Tmem119*, *Cx3cr1*, *P2ry12*), and microbiome depletion phenotypes (Erny et al. 2015, Thion et al. 2018).
