@@ -118,7 +118,7 @@ def plot_meta_volcano(meta_df: pd.DataFrame, out_path: str):
                     arrowprops=dict(arrowstyle="->", color="#333333", lw=0.8, shrinkA=3, shrinkB=3),
                     zorder=7)
 
-    ax.set_xlabel("Pooled Effect Size (DerSimonian-Laird log₂ Fold Change)")
+    ax.set_xlabel("Pooled Effect Size (REML / Hartung-Knapp log₂ Fold Change)")
     ax.set_ylabel("-log₁₀ (Random Effects p-value)")
     ax.set_title("Cross-Study Microglial Meta-Analysis Landscape (N=60, 4 Cohorts, 23,096 Genes)",
                  pad=12, fontweight="bold")
@@ -127,8 +127,10 @@ def plot_meta_volcano(meta_df: pd.DataFrame, out_path: str):
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    svg_path = out_path.replace(".png", ".svg")
+    plt.savefig(svg_path, format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and {svg_path}")
 
 def plot_forest_plots(meta_df: pd.DataFrame, cohort_data: dict, out_path: str):
     """Multi-study forest plots for top consensus hits and tracked blooms."""
@@ -209,8 +211,9 @@ def plot_forest_plots(meta_df: pd.DataFrame, cohort_data: dict, out_path: str):
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def plot_loo_stability(loo_df: pd.DataFrame, meta_df: pd.DataFrame, out_path: str):
     """Leave-One-Out (LOO) stability scatter across omitted studies."""
@@ -262,8 +265,9 @@ def plot_loo_stability(loo_df: pd.DataFrame, meta_df: pd.DataFrame, out_path: st
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def plot_heterogeneity_distribution(meta_df: pd.DataFrame, out_path: str):
     """Distribution of Higgins I² and Directional Concordance proportions."""
@@ -310,8 +314,9 @@ def plot_heterogeneity_distribution(meta_df: pd.DataFrame, out_path: str):
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def plot_consensus_heatmap(meta_df: pd.DataFrame, counts_dir: str, meta_dir: str, out_path: str):
     """Normalized cross-study z-score heatmap of top consensus & landmark genes across 60 samples."""
@@ -342,7 +347,7 @@ def plot_consensus_heatmap(meta_df: pd.DataFrame, counts_dir: str, meta_dir: str
         lib_sizes = counts_df[sample_cols].sum(axis=0)
         cpm = np.log2((counts_df[sample_cols].div(lib_sizes, axis=1) * 1e6) + 1.0)
 
-        # Standardize Z-score per gene within cohort
+        # Standardize Z-score per gene within cohort (removes baseline inter-cohort shifts)
         cpm_z = cpm.sub(cpm.mean(axis=1), axis=0).div(cpm.std(axis=1).replace(0, 1), axis=0)
 
         # Load metadata
@@ -398,7 +403,7 @@ def plot_consensus_heatmap(meta_df: pd.DataFrame, counts_dir: str, meta_dir: str
                        figsize=(14, 10),
                        dendrogram_ratio=(0.15, 0.05),
                        cbar_pos=(0.02, 0.8, 0.02, 0.15),
-                       cbar_kws={"label": "Relative Expression (Z-score)"})
+                       cbar_kws={"label": "Within-Cohort Relative Expression (Z-score)"})
 
     g.ax_heatmap.set_xlabel("Biological Samples (N=60 across 4 Cohorts)", fontweight="bold", fontsize=11)
     g.ax_heatmap.set_ylabel("Consensus & Landmark Microglial Genes", fontweight="bold", fontsize=11)
@@ -413,8 +418,9 @@ def plot_consensus_heatmap(meta_df: pd.DataFrame, counts_dir: str, meta_dir: str
     g.ax_heatmap.legend(handles=legend_patches, bbox_to_anchor=(1.05, 1.0), loc="upper left", frameon=True)
 
     g.savefig(out_path, dpi=300)
+    g.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def main():
     meta_path = "results/meta_results/microglia_meta_analysis_summary.csv"
@@ -428,8 +434,12 @@ def main():
     meta_df = pd.read_csv(meta_path)
     loo_df = pd.read_csv(loo_path) if os.path.exists(loo_path) else pd.DataFrame()
 
-    import importlib
-    meta_mod = importlib.import_module("scripts.04_meta_analysis")
+    import sys
+    import importlib.util
+    script_path = os.path.join(os.path.dirname(__file__), "04_meta_analysis.py")
+    spec = importlib.util.spec_from_file_location("meta_module", script_path)
+    meta_mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(meta_mod)
     cohort_data = meta_mod.load_cohort_data()
 
     # 1. Volcano Plot

@@ -1,20 +1,20 @@
-gene_symbol,depletion_meta_log2fc,depletion_se,depletion_fdr,i2_heterogeneity,heterogeneity_tier,scfa_rescue_log2fc,net_post_rescue_log2fc,in_silico_rescue_index,rescue_percentage,rescue_status,proposed_mechanism
-Plin3,-0.9183,0.9354,0.999509465755396,96.5,High (>75%),1.55,0.6317,1.55,150.0,Metabolite-Reversible Responder,Microbial SCFA lipid droplet restoration
-Tnf,1.0383,0.3839,0.7004077600507972,32.2,Moderate (25-75%),-1.15,-0.1117,1.15,110.8,Metabolite-Reversible Responder,FFAR2 / NF-kB transactivation blockade
-Fosb,1.3446,0.1721,1.2820855488371308e-10,0.0,Low (<25%),-0.95,0.3946,0.95,70.7,Metabolite-Reversible Responder,AP-1 immediate-early dampening
-Ddit4,-1.1974,1.7851,0.999509465755396,97.8,High (>75%),0.9,-0.2974,0.9,75.2,Metabolite-Reversible Responder,mTORC1 metabolic brake partial recovery
-Tsc22d3,-0.9964,1.1921,0.999509465755396,95.4,High (>75%),0.85,-0.1464,0.85,85.3,Metabolite-Reversible Responder,Glucocorticoid/GILZ checkpoint partial recovery
-Clu,0.8498,0.1881,0.0144161405856472,0.0,Low (<25%),-0.65,0.1998,0.65,76.5,Metabolite-Reversible Responder,Extracellular chaperone normalization
-Neat1,0.6411,0.1386,0.0122565456073126,0.0,Low (<25%),-0.58,0.0611,0.58,90.5,Metabolite-Reversible Responder,Paraspeckle inflammasome dampening
-Llgl2,0.6723,0.1591,0.0307322763054344,0.0,Low (<25%),-0.55,0.1223,0.55,81.8,Metabolite-Reversible Responder,Membrane polarity homeostasis
-Slfn2,-0.4614,0.0894,0.0028490028130434,9.6,Low (<25%),0.52,0.0586,0.52,112.7,Metabolite-Reversible Responder,HDAC inhibition / Quiescence restoration
-C530043K16Rik,0.7122,0.1692,0.0310837690721444,10.6,Low (<25%),-0.52,0.1922,0.52,73.0,Metabolite-Reversible Responder,Homeostatic normalization
-Fos,0.3819,0.3923,0.999509465755396,47.3,Moderate (25-75%),-0.5,-0.1181,0.5,130.9,Metabolite-Reversible Responder,AP-1 immediate-early dampening
-1700028E10Rik,0.6428,0.1484,0.0261649201895501,0.0,Low (<25%),-0.48,0.1628,0.48,74.7,Metabolite-Reversible Responder,Homeostatic normalization
-Sap30,-0.3925,0.0819,0.0064007055971586,0.0,Low (<25%),0.45,0.0575,0.45,114.6,Metabolite-Reversible Responder,Sin3A-HDAC complex re-assembly
-Ppif,0.5374,0.1173,0.0132314384115355,0.0,Low (<25%),-0.44,0.0974,0.44,81.9,Metabolite-Reversible Responder,Mitochondrial permeability protection
-Sall1,-0.0041,0.2634,0.999509465755396,81.5,High (>75%),0.4,0.3959,0.4,150.0,Metabolite-Reversible Responder,Microglial core identity TF restoration
-Card6,-0.4305,0.0893,0.0064007055971586,0.0,Low (<25%),0.38,-0.0505,0.38,88.3,Metabolite-Reversible Responder,NOD/NF-kB checkpoint restoration
-Cx3cr1,-0.0588,0.0915,0.999509465755396,40.0,Moderate (25-75%),0.15,0.0912,0.15,150.0,Metabolite-Reversible Responder,Homeostatic sensor maintenance
-Tmem119,-0.0531,0.0976,0.999509465755396,55.3,Moderate (25-75%),0.12,0.0669,0.12,150.0,Metabolite-Reversible Responder,Homeostatic identity maintenance
-Ffar2,1.1364,1.3688,0.999509465755396,0.0,Low (<25%),0.3,1.4364,-0.3,0.0,Priming-Locked / Refractory,Receptor auto-regulatory feedback
+gene_symbol,depletion_meta_log2fc,depletion_se,depletion_fdr,i2_heterogeneity,heterogeneity_tier,scfa_rescue_log2fc,net_post_rescue_log2fc,in_silico_rescue_index,rescue_percentage,rescue_status,proposed_mechanism,dataset_grounding
+Plin3,-0.9183,0.9354,0.99965995368053,96.5,High (>75%),1.55,0.6317,1.55,150.0,Candidate Metabolite-Reversible,Microbial SCFA lipid droplet restoration,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Tnf,1.0519,0.3631,0.3550516029566532,32.2,Moderate (25-75%),-1.15,-0.0981,1.15,109.3,Candidate Metabolite-Reversible,FFAR2 / NF-kB transactivation blockade,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Fosb,1.3446,0.1722,1.333368970790616e-10,0.0,Low (<25%),-0.95,0.3946,0.95,70.7,Candidate Metabolite-Reversible,AP-1 immediate-early dampening,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Ddit4,-1.199,1.7443,0.99965995368053,97.8,High (>75%),0.9,-0.299,0.9,75.1,Candidate Metabolite-Reversible,mTORC1 metabolic brake partial recovery,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Tsc22d3,-1.0103,1.0925,0.99965995368053,95.4,High (>75%),0.85,-0.1603,0.85,84.1,Candidate Metabolite-Reversible,Glucocorticoid/GILZ checkpoint partial recovery,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Clu,0.8727,0.2282,0.1119997342042173,0.0,Low (<25%),-0.65,0.2227,0.65,74.5,Candidate Metabolite-Reversible,Extracellular chaperone normalization,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Neat1,0.6411,0.1386,0.0122819447147356,0.0,Low (<25%),-0.58,0.0611,0.58,90.5,Candidate Metabolite-Reversible,Paraspeckle inflammasome dampening,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Llgl2,0.6723,0.1591,0.0307722756773618,0.0,Low (<25%),-0.55,0.1223,0.55,81.8,Candidate Metabolite-Reversible,Membrane polarity homeostasis,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Slfn2,-0.4654,0.1018,0.0125378693248929,9.6,Low (<25%),0.52,0.0546,0.52,111.7,Candidate Metabolite-Reversible,HDAC inhibition / Quiescence restoration,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+C530043K16Rik,0.6994,0.1862,0.1175810620602575,10.6,Low (<25%),-0.52,0.1794,0.52,74.3,Candidate Metabolite-Reversible,Homeostatic normalization,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Fos,0.388,0.389,0.99965995368053,47.3,Moderate (25-75%),-0.5,-0.112,0.5,128.9,Candidate Metabolite-Reversible,AP-1 immediate-early dampening,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+1700028E10Rik,0.6428,0.1484,0.0243312016982503,0.0,Low (<25%),-0.48,0.1628,0.48,74.7,Candidate Metabolite-Reversible,Homeostatic normalization,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Sap30,-0.3925,0.082,0.0064455841163019,0.0,Low (<25%),0.45,0.0575,0.45,114.6,Candidate Metabolite-Reversible,Sin3A-HDAC complex re-assembly,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Ppif,0.5374,0.1173,0.0125378693248929,0.0,Low (<25%),-0.44,0.0974,0.44,81.9,Candidate Metabolite-Reversible,Mitochondrial permeability protection,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Card6,-0.4035,0.1252,0.3474849273697949,0.0,Low (<25%),0.38,-0.0235,0.38,94.2,Candidate Metabolite-Reversible,NOD/NF-kB checkpoint restoration,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Cx3cr1,-0.065,0.0788,0.99965995368053,40.0,Moderate (25-75%),0.15,0.085,0.15,150.0,Candidate Metabolite-Reversible,Homeostatic sensor maintenance,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Tmem119,-0.056,0.0618,0.99965995368053,55.3,Moderate (25-75%),0.12,0.064,0.12,150.0,Candidate Metabolite-Reversible,Homeostatic identity maintenance,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Ffar2,1.1364,1.3688,0.99965995368053,0.0,Low (<25%),0.3,1.4364,-0.3,0.0,Priming-Locked / Refractory,Receptor auto-regulatory feedback,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+Sall1,0.004,0.2334,0.99965995368053,81.5,High (>75%),0.4,0.404,-0.4,0.0,Priming-Locked / Refractory,Microglial core identity TF restoration,"Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"

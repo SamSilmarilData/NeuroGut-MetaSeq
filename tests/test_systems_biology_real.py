@@ -255,7 +255,7 @@ def test_scfa_metabolite_rescue(scfa_rescue_df):
     assert r < -0.5, f"Expected strong negative correlation (r < -0.5), got r = {r:.3f}"
 
     # Verify that the vast majority are identified as reversible responders
-    responders = scfa_rescue_df[scfa_rescue_df["rescue_status"] == "Metabolite-Reversible Responder"]
+    responders = scfa_rescue_df[scfa_rescue_df["rescue_status"].str.contains("Reversible")]
     assert len(responders) >= 12, f"Expected at least 12 reversible responders, found {len(responders)}"
 
     # Specific gene checks: Plin3 (down in depletion, up in rescue)

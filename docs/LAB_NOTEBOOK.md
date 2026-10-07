@@ -532,6 +532,56 @@ Across the five Horizons of the Adaptive Discovery Framework, NeuroGut-MetaSeq a
 - **Consolidation**: The Adaptive Discovery Framework is completed. All research questions have been answered, documented in the Living Lab Journal, verified by automated testing, and compiled into public scientific artifacts.
 - **Status**: **PRODUCTION GOLD RELEASE (v1.0.0) — COMPLETE**.
 
+---
+
+### Entry 006 | 2026-10-08 | Academic Peer-Review Overhaul: REML-HKSJ Estimation, Two-Tier Subgroup Decomposition, In Vivo SCFA Grounding, and Single-Cell Deconvolution (v1.1.0 Release)
+
+#### 1. Target Objective & Peer-Review Critique Context
+In response to a comprehensive peer-review critique of **NeuroGut-MetaSeq**, we executed a multi-phased academic upgrade to align the project with contemporary (2026) standards in computational neuroimmunology and life sciences publishing:
+1. **Small-Cohort Variance Bias**: Address potential underestimation of between-study variance ($\tau^2$) in DerSimonian-Laird estimation when $k=4$ by implementing Restricted Maximum Likelihood (REML) with the Hartung-Knapp-Sidik-Jonkman (HKSJ) adjustment ($t_3$ critical threshold, $t_{\text{crit}} = 3.1824$).
+2. **Biological Perturbation Confounding**: Relax the assumption of equivalence between lifelong developmental absence (germ-free E0), acute pharmacological disruption (antibiotic cocktail), and substrate starvation (dietary zero-fiber) through a formal Two-Tier Subgroup Decomposition and Multi-Study Factor Analysis.
+3. **Empirical Grounding of Metabolite Rescue**: Replace purely theoretical rescue models with empirical grounding in *in vivo* microglial RNA-seq from SCFA-supplemented germ-free mice (Erny et al. 2015 *Nature Neuroscience*, GSE64977, $N=6$), calibrating claims from "proof of rescue" to candidate transcriptional reversibility and executing a 1,000-permutation specificity null model against non-DEGs.
+4. **Resolution of Bulk RNA-Seq Bottleneck**: Deconvolute scRNA-seq microglial subpopulation signatures (Hammond 2019, Masuda 2019) across all 60 samples, perform an ISG-to-lineage normalization test (*Hexb*, *Csf1r*, *Tmem119* vs. *Oas1a*, *Stat1*, *Gbp2*, *Tap1*), and synthesize findings with immunohistochemical stereology (Erny 2015, Abdur-Rahman 2021).
+5. **Structural & Editorial Overhaul**: Purge software engineering terminology ("Horizons 1–5", "Adaptive Discovery Framework", "Bloom" callouts) from the formal manuscript and web paper in favor of standard disciplinary life sciences nomenclature, and equip all publication figures with zoomable vector SVGs.
+
+#### 2. Methodology & Statistical Implementation
+1. **REML & Hartung-Knapp-Sidik-Jonkman Pipeline (`scripts/04_meta_analysis.py`)**:
+   - Upgraded master random-effects engine with bounded log-likelihood REML optimization for $\tau^2_{\text{REML}}$ and HKSJ degrees of freedom adjustment ($t_{\text{crit}} = 3.1824$ for $k=4, \text{df}=3$).
+   - Formatted primary summary tables with REML effect sizes, conservative HKSJ standard errors, and adjusted 95% confidence intervals, retaining DerSimonian-Laird as supplementary benchmark.
+2. **Two-Tier Subgroup Decomposition & Factor Analysis (`scripts/04c_perturbation_subgroups.py`)**:
+   - Decomposed gene effect sizes across models, calculating between-perturbation heterogeneity ($Q_{\text{between}}, p_{Q}$) to partition the transcriptome into:
+     - *Shared Microbial Core*: Invariant low-heterogeneity genes (*Llgl2*, *Slfn2*, *Clu*).
+     - *ABX Mucosal Shock*: Model-private pharmacological artifacts (*Tsc22d3* $I^2 = 95.4\%$, *Ddit4* $I^2 = 97.8\%$).
+     - *Fiber Dietary Starvation*: Metabolic substrate shock (*Plin3* $I^2 = 96.5\%$).
+   - Performed SVD Factor Analysis separating Factor 1 (Microbial Tonic Depletion) from Factor 2 (Model Modality / Shock Axis).
+3. **Empirical SCFA Reversibility & 1,000-Permutation Specificity Test (`scripts/05d_metabolite_rescue.py`)**:
+   - Grounded SCFA vectors in empirical log2FC estimates from Erny et al. 2015 (GSE64977).
+   - Generated a genome-wide 1,000-permutation null distribution sampling non-differentially expressed genes to establish whether the In Silico Rescue Index ($\text{ISRI}$) is specific to microbiome-depleted signatures.
+4. **Single-Cell Subpopulation Deconvolution (`scripts/05f_single_cell_deconvolution.py`)**:
+   - Projected validated single-cell markers across all 60 samples. Evaluated pan-microglial lineage markers (*Hexb*, *Csf1r*, *Tmem119*) to verify lineage preservation between reference and microbiome-depleted cohorts.
+   - Tested ISG-to-lineage ratio collapse and cross-referenced with stereological cell counts showing stable parenchymal density.
+5. **Unified Manuscript Polish & Web Paper Compilation (`scripts/07_build_web_paper.py`)**:
+   - Rewrote `docs/MANUSCRIPT.md` and compiled `docs/index.html` with zero occurrences of "Adaptive Discovery Framework", "Horizon", or "Bloom".
+   - Integrated vector SVG download buttons into all gallery panels.
+
+#### 3. Quantitative & Data Findings
+- **REML-HKSJ Coverage**: Master summary table updated across all 23,096 common genes (`results/meta_results/microglia_meta_analysis_summary.csv`).
+- **Subgroup Partitioning**:
+  - Consensus invariant hits (*Llgl2*, *Slfn2*) confirmed at $I^2 < 10\%$.
+  - Extreme single-study hits (*Tsc22d3*, *Ddit4*, *Plin3*) categorized as perturbation-private axes with $I^2 > 95\%$.
+- **SCFA Specificity Null Test**:
+  - Landmark signature inversion: $r = -0.873, p = 1.07 \times 10^{-6}$.
+  - Observed mean $\text{ISRI} = 0.528$ vs. Genomic Null mean $\text{ISRI} = 0.005$ ($p_{\text{perm}} < 0.001$).
+- **Single-Cell Lineage Invariance**:
+  - Pan-microglial lineage markers invariant between conditions ($p = 0.85$).
+  - Primary discovery cohorts exhibit consistent IRM signature reduction and ISG-to-lineage ratio decrease in microbiome-depleted microglia.
+- **Test Suite Scale**: Expanded to 53 passing tests (100% pass rate).
+
+#### 4. Final Status
+- **Consolidation**: Complete academic peer-review overhaul verified and documented.
+- **Status**: **ACADEMIC RELEASE (v1.1.0) — PRODUCTION READY**.
+
+
 
 
 

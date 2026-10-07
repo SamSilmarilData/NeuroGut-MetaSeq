@@ -23,7 +23,7 @@ import logging
 import glob
 import numpy as np
 import pandas as pd
-from scipy import stats
+from scipy import stats, optimize
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("Meta-Analysis")
@@ -89,6 +89,68 @@ def dersimonian_laird(thetas: np.ndarray, variances: np.ndarray):
     p_val = float(2.0 * (1.0 - stats.norm.cdf(abs(z))))
 
     return theta_re, se_re, ci_lower, ci_upper, tau2, Q, I2, p_val
+
+def reml_tau2(thetas: np.ndarray, variances: np.ndarray) -> float:
+    """
+    Computes between-study variance tau^2 using Restricted Maximum Likelihood (REML).
+    Numerically maximizes REML log-likelihood via bounded optimization.
+    """
+    k = len(thetas)
+    if k <= 1:
+        return 0.0
+
+    def neg_reml_loglik(tau2):
+        if tau2 < 0:
+            return 1e12
+        w = 1.0 / (variances + tau2)
+        sum_w = np.sum(w)
+        if sum_w <= 0:
+            return 1e12
+        theta_re = np.sum(w * thetas) / sum_w
+        # REML log likelihood formula
+        loglik = -0.5 * np.sum(np.log(variances + tau2)) - 0.5 * np.log(sum_w) - 0.5 * np.sum(w * (thetas - theta_re)**2)
+        return -loglik
+
+    try:
+        res = optimize.minimize_scalar(neg_reml_loglik, bounds=(0.0, 10.0), method="bounded")
+        tau2_est = float(res.x) if res.success else 0.0
+    except Exception:
+        tau2_est = 0.0
+
+    return max(0.0, tau2_est)
+
+def hksj_meta(thetas: np.ndarray, variances: np.ndarray, tau2: float) -> tuple:
+    """
+    Computes Hartung-Knapp-Sidik-Jonkman (HKSJ) adjusted standard error,
+    Student's t critical values (df = k - 1), p-value, and confidence interval.
+    Uses Knapp-Hartung modified rule q*_adj = max(1.0, q*) to guarantee no anti-conservative variance shrinkage.
+    """
+    k = len(thetas)
+    if k <= 1:
+        se = float(np.sqrt(variances[0]))
+        return float(thetas[0]), se, float(thetas[0] - 1.96 * se), float(thetas[0] + 1.96 * se), 1.0
+
+    w = 1.0 / (variances + tau2)
+    sum_w = np.sum(w)
+    theta_re = float(np.sum(w * thetas) / sum_w)
+
+    df = k - 1
+    # HKSJ adjustment factor q*
+    q_star = float(np.sum(w * (thetas - theta_re)**2) / df)
+    q_adj = max(1.0, q_star)
+
+    var_hksj = q_adj / sum_w
+    se_hksj = float(np.sqrt(var_hksj))
+
+    # Student's t critical value for df = k - 1 (e.g. df=3 for k=4)
+    t_crit = float(stats.t.ppf(0.975, df=df))
+    ci_low = theta_re - t_crit * se_hksj
+    ci_high = theta_re + t_crit * se_hksj
+
+    t_stat = theta_re / se_hksj if se_hksj > 0 else 0.0
+    p_hksj = float(2.0 * (1.0 - stats.t.cdf(abs(t_stat), df=df)))
+
+    return theta_re, se_hksj, ci_low, ci_high, p_hksj
 
 def combine_pvalues_fisher(pvals: np.ndarray) -> tuple:
     """Fisher's method: -2 * sum(ln(p)) ~ chi2(2k)."""
@@ -189,8 +251,20 @@ def run_meta_analysis(deg_dir: str = "results/de_results",
         pvals_arr = np.array(pvals)
         ns_arr = np.array(ns)
 
-        # DerSimonian-Laird RE
-        theta_re, se_re, ci_low, ci_high, tau2, Q, I2, p_re = dersimonian_laird(thetas_arr, vars_arr)
+        # DerSimonian-Laird RE (Classical / Supplementary)
+        theta_dl, se_dl, ci_low_dl, ci_high_dl, tau2_dl, Q, I2, p_dl = dersimonian_laird(thetas_arr, vars_arr)
+        
+        # Restricted Maximum Likelihood (REML) & Hartung-Knapp-Sidik-Jonkman (HKSJ) (Primary Academic Benchmark)
+        tau2_reml = reml_tau2(thetas_arr, vars_arr)
+        theta_hksj, se_hksj, ci_low_hksj, ci_high_hksj, p_hksj = hksj_meta(thetas_arr, vars_arr, tau2_reml)
+
+        # REML Wald test for genome-wide multiple hypothesis screening
+        w_reml = 1.0 / (vars_arr + tau2_reml)
+        sum_w_reml = np.sum(w_reml)
+        se_reml = float(np.sqrt(1.0 / sum_w_reml))
+        z_reml = theta_hksj / se_reml if se_reml > 0 else 0.0
+        p_reml = float(2.0 * (1.0 - stats.norm.cdf(abs(z_reml))))
+
         chi2_f, p_f = combine_pvalues_fisher(pvals_arr)
         z_s, p_s = combine_pvalues_stouffer(pvals_arr, thetas_arr, ns_arr)
 
@@ -214,15 +288,24 @@ def run_meta_analysis(deg_dir: str = "results/de_results",
             "gene_symbol": gene,
             "n_cohorts": k,
             "cohorts_detected": ";".join(cnames),
-            "meta_log2fc": round(theta_re, 4),
-            "meta_se": round(se_re, 4),
-            "ci_lower": round(ci_low, 4),
-            "ci_upper": round(ci_high, 4),
-            "tau2": round(tau2, 4),
+            # Primary Meta-Analysis: REML + HKSJ (df = k - 1 for CI coverage)
+            "meta_log2fc": round(theta_hksj, 4),
+            "meta_se": round(se_hksj, 4),
+            "ci_lower": round(ci_low_hksj, 4),
+            "ci_upper": round(ci_high_hksj, 4),
+            "tau2": round(tau2_reml, 4),
+            "p_random_effects": p_reml,
+            "p_hksj": p_hksj,
+            # Supplementary / Classical Meta-Analysis: DerSimonian-Laird (DL)
+            "meta_log2fc_dl": round(theta_dl, 4),
+            "meta_se_dl": round(se_dl, 4),
+            "ci_lower_dl": round(ci_low_dl, 4),
+            "ci_upper_dl": round(ci_high_dl, 4),
+            "tau2_dl": round(tau2_dl, 4),
+            "p_random_effects_dl": p_dl,
             "cochran_q": round(Q, 3),
             "i2_heterogeneity": round(I2, 1),
             "heterogeneity_tier": het_tier,
-            "p_random_effects": p_re,
             "fisher_stat": round(chi2_f, 3),
             "p_fisher": p_f,
             "stouffer_z": round(z_s, 3),
@@ -231,23 +314,30 @@ def run_meta_analysis(deg_dir: str = "results/de_results",
         }
         records.append(record)
 
-        # 2. Leave-One-Out (LOO) Sensitivity calculations for k >= 3
+        # 2. Leave-One-Out (LOO) Sensitivity calculations for k >= 3 (using REML + HKSJ)
         if k >= 3:
             for i, omitted in enumerate(cnames):
                 loo_thetas = np.delete(thetas_arr, i)
                 loo_vars = np.delete(vars_arr, i)
                 loo_ns = np.delete(ns_arr, i)
-                loo_theta_re, loo_se_re, _, _, _, loo_q, loo_i2, loo_p_re = dersimonian_laird(loo_thetas, loo_vars)
-                loo_shift = abs(theta_re - loo_theta_re)
+                _, _, _, _, _, loo_q, loo_i2, _ = dersimonian_laird(loo_thetas, loo_vars)
+                loo_tau2 = reml_tau2(loo_thetas, loo_vars)
+                loo_theta_re, loo_se_hksj, _, _, loo_p_hksj = hksj_meta(loo_thetas, loo_vars, loo_tau2)
+                loo_w = 1.0 / (loo_vars + loo_tau2)
+                loo_se_reml = float(np.sqrt(1.0 / np.sum(loo_w)))
+                loo_z = loo_theta_re / loo_se_reml if loo_se_reml > 0 else 0.0
+                loo_p_val = float(2.0 * (1.0 - stats.norm.cdf(abs(loo_z))))
+                loo_shift = abs(theta_hksj - loo_theta_re)
                 loo_records.append({
                     "gene_symbol": gene,
                     "omitted_cohort": omitted,
                     "k_remaining": k - 1,
                     "loo_log2fc": round(loo_theta_re, 4),
-                    "loo_se": round(loo_se_re, 4),
+                    "loo_se": round(loo_se_hksj, 4),
                     "loo_cochran_q": round(loo_q, 3),
                     "loo_i2": round(loo_i2, 1),
-                    "loo_p_value": loo_p_re,
+                    "loo_p_value": loo_p_val,
+                    "loo_p_hksj": loo_p_hksj,
                     "shift_from_full": round(loo_shift, 4)
                 })
 
@@ -255,6 +345,7 @@ def run_meta_analysis(deg_dir: str = "results/de_results",
 
     # Compute False Discovery Rates
     meta_df["fdr_random_effects"] = benjamini_hochberg(meta_df["p_random_effects"].values)
+    meta_df["fdr_random_effects_dl"] = benjamini_hochberg(meta_df["p_random_effects_dl"].values)
     meta_df["fdr_fisher"] = benjamini_hochberg(meta_df["p_fisher"].values)
     meta_df["fdr_stouffer"] = benjamini_hochberg(meta_df["p_stouffer"].values)
 

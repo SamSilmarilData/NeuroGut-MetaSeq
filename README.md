@@ -4,9 +4,9 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![R 4.3+](https://img.shields.io/badge/R-4.3+-276DC3.svg)](https://www.r-project.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version: v1.0.0](https://img.shields.io/badge/version-v1.0.0%20(Gold)-gold.svg)](CHANGELOG.md)
+[![Version: v1.1.0](https://img.shields.io/badge/version-v1.1.0%20(Academic)-blue.svg)](CHANGELOG.md)
 [![Manuscript: Nature Neuro Style](https://img.shields.io/badge/Manuscript-6%2C800%2B%20words-darkgreen.svg)](docs/MANUSCRIPT.md)
-[![Tests: 46 passed](https://img.shields.io/badge/tests-46%20passed%20(100%25)-success.svg)](tests/)
+[![Tests: 53 passed](https://img.shields.io/badge/tests-53%20passed%20(100%25)-success.svg)](tests/)
 [![Samples: 60](https://img.shields.io/badge/samples-60%20biological-teal.svg)](data/metadata/)
 [![Cohorts: 4](https://img.shields.io/badge/cohorts-4%20GEO%20studies-orange.svg)](config/datasets.yaml)
 [![Expressed Genes: 23,096](https://img.shields.io/badge/genes-23%2C096%20evaluated-green.svg)](results/meta_results/)
@@ -24,10 +24,11 @@
 Instead of relying on single-cohort analyses prone to laboratory-specific batch effects and isolation artifacts, **NeuroGut-MetaSeq** executes a **unified, multi-scale computational meta-analysis**:
 1. **Multi-Cohort Harmonization**: Curating 60 biological samples across 4 diverse experimental paradigms (germ-free housing, acute broad-spectrum antibiotic cocktails, dietary fiber starvation).
 2. **Quality Control & Lineage Auditing**: Enforcing rigorous lineage marker checks (>99% purity) and proving statistical independence from enzymatic dissociation stress ($p \ge 0.18$).
-3. **Random-Effects Meta-Analysis**: DerSimonian-Laird inverse-variance pooling across 23,096 expressed genes, resolving between-study heterogeneity ($Q, \tau^2, I^2$) and confirming robustness to sorting technology via Leave-One-Out (LOO) sensitivity ($r = 0.725$).
-4. **Systems Biology & Regulon Networks**: Whole-transcriptome GSEA, upstream TRRUST transcription factor deconvolution (357 TFs), and WGCNA co-expression networking.
-5. **In Silico Metabolite Rescue**: Quantitative modeling demonstrating that microbial SCFA supplementation inverts the meta-analytic depletion phenotype ($r = -0.778, p < 10^{-4}$).
-6. **Interactive Scientific Web Paper**: An interactive, publication-grade academic article compiled to [`docs/index.html`](docs/index.html) (deployed via **GitHub Pages**), complete with a dynamic **Gene Explorer**, forest plots, and data downloads.
+3. **Random-Effects Meta-Analysis (REML & HKSJ)**: Restricted Maximum Likelihood (REML) between-study variance optimization and Hartung-Knapp-Sidik-Jonkman (HKSJ) adjustment ($t_3$ critical threshold, $t_{\text{crit}} = 3.1824$) across 23,096 expressed genes, confirming robustness via Leave-One-Out (LOO) sensitivity ($r = 0.725$).
+4. **Two-Tier Subgroup Decomposition**: Formally partitioning shared Microbial Tonic Surveillance from model-private perturbation shocks (*Ddit4*/*Tsc22d3* for acute ABX; *Plin3* for dietary fiber starvation).
+5. **Single-Cell Subpopulation Deconvolution**: Deconvoluting scRNA-seq signatures (Hammond 2019, Masuda 2019) across all 60 samples, validating pan-microglial lineage stability (*Hexb*, *Csf1r*, *Tmem119*, $p = 0.85$) and confirming cell-intrinsic IRM signature suppression.
+6. **Empirically Grounded Metabolite Rescue**: In vivo grounded modeling in SCFA-supplemented germ-free mice (Erny et al. 2015, GSE64977) with a 1,000-permutation specificity null model ($r = -0.873, p = 1.07 \times 10^{-6}$, $p_{\text{perm}} < 0.001$).
+7. **Interactive Scientific Web Paper**: An interactive, publication-grade academic article compiled to [`docs/index.html`](docs/index.html) (deployed via **GitHub Pages**), complete with a dynamic **Gene Explorer**, forest plots, zoomable vector SVGs, and data downloads.
 
 ---
 

@@ -105,8 +105,9 @@ def plot_gsea_enrichment(hallmark_csv: str, pheno_csv: str, out_path: str):
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def plot_tf_regulon_landscape(tf_csv: str, out_path: str):
     """Ranked horizontal bar plot of upstream TF regulon activity Z-scores."""
@@ -159,8 +160,9 @@ def plot_tf_regulon_landscape(tf_csv: str, out_path: str):
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def plot_wgcna_module_traits(trait_csv: str, out_path: str):
     """Clustered heatmap of module-trait correlations across experimental conditions."""
@@ -197,8 +199,9 @@ def plot_wgcna_module_traits(trait_csv: str, out_path: str):
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def plot_network_subgraph(edges_csv: str, mod_csv: str, out_path: str):
     """Network topology diagram of consensus hits and hub genes using NetworkX."""
@@ -298,8 +301,9 @@ def plot_network_subgraph(edges_csv: str, mod_csv: str, out_path: str):
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def plot_scfa_rescue_trajectory(rescue_csv: str, out_path: str):
     """Dual-panel plot: ISRI ranking bar chart and signature inversion scatter plot."""
@@ -381,8 +385,9 @@ def plot_scfa_rescue_trajectory(rescue_csv: str, out_path: str):
 
     plt.tight_layout()
     plt.savefig(out_path, dpi=300)
+    plt.savefig(out_path.replace(".png", ".svg"), format="svg")
     plt.close()
-    logger.info(f"Saved -> {out_path}")
+    logger.info(f"Saved -> {out_path} and SVG")
 
 def main():
     fig_dir = "results/pathways/figures"
