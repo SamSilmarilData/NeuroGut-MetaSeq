@@ -1,0 +1,5 @@
+cohort,perturbation_paradigm,total_expressed_genes,sig_upregulated,sig_downregulated,total_significant_degs,top_upregulated_genes,top_downregulated_genes
+GSE107925,Lifelong Germ-Free (GF),30416,5,20,25,"Glrp1, Gpr137b, Cep85, Lgals8, Camk2b","Gpr137b-ps, Fam129a, Ero1lb, Mlph, D2hgdh"
+GSE108045,Acute Antibiotic Depletion (ABX),20605,125,130,255,"Fzd7, Fosb, Rin2, Cd180, G530011O06Rik","Ddit4, Gm43813, Tsc22d3, Tagap, E230001N04Rik"
+GSE266602,Microbiome Depletion Baseline,20495,12,7,19,"Gm61007, ENSMUSG00000027397, Serf2, Gm7815, Nek7","Gm28800, Qser1, Igkv5-39, Gm45718, Gm8582"
+GSE186210,Dietary Fiber Starvation (Zero Fiber),16764,9,4,13,"Gm38319, Hba-a2, Bc1, Rbm5, Qpct","Plin3, Cat, Tap1, Atad3a"

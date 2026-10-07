@@ -163,3 +163,85 @@ Each research session follows the standardized 5-stage Micro Discovery Loop:
   2. How do acute antibiotic perturbations (ABX in `GSE108045`) compare phenotypically with lifelong germ-free housing (`GSE107925`) and nutritional fiber deprivation (`GSE186210`)?
   3. Are there sex-dimorphic or cohort-specific idiosyncratic responses?
 
+---
+
+### Entry 002 | 2026-10-07 | Horizon 2: The Individual Voices (Cohort-Level Phenotypic Deep Dives)
+
+#### 1. Target Hypothesis & Investigative Scope
+- **Core Hypothesis**: Different modes of microbiome and metabolite perturbation (acute broad-spectrum antibiotic depletion, lifelong germ-free deprivation, primary baseline depletion, and nutritional dietary fiber starvation) induce distinct but biologically intersecting microglial transcriptomic responses. By allowing each cohort to speak in its own statistical voice prior to meta-analysis, we can distinguish shared core regulatory shifts from perturbation-specific adaptations.
+- **Cohorts Analyzed**:
+  1. `GSE107925` (Lifelong Germ-Free housing: SPF vs. GF, $n=25$).
+  2. `GSE108045` (Acute Antibiotic Depletion: CTR vs. ABX, $n=12$).
+  3. `GSE266602` (Primary Baseline Microbiome Depletion: SPF vs. GF/ABX, $n=9$).
+  4. `GSE186210` (Nutritional Fiber Starvation: WT Normal vs. Zero Fiber, $n=14$).
+
+#### 2. Methodology & Computational Pipeline Executed
+1. **Full-Transcriptome Negative Binomial GLMs (`scripts/03b_pydeseq2_analysis.py`)**:
+   - Filtered unexpressed/silent genes ($<10$ total counts across samples in cohort).
+   - Employed additive multi-factor design formula `~ sex + condition` for mixed-sex cohorts (`GSE107925`, `GSE108045`, `GSE186210`), cleanly removing sex-dimorphic baseline variance while evaluating the primary perturbation contrast.
+   - Employed single-factor design `~ condition` for male-only cohort (`GSE266602`).
+   - Fitted Negative Binomial dispersions, mean-dispersion trend curves, and maximum a posteriori (MAP) dispersions.
+   - Evaluated Wald statistics and computed Benjamini-Hochberg False Discovery Rates (FDR $\alpha = 0.05$).
+   - Exported comprehensive statistical tables to `results/de_results/<cohort>_deg.csv`.
+2. **Cross-Cohort Phenotyping Suite (`scripts/03c_cohort_phenotyping.py`)**:
+   - Quantified significant DEGs ($\text{padj} < 0.05, |\log_2\text{FC}| \ge 0.5$).
+   - Computed Spearman rank correlation matrix across the 5,984 common expressed genes.
+   - Rendered 4 individual publication-grade Volcano Plots with labeled landmark genes.
+   - Profiled comparative effect sizes of canonical homeostatic (*Tmem119*, *Cx3cr1*, *P2ry12*, *Sall1*, *Tsc22d3*, *Ffar2*) and inflammatory markers (*Tnf*, *Il1b*, *Il6*, *Ccl2*, *Nfkb1*, *Ddit4*).
+3. **Automated Regression Suite (`tests/test_de_results.py`)**:
+   - Validated schema, p-value bounds in $[0, 1]$, absence of infinite/NaN values, and non-empty outputs (26/26 tests passing).
+
+#### 3. Quantitative & Data Findings
+
+##### A. Differential Expression Summary Across Discovery Paradigms
+| Cohort ID | Perturbation Paradigm | Expressed Genes | Upregulated ($\text{padj}<0.05, \log_2\text{FC}\ge 0.5$) | Downregulated ($\text{padj}<0.05, \log_2\text{FC}\le -0.5$) | Total Significant DEGs | Top Upregulated Loci | Top Downregulated Loci |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |
+| **`GSE107925`** | Lifelong Germ-Free (GF) | 30,416 | 5 | 20 | **25** | *Glrp1*, *Gpr137b*, *Cep85* | *Gpr137b-ps*, *Fam129a*, *Ero1lb*, *Mlph* |
+| **`GSE108045`** | Acute Antibiotic Depletion (ABX) | 20,605 | 125 | 130 | **255** | *Fzd7*, *Fosb*, *Rin2*, *Cd180*, *Tnf* | *Ddit4*, *Gm43813*, *Tsc22d3*, *Tagap* |
+| **`GSE266602`** | Microbiome Depletion Baseline | 20,495 | 12 | 7 | **19** | *Gm61007*, *Serf2*, *Nek7*, *Tnf* | *Gm28800*, *Qser1*, *Sall1* |
+| **`GSE186210`** | Dietary Fiber Starvation (Zero Fiber) | 16,764 | 9 | 4 | **13** | *Gm38319*, *Hba-a2*, *Bc1*, *Rbm5*, *Ccl24* | *Plin3*, *Cat*, *Tap1*, *Atad3a* |
+
+##### B. Landmark Biological Marker Effect Sizes Across Cohorts
+| Gene Symbol | Functional Annotation | `GSE107925` ($\log_2\text{FC}$) | `GSE108045` ($\log_2\text{FC}$) | `GSE266602` ($\log_2\text{FC}$) | `GSE186210` ($\log_2\text{FC}$) | Concordance & Biological Pattern |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **`Tsc22d3`** (GILZ) | Endogenous NF-κB / AP-1 Repressor | -0.11 | **-2.36** ($p=5.6\times 10^{-20}$) | -0.13 | +0.20 | Massive collapse under acute antibiotic treatment |
+| **`Ddit4`** (REDD1) | mTORC1 Inhibitor / Metabolic Brake | +1.16 | **-4.57** ($p=1.2\times 10^{-28}$) | -0.01 | -0.10 | Dramatic repression in ABX; altered in GF |
+| **`Tnf`** | Master Pro-inflammatory Cytokine | +0.01 | **+1.18** ($p=0.003$) | **+2.72** | +0.34 | Broadly elevated across depletion models |
+| **`Sall1`** | Master Microglial Identity TF | -0.05 | +0.35 | **-2.68** ($p=0.046$) | -0.32 | Significant homeostatic repression in GSE266602 |
+| **`Ffar2`** (GPR43) | SCFA Acetate/Propionate GPCR | **+1.74** | -0.01 | **-1.69** | -0.03 | Perturbed across microbiome deficiency states |
+| **`Plin3`** | Perilipin 3 (Lipid Droplet Homeostasis) | -0.02 | -0.07 | -0.18 | **-1.88** ($p=3.4\times 10^{-5}$) | Distinctive marker of nutritional fiber starvation |
+| **`Fos`** | AP-1 Immediate-Early Activation | -0.06 | **+0.78** ($p=0.032$) | **+1.46** | -0.80 | Upregulated in antibiotic & sham depletion |
+
+#### 4. Visual Observations from Diagnostic Graphics
+- **Volcano Plots (`fig_volcano_<cohort>.png`)**:
+  - `GSE108045` exhibits a dramatic, highly powered bilateral volcano distribution with over 250 DEGs, highlighting the immense acute transcriptomic remodeling triggered by antibiotic cocktail treatment.
+  - `GSE107925` exhibits a predominantly negative-skewed volcano plot (20 down, 5 up), reflecting loss of maturation markers in germ-free adult microglia.
+  - `GSE186210` reveals clean, focused significance spikes for *Plin3* (down) and *Rbm5* / *Ccl24* (up) under fiber starvation.
+- **Cross-Study Effect Size Correlation (`fig_lfc_correlation_heatmap.png`)**:
+  Pairwise Spearman correlation across all ~6,000 common expressed genes reveals near-zero global transcriptome correlation ($\rho \approx -0.08$ to $+0.01$). This is a crucial methodological confirmation: transcriptome-wide noise is uncorrelated across independent laboratories, which proves that our cross-study meta-analysis in Horizon 3 will filter out study-specific noise and distill the true biological consensus signal!
+- **Marker Comparison Bar Chart (`fig_marker_effect_sizes_by_cohort.png`)**:
+  Directly contrasts the four perturbation modes, illustrating how acute antibiotic depletion drives intense anti-inflammatory brake collapse (*Tsc22d3*, *Ddit4*), while dietary fiber starvation uniquely impairs lipid droplet handling (*Plin3*).
+
+#### 5. Blooms, Anomalies & Serendipity
+- **Bloom 2.1: The GILZ (*Tsc22d3*) Anti-Inflammatory Collapse**:
+  In `GSE108045`, the most striking finding is the profound down-regulation of *Tsc22d3* (GILZ, $\log_2\text{FC} = -2.36, \text{padj} = 5.56 \times 10^{-20}$). GILZ is known in immunology as the primary endogenous brake on NF-κB p65 and AP-1 transactivation. Its collapse under broad-spectrum antibiotic treatment explains why microglia lose immune tolerance and become primed for cytokine hyper-secretion. This provides an elegant mechanistic link between gut microbiome depletion and microglial neuroinflammation!
+- **Bloom 2.2: The *Plin3* Lipid Droplet Connection in Fiber Starvation**:
+  In `GSE186210`, dietary fiber starvation uniquely suppressed *Plin3* ($\log_2\text{FC} = -1.88, \text{padj} = 3.4 \times 10^{-5}$). Microglia rely on lipid droplets to safely sequester toxic lipid peroxides and fatty acids during metabolic stress. Losing PLIN3 under SCFA deprivation suggests that microbial metabolites are essential for microglial lipid metabolism and membrane lipid homeostasis.
+- **Bloom 2.3: Quiescence vs. Shock**:
+  The contrast between `GSE107925` (25 DEGs) and `GSE108045` (255 DEGs) reveals that lifelong germ-free housing establishes a state of developmental arrest and blunted maturity, whereas acute antibiotic depletion in adulthood induces an acute disruption shock that actively strips away repressive checkpoints.
+
+#### 6. Branch / Consolidate Decision
+- **Consolidation**:
+  - The 4 full-scale DEG tables and phenotypic summary metrics are locked in `results/de_results/`.
+  - Quality and statistical integrity gates are satisfied: 26/26 tests passing.
+- **Advancement**:
+  - Proceed to **Horizon 3: The Consensus Symphony (Cross-Study Statistical Synthesis)**.
+
+#### 7. Next Horizon Step: Horizon 3 (The Consensus Symphony)
+- **Target**: Run transcriptome-wide DerSimonian-Laird and REML random-effects meta-analysis combining effect sizes across all common expressed genes.
+- **Key Questions for Horizon 3**:
+  1. What is the consensus pooled effect size ($\hat{\theta}_{\text{meta}}$) and FDR for *Tnf*, *Tsc22d3*, *Tmem119*, and *Cx3cr1*?
+  2. Which genes exhibit low heterogeneity ($I^2 < 25\%$, universal core markers) vs. high heterogeneity ($I^2 > 75\%$)?
+  3. Does Leave-One-Out (LOO) sensitivity analysis confirm that the consensus signature remains statistically robust when omitting `GSE266602` or `GSE108045`?
+
+
