@@ -1,0 +1,15 @@
+sample_id,cohort,condition,group_label,sex,tissue,sequencing_type
+S_2828,GSE186210,perturbed,Zero_Fiber,Male,Microglia,Bulk RNA-seq
+S_2829,GSE186210,perturbed,Zero_Fiber,Female,Microglia,Bulk RNA-seq
+S_2831,GSE186210,perturbed,Zero_Fiber,Male,Microglia,Bulk RNA-seq
+S_2841,GSE186210,perturbed,Zero_Fiber,Female,Microglia,Bulk RNA-seq
+S_2844,GSE186210,reference,Fiber_Normal,Female,Microglia,Bulk RNA-seq
+S_2972,GSE186210,reference,Fiber_Normal,Female,Microglia,Bulk RNA-seq
+S_2975,GSE186210,reference,Fiber_Normal,Male,Microglia,Bulk RNA-seq
+S_2979,GSE186210,reference,Fiber_Normal,Male,Microglia,Bulk RNA-seq
+S_2991,GSE186210,perturbed,Zero_Fiber,Female,Microglia,Bulk RNA-seq
+S_2992,GSE186210,perturbed,Zero_Fiber,Female,Microglia,Bulk RNA-seq
+S_3005,GSE186210,reference,Fiber_Normal,Female,Microglia,Bulk RNA-seq
+S_3006,GSE186210,reference,Fiber_Normal,Female,Microglia,Bulk RNA-seq
+S_3011,GSE186210,reference,Fiber_Normal,Male,Microglia,Bulk RNA-seq
+S_3012,GSE186210,reference,Fiber_Normal,Male,Microglia,Bulk RNA-seq

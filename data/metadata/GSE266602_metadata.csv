@@ -1,7 +1,10 @@
 sample_id,cohort,condition,group_label,sex,tissue,sequencing_type
-SPF_Sham_1,GSE266602,reference,SPF_Sham,Unspecified,Microglia,Bulk RNA-seq
-SPF_Sham_2,GSE266602,reference,SPF_Sham,Unspecified,Microglia,Bulk RNA-seq
-SPF_Sham_3,GSE266602,reference,SPF_Sham,Unspecified,Microglia,Bulk RNA-seq
-GF_Sham_1,GSE266602,perturbed,GF_Sham,Unspecified,Microglia,Bulk RNA-seq
-GF_Sham_2,GSE266602,perturbed,GF_Sham,Unspecified,Microglia,Bulk RNA-seq
-GF_Sham_3,GSE266602,perturbed,GF_Sham,Unspecified,Microglia,Bulk RNA-seq
+ABX_Sham1,GSE266602,perturbed,ABX_Sham,Male,Microglia,Bulk RNA-seq
+ABX_Sham2,GSE266602,perturbed,ABX_Sham,Male,Microglia,Bulk RNA-seq
+ABX_Sham3,GSE266602,perturbed,ABX_Sham,Male,Microglia,Bulk RNA-seq
+GF_Sham1,GSE266602,perturbed,GF_Sham,Male,Microglia,Bulk RNA-seq
+GF_Sham2,GSE266602,perturbed,GF_Sham,Male,Microglia,Bulk RNA-seq
+GF_Sham3,GSE266602,perturbed,GF_Sham,Male,Microglia,Bulk RNA-seq
+SPF_Sham1,GSE266602,reference,SPF_Sham,Male,Microglia,Bulk RNA-seq
+SPF_Sham2,GSE266602,reference,SPF_Sham,Male,Microglia,Bulk RNA-seq
+SPF_Sham3,GSE266602,reference,SPF_Sham,Male,Microglia,Bulk RNA-seq

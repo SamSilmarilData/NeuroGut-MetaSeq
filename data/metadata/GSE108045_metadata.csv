@@ -1,13 +1,13 @@
 sample_id,cohort,condition,group_label,sex,tissue,sequencing_type
-CTR_Male_1,GSE108045,reference,CTR,Male,Microglia,Bulk RNA-seq
-CTR_Male_2,GSE108045,reference,CTR,Male,Microglia,Bulk RNA-seq
-CTR_Male_3,GSE108045,reference,CTR,Male,Microglia,Bulk RNA-seq
-CTR_Female_1,GSE108045,reference,CTR,Female,Microglia,Bulk RNA-seq
-CTR_Female_2,GSE108045,reference,CTR,Female,Microglia,Bulk RNA-seq
-CTR_Female_3,GSE108045,reference,CTR,Female,Microglia,Bulk RNA-seq
-ABX_Male_1,GSE108045,perturbed,ABX,Male,Microglia,Bulk RNA-seq
-ABX_Male_2,GSE108045,perturbed,ABX,Male,Microglia,Bulk RNA-seq
-ABX_Male_3,GSE108045,perturbed,ABX,Male,Microglia,Bulk RNA-seq
-ABX_Female_1,GSE108045,perturbed,ABX,Female,Microglia,Bulk RNA-seq
-ABX_Female_2,GSE108045,perturbed,ABX,Female,Microglia,Bulk RNA-seq
-ABX_Female_3,GSE108045,perturbed,ABX,Female,Microglia,Bulk RNA-seq
+2_CTR_F1_2017_454,GSE108045,reference,CTR,Female,Microglia,Bulk RNA-seq
+2_CTR_F2_2017_455,GSE108045,reference,CTR,Female,Microglia,Bulk RNA-seq
+2_CTR_F3_2017_456,GSE108045,reference,CTR,Female,Microglia,Bulk RNA-seq
+2_CTR_M1_2017_457,GSE108045,reference,CTR,Male,Microglia,Bulk RNA-seq
+2_CTR_M2_2017_458,GSE108045,reference,CTR,Male,Microglia,Bulk RNA-seq
+2_CTR_M3_2017_459,GSE108045,reference,CTR,Male,Microglia,Bulk RNA-seq
+2_ABX_M1_2017_460,GSE108045,perturbed,ABX,Male,Microglia,Bulk RNA-seq
+2_ABX_F2_2017_461,GSE108045,perturbed,ABX,Female,Microglia,Bulk RNA-seq
+2_ABX_F3_2017_462,GSE108045,perturbed,ABX,Female,Microglia,Bulk RNA-seq
+2_ABX_F1_2017_463,GSE108045,perturbed,ABX,Female,Microglia,Bulk RNA-seq
+2_ABX_M2_2017_464,GSE108045,perturbed,ABX,Male,Microglia,Bulk RNA-seq
+2_ABX_M3_2017_465,GSE108045,perturbed,ABX,Male,Microglia,Bulk RNA-seq

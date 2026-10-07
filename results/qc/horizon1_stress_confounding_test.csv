@@ -1,0 +1,5 @@
+cohort,ref_n,pert_n,mean_stress_diff,mwu_stat,p_value,confounding_flag
+GSE107925,13,12,0.077,70.0,0.6833,False
+GSE108045,6,6,0.542,9.0,0.1797,False
+GSE186210,8,6,-0.095,27.0,0.7546,False
+GSE266602,3,6,0.015,9.0,1.0,False
