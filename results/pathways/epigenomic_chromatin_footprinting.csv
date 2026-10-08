@@ -1,0 +1,13 @@
+gene_symbol,transcription_factor_motif,genomic_region,atac_acc_spf,atac_acc_depleted,atac_acc_scfa_repleted,lfc_atac_depleted_vs_spf,lfc_atac_scfa_vs_depleted,tobias_fp_depth_spf,tobias_fp_depth_depleted,tobias_fp_depth_scfa_repleted,delta_fp_depletion,delta_fp_scfa_reversal,chromatin_reversal_pct,rna_meta_log2fc
+Irf1,IRF1 (MA0050.2),Promoter (-450bp),42.5,14.2,39.1,-1.5169,1.3995,0.48,0.12,0.44,-0.36,0.32,88.9,0.0634
+Stat1,STAT1 (MA0137.3),Promoter (-220bp),38.1,16.5,35.4,-1.1598,1.0566,0.42,0.15,0.39,-0.27,0.24,88.9,-0.0992
+Oas1a,ISRE (MA0517.1),Enhancer (+3.2kb),29.4,8.1,26.8,-1.7401,1.6111,0.51,0.08,0.47,-0.43,0.39,90.7,0.0136
+Gbp2,ISRE (MA0517.1),Promoter (-180bp),31.7,9.4,28.2,-1.6527,1.4894,0.45,0.11,0.41,-0.34,0.3,88.2,-0.2548
+Tap1,IRF1 (MA0050.2),Promoter (-310bp),24.6,10.2,23.0,-1.1926,1.0995,0.38,0.14,0.35,-0.24,0.21,87.5,-0.2829
+Ifit3,ISRE (MA0517.1),Promoter (-120bp),27.8,7.5,25.4,-1.7605,1.635,0.49,0.09,0.46,-0.4,0.37,92.5,-0.2525
+Llgl2,AP-1 (MA0099.3),Enhancer (-1.8kb),18.2,36.4,22.1,0.9619,-0.6951,0.22,0.46,0.26,0.24,-0.2,83.3,0.6723
+Slfn2,NF-kB (MA0107.1),Promoter (-520bp),35.0,12.8,31.5,-1.3833,1.2358,0.44,0.16,0.4,-0.28,0.24,85.7,-0.4654
+Clu,AP-1 (MA0099.3),Promoter (-280bp),20.4,38.9,24.0,0.8988,-0.6745,0.25,0.48,0.29,0.23,-0.19,82.6,0.8727
+Plin3,PPARg (MA0065.2),Promoter (-390bp),28.5,11.2,26.4,-1.2738,1.1673,0.39,0.14,0.36,-0.25,0.22,88.0,-0.9183
+Tsc22d3,NR3C1 (MA0113.3),Promoter (-150bp),22.0,23.5,21.8,0.0911,-0.1037,0.28,0.3,0.27,0.02,-0.03,150.0,-1.0103
+Ddit4,ATF4 (MA0833.1),Promoter (-610bp),19.5,20.8,18.9,0.0887,-0.1316,0.26,0.28,0.25,0.02,-0.03,150.0,-1.199

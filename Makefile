@@ -24,7 +24,7 @@ help:
 	@echo "  make production   : Run full real-cohort pipeline end-to-end"
 	@echo ""
 	@echo "Validation & Containerization:"
-	@echo "  make test         : Run full 53-test automated unit test suite"
+	@echo "  make test         : Run full 58-test automated unit test suite"
 	@echo "  make docker-build : Build reproducible Docker container"
 	@echo "  make docker-run   : Run pipeline inside Docker container"
 	@echo "  make clean        : Remove intermediate generated results"
@@ -56,9 +56,10 @@ horizon1:
 	$(PYTHON) scripts/02b_qc_audit.py
 
 horizon2:
-	@echo "[*] Horizon 2: Running negative binomial GLMs across 4 cohorts..."
+	@echo "[*] Horizon 2: Running negative binomial GLMs & sex interaction across cohorts..."
 	$(PYTHON) scripts/03b_pydeseq2_analysis.py
 	$(PYTHON) scripts/03c_cohort_phenotyping.py
+	$(PYTHON) scripts/03d_sex_dimorphism_analysis.py
 
 horizon3:
 	@echo "[*] Horizon 3: Running Random-Effects meta-analysis across 23,096 genes..."
@@ -67,7 +68,7 @@ horizon3:
 	$(PYTHON) scripts/04c_perturbation_subgroups.py
 
 horizon4:
-	@echo "[*] Horizon 4: Executing Systems Biology & Regulon Networks..."
+	@echo "[*] Horizon 4: Executing Multi-Omic Systems Biology & Regulon Networks..."
 	$(PYTHON) scripts/05a_cache_gene_sets.py
 	$(PYTHON) scripts/05_pathway_enrichment.py
 	$(PYTHON) scripts/05b_tf_regulon_analysis.py
@@ -75,6 +76,9 @@ horizon4:
 	$(PYTHON) scripts/05d_metabolite_rescue.py
 	$(PYTHON) scripts/05e_systems_diagnostics.py
 	$(PYTHON) scripts/05f_single_cell_deconvolution.py
+	$(PYTHON) scripts/05g_epigenomic_footprinting.py
+	$(PYTHON) scripts/05h_ligand_receptor_nichenet.py
+	$(PYTHON) scripts/05i_metabolic_llgl2_and_pharmacokinetics.py
 	@echo "[SUCCESS] Horizon 4 complete! Figures in results/pathways/figures/"
 
 systems: horizon4

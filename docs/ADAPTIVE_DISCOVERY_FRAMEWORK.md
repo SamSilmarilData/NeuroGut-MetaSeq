@@ -197,8 +197,9 @@ To ensure both computational rigor and seamless peer-review alignment, the repos
 | **Horizon 1** | Lineage Purity & Ex Vivo Dissociation Quality Control | Audit immediate-early stress genes (*Fos*, *Jun*, *Atf3*) and verify >99% microglial purity |
 | **Horizon 2** | Cross-Cohort Differential Expression Modeling | Negative binomial GLMs (`PyDESeq2`), sex covariate adjustment, and perturbation divergence |
 | **Horizon 3** | Random-Effects Meta-Analysis & Two-Tier Subgroup Decomposition | REML variance estimation, Hartung-Knapp-Sidik-Jonkman (HKSJ) CIs, and $Q_{\text{between}}$ testing |
-| **Horizon 4** | Upstream Transcription Factor Regulons & Single-Cell Deconvolution | TRRUST v2 regulon analysis (IRF1 shutoff) and ISG-to-lineage normalization index |
-| **Horizon 5** | In Vivo Metabolite Reversibility & Specificity Null Modeling | Empirical SCFA response vectors (GSE64977) and 1,000-permutation specificity null testing |
+| **Horizon 4** | Upstream Transcription Factor Regulons & Systems Biology | TRRUST v2 regulon analysis (IRF1 shutoff), WGCNA networks, and GSEA pathway bifurcation |
+| **Horizon 5** | In Vivo Metabolite Reversibility & Living Web Paper | Empirical SCFA response vectors (GSE64977), 1,000-permutation specificity testing, and web publication |
+| **Multi-Omic Release (v1.2.0)** | Multi-Omic Grounding & Mechanistic Chain of Custody | Factorial sex modeling ($\sim \text{sex} \times \text{cond}$), BayesPrism ($\kappa = 1.54$), microglial ATAC-seq footprinting (88.9% reversal), NicheNet upstream ligands, and LAT1 BBB flux |
 
 ---
 

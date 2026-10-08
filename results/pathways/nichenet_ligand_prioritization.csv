@@ -1,0 +1,13 @@
+upstream_ligand,sender_compartment,cognate_microglial_receptor,ligand_activity_pearson_r,ligand_activity_pval,interferon_regulon_potency,microglial_receptor_log2fc,microglial_receptor_expressed,overall_priority_rank
+Bacterial OMVs / LPS,Circulating Microbial PAMP,Tlr4/Cd14,0.658,0.10838636772236873,0.867,-0.0671,True,1
+Ifnb1 (Endothelial),Brain Endothelium (BMEC),Ifnar1/Ifnar2,0.6,0.15464676816617917,0.937,-0.0382,True,2
+Circulating Ifnb1,Circulating Systemic Mediators,Ifnar1/Ifnar2,0.572,0.1792925736213182,0.94,-0.0382,True,3
+Circulating Ifng,Circulating Systemic Mediators,Ifngr1/Ifngr2,0.559,0.19213697083790016,0.937,-0.1422,True,4
+Peptidoglycans,Circulating Microbial PAMP,Nod1/Nod2,0.553,0.19806703478137522,0.65,-0.17,True,5
+Il1b,Border Macrophages (BAM),Il1r1,0.546,0.20467359723139386,0.5,0.1889,True,6
+Tnf,Border Macrophages (BAM),Tnfrsf1a/Tnfrsf1b,0.543,0.20793006467831693,0.643,-0.0435,True,7
+Cxcl10,Brain Endothelium (BMEC),Cxcr3,0.474,0.28263166884394375,0.79,0.2911,True,8
+Ccl2,Brain Endothelium (BMEC),Ccr2,0.33,0.47010009558301896,0.267,-0.3424,True,9
+Il6,Brain Endothelium (BMEC),Il6ra/Il6st,0.273,0.5538746529179212,0.467,0.0193,True,10
+Csf1,Border Macrophages (BAM),Csf1r,0.051,0.9129971575345583,0.233,-0.0063,True,11
+Tgfb1,Border Macrophages (BAM),Tgfbr1/Tgfbr2,-0.136,0.7707276513828633,0.2,0.0634,True,12

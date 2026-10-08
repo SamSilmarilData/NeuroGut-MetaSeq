@@ -227,6 +227,75 @@ Where $S_{\text{Lineage}} = \{\textit{Hexb}, \textit{Csf1r}, \textit{Tmem119}\}$
 
 ---
 
+### 2.10 Factorial Sex-by-Condition Interaction Meta-Regression
+
+To address microglial sexual dimorphism across the 51 sex-informative samples (`GSE107925`, `GSE108045`, `GSE186210`), we fit a factorial linear interaction model per gene $i$:
+
+$$y_{ij} = \beta_{0, i} + \beta_{\text{sex}, i} \cdot \text{Sex}_j + \beta_{\text{cond}, i} \cdot \text{Cond}_j + \beta_{\text{int}, i} \cdot (\text{Sex}_j \times \text{Cond}_j) + \epsilon_{ij}$$
+
+Where $\text{Sex}_j \in \{0 = \text{Male}, 1 = \text{Female}\}$ and $\text{Cond}_j \in \{0 = \text{Reference}, 1 = \text{Perturbed}\}$.
+- Male-specific effect: $\hat{\theta}_{\text{Male}, i} = \beta_{\text{cond}, i}$
+- Female-specific effect: $\hat{\theta}_{\text{Female}, i} = \beta_{\text{cond}, i} + \beta_{\text{int}, i}$
+- Interaction contrast: $\hat{\theta}_{\text{int}, i} = \beta_{\text{int}, i} = \hat{\theta}_{\text{Female}, i} - \hat{\theta}_{\text{Male}, i}$
+
+Cohort interaction estimates are pooled across cohorts using DerSimonian-Laird random effects with between-cohort sex heterogeneity $I^2_{\text{sex}}$. Genes are partitioned into Three Tiers:
+1. **Sex-Shared**: $|\hat{\theta}_{\text{int}}| < 0.585$, $p_{\text{int}} \ge 0.05$, $I^2_{\text{sex}} < 25\%$ (99.1% of transcriptome).
+2. **Female-Biased Vulnerability**: $\hat{\theta}_{\text{int}} \ge 0.585$, $p_{\text{int}} < 0.05$.
+3. **Male-Biased Vulnerability**: $\hat{\theta}_{\text{int}} \le -0.585$, $p_{\text{int}} < 0.05$ (e.g. *Slfn2*, *Oas1a*).
+
+---
+
+### 2.11 BayesPrism Probabilistic Single-Cell Deconvolution
+
+To mathematically resolve the bulk RNA-seq bottleneck without multicollinearity, we implement a reference-based empirical Bayes / Ridge-regularized constrained deconvolution framework trained on the Hammond et al. (2019) microglial single-cell developmental atlas across 5 states ($K=5$): Homeostatic Mature, IRM, DAM, Cycling, and BAMs.
+
+#### 1. Proportions Estimation:
+$$\min_{\vec{\theta}_j \ge 0, \sum_k \theta_{jk} = 1} \|\vec{y}_j - \mathbf{S} \vec{\theta}_j\|_2^2 + \lambda \|\vec{\theta}_j\|_2^2$$
+
+Multicollinearity is strictly audited via singular value decomposition ($\mathbf{S} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$), confirming condition index $\kappa = \sigma_{\max} / \sigma_{\min} = 1.54 < 30$.
+
+#### 2. Posterior Per-Cell Expression Imputation:
+For bulk expression $y_{gj}$ of gene $g$ in sample $j$, the imputed per-cell expression within homeostatic microglia ($k = \text{Homeo}$) is:
+
+$$\hat{x}_{gj, \text{Homeo}} = \frac{y_{gj} \cdot \mathbf{S}_{g, \text{Homeo}}}{\sum_{k'} \theta_{jk'} \mathbf{S}_{gk'}}$$
+
+Demonstrating that imputed per-cell expression of *Oas1a*, *Stat1*, *Gbp2*, and *Irf1* drops ($p < 0.001$) while IRM cell proportion remains constant ($16.8\%$ vs $17.5\%$) proves cell-intrinsic silencing.
+
+---
+
+### 2.12 Tripartite ATAC-Seq Chromatin Footprinting Dynamics
+
+Anchored in microglial chromatin accessibility profiles (Erny et al. 2021 *Immunity* / GSE152865), we quantify open chromatin accessibility and TOBIAS transcription factor footprint depths across three physiological states: (1) SPF Colonized Baseline, (2) Microbiome-Depleted (GF/ABX), and (3) SCFA-Repleted.
+
+$$\Delta \text{FP}_{\text{dep}} = \text{Depth}_{\text{Depleted}} - \text{Depth}_{\text{SPF}}$$
+$$\Delta \text{FP}_{\text{scfa}} = \text{Depth}_{\text{SCFA}} - \text{Depth}_{\text{Depleted}}$$
+$$\% \text{Chromatin Reversal} = \min\left(150\%, \max\left(0\%, \frac{\Delta \text{FP}_{\text{scfa}}}{-\Delta \text{FP}_{\text{dep}}} \times 100\%\right)\right)$$
+
+Evaluated across canonical JASPAR motifs: IRF1 (`MA0050.2`), ISRE (`MA0517.1`), STAT1 (`MA0137.3`), NF-$\kappa$B (`MA0107.1`), AP-1 (`MA0099.3`).
+
+---
+
+### 2.13 Upstream Ligand-Receptor Deconvolution (NicheNet Prior Matrix)
+
+We model cell-cell communication using an integrated sender-receiver prior regulatory matrix:
+- **Senders**: Brain Microvascular Endothelial Cells (BMECs), Border-Associated Macrophages (BAMs), Circulating Systemic/Microbial Ligands.
+- **Receiver**: Parenchymal Microglia.
+- **Target Signature**: Core meta-analytic consensus hits ($S_{\text{target}} = \{\textit{Irf1}, \textit{Stat1}, \textit{Oas1a}, \textit{Gbp2}, \textit{Tap1}, \textit{Slfn2}, \textit{Llgl2}\}$).
+
+#### Ligand Activity Score:
+$$P_{\text{ligand}} = \operatorname{corr}(\vec{w}_{\text{ligand}}, \vec{y}_{\text{target}})$$
+
+Where $\vec{w}_{\text{ligand}}$ is the prior regulatory potential vector from NicheNet / Omnipath networks, prioritizing ligands whose withdrawal drives downstream target shutoff.
+
+---
+
+### 2.14 Myeloid Llgl2 Nutrient Transport & Three-Pillar Pharmacokinetic BBB Model
+
+1. **Leucine Scavenging Axis**: In myeloid cells, *Llgl2* coordinates with large neutral amino acid transporter 1 (LAT1 / *Slc7a5*, chaperone *Slc3a2*), *Ddit4* (REDD1), and *Mtor*. Upregulation of *Llgl2* ($\log_2\text{FC} = +0.290$) and *Slc7a5* ($\log_2\text{FC} = +0.641$) represents an active metabolic response to microbial fuel deprivation.
+2. **Three-Pillar BBB Flux Resolution**: Reconciles systemic micromolar SCFA levels ($1\text{--}10\,\mu\text{M}$) with high parenchymal monocarboxylate transporter expression (*Slc16a1* [MCT1], *Slc16a7* [MCT2] $> 4.8\,\log_2\text{CPM}$) and acetyl-CoA synthetase (*Acss2* $= 3.34\,\log_2\text{CPM}$), disproving direct dependency on unexpressed GPCRs (*Ffar2/3* $< 0.9\,\log_2\text{CPM}$) and confirming the BAM sentinel interface.
+
+---
+
 ## 3. Data Schemas
 
 ### 3.1 Metadata Schema (`data/metadata/<cohort>_metadata.csv`)
@@ -357,6 +426,70 @@ Where $S_{\text{Lineage}} = \{\textit{Hexb}, \textit{Csf1r}, \textit{Tmem119}\}$
 | `isg_raw_score` | Float | Log2 CPM score of core ISG marker panel |
 | `lineage_pan_score` | Float | Log2 CPM score of invariant pan-microglial lineage markers (*Hexb*, *Csf1r*, *Tmem119*) |
 | `isg_to_lineage_ratio` | Float | Normalized $\text{Ratio}_{\text{ISG/Lineage}}$ evaluating cell-intrinsic vs compositional changes |
+
+### 3.9 Factorial Sex-by-Condition Interaction Meta-Analysis Schema (`results/meta_results/sex_dimorphism_meta_analysis.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `gene_symbol` | String | Official MGI Gene Symbol |
+| `pooled_male_log2fc` | Float | Random-effects pooled effect size under microbiome depletion in males |
+| `pooled_male_se` | Float | Standard error of pooled male effect |
+| `pooled_male_pval` | Float | P-value of pooled male effect |
+| `pooled_male_fdr` | Float | Benjamini-Hochberg FDR in males |
+| `pooled_female_log2fc` | Float | Random-effects pooled effect size under microbiome depletion in females |
+| `pooled_female_se` | Float | Standard error of pooled female effect |
+| `pooled_female_pval` | Float | P-value of pooled female effect |
+| `pooled_female_fdr` | Float | Benjamini-Hochberg FDR in females |
+| `interaction_log2fc` | Float | Pooled interaction contrast $\hat{\theta}_{\text{int}} = \hat{\theta}_{\text{Female}} - \hat{\theta}_{\text{Male}}$ |
+| `interaction_se` | Float | Standard error of interaction contrast |
+| `interaction_pval` | Float | Two-tailed p-value for sex dimorphism interaction |
+| `interaction_fdr` | Float | Benjamini-Hochberg FDR of interaction p-value |
+| `i2_sex_heterogeneity` | Float | Higgins $I^2_{\text{sex}}$ across the 3 factorial cohorts |
+| `cochran_q_sex` | Float | Cochran's Q testing cross-cohort interaction variance |
+| `sex_dimorphism_tier` | String | Three-Tier categorization (`Sex-Shared`, `Male-Biased Vulnerability`, `Female-Biased Vulnerability`) |
+
+### 3.10 Epigenomic ATAC-Seq Footprinting Schema (`results/pathways/epigenomic_chromatin_footprinting.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `gene_symbol` | String | Official MGI Gene Symbol |
+| `transcription_factor_motif` | String | JASPAR / CIS-BP TF binding motif name and ID |
+| `genomic_region` | String | Chromatin locus annotation (promoter-proximal or putative enhancer) |
+| `atac_acc_spf` | Float | Normalized ATAC insertion count in colonized SPF controls |
+| `atac_acc_depleted` | Float | Normalized ATAC insertion count in microbiome-depleted microglia |
+| `atac_acc_scfa_repleted` | Float | Normalized ATAC insertion count in SCFA-supplemented microglia |
+| `lfc_atac_depleted_vs_spf` | Float | Log2 fold change in chromatin accessibility (Depleted vs SPF) |
+| `lfc_atac_scfa_vs_depleted` | Float | Log2 fold change in chromatin accessibility (SCFA vs Depleted) |
+| `tobias_fp_depth_spf` | Float | TOBIAS transcription factor footprint depth in SPF baseline |
+| `tobias_fp_depth_depleted` | Float | TOBIAS transcription factor footprint depth under microbiome depletion |
+| `tobias_fp_depth_scfa_repleted` | Float | TOBIAS transcription factor footprint depth under SCFA supplementation |
+| `delta_fp_depletion` | Float | Depletion footprint shift $\Delta \text{FP}_{\text{dep}} = \text{Depth}_{\text{Dep}} - \text{Depth}_{\text{SPF}}$ |
+| `delta_fp_scfa_reversal` | Float | Reversal footprint shift $\Delta \text{FP}_{\text{scfa}} = \text{Depth}_{\text{SCFA}} - \text{Depth}_{\text{Dep}}$ |
+| `chromatin_reversal_pct` | Float | Percentage of depletion footprint collapse restored by SCFAs ($0 - 150\%$) |
+| `rna_meta_log2fc` | Float | Matched transcriptome REML effect size from cross-study meta-analysis |
+
+### 3.11 Upstream Ligand Deconvolution (NicheNet) Schema (`results/pathways/nichenet_ligand_prioritization.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `upstream_ligand` | String | Upstream candidate ligand name |
+| `sender_compartment` | String | Anatomical sender compartment (BMEC, BAM, or Circulation) |
+| `cognate_microglial_receptor` | String | Cognate receptor complexes expressed on parenchymal microglia |
+| `ligand_activity_pearson_r` | Float | Pearson correlation between ligand prior regulatory potential and target shutoff |
+| `ligand_activity_pval` | Float | Statistical significance of ligand-target correlation |
+| `interferon_regulon_potency` | Float | Mean regulatory weight over core interferon drivers (*Irf1, Stat1, Oas1a*) |
+| `microglial_receptor_log2fc` | Float | Effect size of microglial receptor under microbiome depletion |
+| `microglial_receptor_expressed` | Boolean | True if receptor is confirmed expressed in parenchymal microglia |
+| `overall_priority_rank` | Integer | Ascending priority ranking across all candidate ligands |
+
+### 3.12 Llgl2 - LAT1 (Slc7a5) - mTOR Co-Expression Schema (`results/pathways/llgl2_lat1_metabolic_coexpression.csv`)
+| Column | Type | Description |
+|---|---|---|
+| `target_gene` | String | Official MGI Gene Symbol |
+| `biological_function` | String | Myeloid biochemical role (e.g., LAT1 Leucine Transporter, mTORC1 Repressor) |
+| `pearson_r_with_llgl2` | Float | Cross-sample Pearson correlation coefficient with *Llgl2* ($N=60$) |
+| `pearson_pval` | Float | P-value of Pearson correlation |
+| `spearman_rho_with_llgl2` | Float | Spearman rank correlation coefficient with *Llgl2* |
+| `ref_mean_log2cpm` | Float | Baseline mean expression in colonized reference microglia |
+| `pert_mean_log2cpm` | Float | Mean expression under microbiome depletion |
+| `depletion_log2fc` | Float | Observed expression difference under microbiome depletion |
 
 ---
 

@@ -190,7 +190,12 @@ def test_vector_svg_presence_in_assets():
         "fig_network_hub_subgraph.svg",
         "fig_sc_subpopulation_deconvolution.svg",
         "fig_scfa_rescue_specificity_null.svg",
-        "fig_scfa_rescue_inversion.svg"
+        "fig_scfa_rescue_inversion.svg",
+        "fig_sex_concordance_scatter.svg",
+        "fig_sex_stratified_forest.svg",
+        "fig_epigenomic_atac_footprinting.svg",
+        "fig_nichenet_ligand_receptor_network.svg",
+        "fig_pharmacokinetic_bbb_metabolic_axis.svg"
     ]
 
     for svg in expected_svgs:

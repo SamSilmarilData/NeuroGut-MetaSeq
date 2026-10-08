@@ -1,0 +1,7 @@
+target_gene,biological_function,pearson_r_with_llgl2,pearson_pval,spearman_rho_with_llgl2,ref_mean_log2cpm,pert_mean_log2cpm,depletion_log2fc
+Llgl2,Polarity / LAT1 Stabilizer,1.0,0.0,1.0,2.095,2.384,0.29
+Mtor,mTOR Kinase,0.784,1.330253073945635e-13,0.742,5.143,4.674,-0.469
+Rptor,mTORC1 Adaptor,0.69,1.050102361601283e-09,0.731,7.948,7.879,-0.068
+Slfn2,Chaperone / Quiescence,0.518,2.2912876476440844e-05,0.17,5.933,5.099,-0.833
+Ddit4,REDD1 mTORC1 Repressor,0.425,0.0007070910727725278,0.273,5.013,4.498,-0.515
+Slc7a5,LAT1 Leucine Transporter,-0.626,9.086805525415955e-08,-0.354,6.271,6.912,0.641

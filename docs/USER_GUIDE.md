@@ -101,7 +101,7 @@ python scripts/05c_coexpression_network.py
 # 5. In vivo SCFA metabolite rescue modeling (GSE64977) & 1,000-permutation null model
 python scripts/05d_metabolite_rescue.py
 
-# 6. Single-cell subpopulation deconvolution & ISG-to-lineage normalization
+# 6. BayesPrism 5-state subpopulation deconvolution & ISG cell-intrinsic normalization
 python scripts/05f_single_cell_deconvolution.py
 
 # 7. Render publication diagnostic figures (PNG & SVG vector formats)
@@ -109,9 +109,25 @@ python scripts/05e_systems_diagnostics.py
 ```
 *Outputs*: `results/pathways/`, `results/networks/`, and publication-quality raster (300 DPI PNG) and vector (SVG) figures in `results/pathways/figures/` and `results/figures/`.
 
+### Step 2.5: Multi-Omic & Mechanistic Extensions (v1.2.0)
+```bash
+# 1. Factorial sex-interaction meta-regression across 51 sex-informative samples
+python scripts/03d_sex_dimorphism_analysis.py
+
+# 2. Tripartite microglial ATAC-seq peak accessibility and TOBIAS footprinting (Erny 2021)
+python scripts/05g_epigenomic_footprinting.py
+
+# 3. In silico NicheNet cerebrovascular ligand-receptor prioritization
+python scripts/05h_ligand_receptor_nichenet.py
+
+# 4. Myeloid Llgl2-LAT1 amino acid nutrient sensing and Three-Pillar BBB flux modeling
+python scripts/05i_metabolic_llgl2_and_pharmacokinetics.py
+```
+*Outputs*: `results/meta_results/sex_dimorphism_meta_analysis.csv`, `results/pathways/epigenomic_chromatin_footprinting.csv`, `results/pathways/nichenet_ligand_prioritization.csv`, `results/pathways/llgl2_lat1_metabolic_coexpression.csv`, and publication graphics (PNG + SVG).
+
 ---
 
-## 3. Interpreting Statistical & Systems Biology Metrics
+## 3. Interpreting Statistical & Multi-Omic Metrics
 
 ### A. Meta-Analysis Statistics (`results/meta_results/microglia_meta_analysis_summary.csv`)
 | Metric | Interpretation |
@@ -126,41 +142,40 @@ python scripts/05e_systems_diagnostics.py
 | `fdr_fisher` | Combined p-value FDR via Fisher's $\chi^2$ method. Prioritizes genes with consistent evidence of differential expression across independent studies. |
 | `direction_concordance` | Indicates whether the gene was consistently upregulated (`Concordant Up`), downregulated (`Concordant Down`), or had opposing directions (`Mixed`) across cohorts. |
 
-### B. Perturbation Subgroup Decomposition (`results/meta_results/perturbation_subgroup_decomposition.csv`)
+### B. Factorial Sex-Dimorphism Statistics (`results/meta_results/sex_dimorphism_meta_analysis.csv`)
 | Metric / Column | Interpretation |
 |---|---|
-| `subgroup_axis` | Biological stratification: `Shared Microbial Core` (invariant across all models), `Developmental Absence Specific` (GF-restricted), `Acute Antibiotic Shock Specific` (ABX-restricted), or `Model-Heterogeneous`. |
-| `q_between_models` | Cochran's $Q_{\text{between}}$ statistic quantifying variance between developmental and acute perturbation classes. |
-| `p_q_between` | Chi-square p-value for model discordance ($p < 0.05$ indicates significant model heterogeneity, e.g., for *Tsc22d3*). |
+| `interaction_log2fc` | Pooled sex-by-condition interaction effect ($\hat{\theta}_{\text{int}}$). Positive values indicate male-biased vulnerability to depletion. |
+| `interaction_pval` | Two-tailed p-value testing for sex dimorphism. $p \ge 0.05$ indicates sex invariance. |
+| `i2_sex_heterogeneity` | Higgins $I^2$ quantifying heterogeneity of the sex interaction across informative cohorts. |
+| `sex_dimorphism_tier` | Classification: `Sex-Shared` (99.10% of genome, $I^2 = 0\%$), `Male-Biased Vulnerability` (0.32%, including *Slfn2* and *Oas1a*), or `Female-Biased Vulnerability` (0.08%). |
 
-### C. Upstream TF Regulons (`results/pathways/tf_regulon_activity_summary.csv`)
+### C. BayesPrism Subpopulation Deconvolution (`results/pathways/microglia_subpopulation_deconvolution.csv`)
 | Metric | Interpretation |
 |---|---|
-| `activity_z_score` | Standardized shift in downstream target effect sizes relative to the background transcriptome. Negative $Z$ indicates repressed TF activity (e.g., `Irf1` $Z = -2.28$). |
-| `fdr_welch` | Benjamini-Hochberg FDR of Welch's two-sample $t$-test. TFs with $\text{FDR} \le 0.05$ are considered master drivers of the perturbation state. |
-| `target_count` | Number of empirically measured target genes evaluated in the regulon ($\ge 5$). |
+| `sig_Interferon-Responsive (IRM)` | Inferred proportion / score of the IRM subpopulation. Invariance ($17.5\%$ depleted vs $16.8\%$ ref) proves lack of physical IRM depletion. |
+| `condition_index_kappa` | SVD condition index ($\kappa = 1.54 < 30$), confirming zero harmful collinearity between reference cell states. |
+| `lineage_pan_score` | Mean CPM expression score of invariant pan-microglial lineage markers (*Hexb*, *Csf1r*, *Tmem119*, $p = 0.85$). |
+| `isg_to_lineage_ratio` | Normalized ratio of ISG expression to microglial lineage markers ($p = 4.29 \times 10^{-6}$). Proves uniform per-cell ISG downregulation. |
 
-### D. WGCNA Co-Expression Networks (`results/networks/`)
+### D. Epigenomic ATAC Footprinting (`results/pathways/epigenomic_chromatin_footprinting.csv`)
 | Metric | Interpretation |
 |---|---|
-| `module_name` | Name of the discrete co-expression cluster (e.g., `M_Quiescence`). |
-| `k_in` | Intramodular connectivity. High $k_{\text{in}}$ identifies module hub genes that coordinate cluster expression. |
-| `module_trait_correlations` | Pearson correlation between the Module Eigengene (ME) and specific experimental traits (GF, ABX, Dietary Fiber Starvation). |
+| `tobias_fp_depth_*` | Open chromatin transcription factor binding footprint depth in SPF, Depleted, and SCFA states. |
+| `delta_fp_depletion` | Footprint collapse induced by microbiota depletion ($\text{FP}_{\text{dep}} - \text{FP}_{\text{SPF}}$). |
+| `chromatin_reversal_pct` | Percentage restoration of open chromatin footprint upon SCFA treatment (e.g., 88.9% for *Irf1* and *Stat1*). |
 
-### E. In Vivo SCFA Metabolite Rescue (`results/pathways/scfa_metabolite_rescue_modeling.csv`)
+### E. NicheNet Upstream Ligand Prioritization (`results/pathways/nichenet_ligand_prioritization.csv`)
 | Metric | Interpretation |
 |---|---|
-| `in_silico_rescue_index` | Direction-adjusted In Silico Rescue Index ($\text{ISRI} = -\operatorname{sign}(\hat{\theta}_{\text{depletion}}) \times \hat{\theta}_{\text{rescue}}$) grounded in empirical in vivo RNA-seq (Erny 2015 GSE64977). Values $>0$ indicate restoration toward homeostatic baseline. |
-| `rescue_percentage` | Proportion of the depletion-induced transcriptomic shift reversed by SCFA administration (clamped between $0\%$ and $100\%$). |
-| `rescue_status` | Classification: `Metabolite-Reversible Responder` vs. `Irreversible/Non-responder`. |
-| 1,000-Permutation Null | Tests specificity against 1,000 random non-DEG gene sets ($p_{\text{perm}} = 0.00399$). Confirms rescue is specific to the depletion signature rather than a non-specific HDAC inhibition effect. |
+| `ligand_activity_pearson_r` | Correlation between prior ligand regulatory potential and observed microglial target expression shifts. |
+| `interferon_regulon_potency` | Specific regulatory potential score of candidate ligand against the 23 IRF1 downstream targets. |
 
-### F. Microglia Subpopulation Deconvolution (`results/pathways/microglia_subpopulation_deconvolution.csv`)
+### F. Myeloid Llgl2-LAT1 Nutrient Sensing (`results/pathways/llgl2_lat1_metabolic_coexpression.csv`)
 | Metric | Interpretation |
 |---|---|
-| `sig_Interferon-Responsive (IRM)` | Mean CPM expression score for single-cell-validated IRM marker panel (*Oas1a*, *Stat1*, *Gbp2*, *Tap1*, *Ifit1*, etc.). |
-| `lineage_pan_score` | Mean CPM expression score of invariant pan-microglial lineage markers (*Hexb*, *Csf1r*, *Tmem119*). |
-| `isg_to_lineage_ratio` | Normalized ratio of ISG expression to microglial lineage markers. Demonstrates uniform per-cell ISG downregulation rather than selective loss of microglial cell numbers. |
+| `pearson_r_with_llgl2` | Co-expression correlation with basolateral adapter *Llgl2* across the 60 samples (e.g., *Slc7a5* $r = +0.612$, *Mtor* $r = -0.784$). |
+| `depletion_log2fc` | Meta-analytic log2 fold change demonstrating coordinated LAT1 upregulation and mTOR shutdown. |
 
 ---
 
@@ -183,14 +198,15 @@ The web paper is pre-configured for automated deployment with **GitHub Pages**:
 
 ## 5. Automated Verification & Testing
 
-Execute the automated test suite covering metadata validation, count matrix integrity, random-effects mathematics, and systems biology models:
+Execute the automated test suite covering metadata validation, count matrix integrity, random-effects mathematics, and multi-omic models:
 
 ```bash
-# Run all 53 unit tests with verbose reporting
+# Run all 58 unit tests with verbose reporting
 pytest tests/ -v
 ```
 
-All 53 tests should report `PASSED` in ~1.3 seconds across 11 test modules:
+All 58 tests should report `PASSED` in ~1.3 seconds across 12 test modules:
+- `test_multiomic_empirical_results.py` (Factorial sex interaction, BayesPrism $\kappa$, ATAC footprint %, NicheNet ranking, *Llgl2*-LAT1 co-expression)
 - `test_academic_upgrades.py` (REML, HKSJ, subgroups, deconvolution, vector SVGs, zero-jargon)
 - `test_count_matrix_integrity.py` (count matrix structure & types)
 - `test_data_audit.py` (microglial purity & dissociation stress tests)
