@@ -237,3 +237,37 @@ def test_calibrated_epigenetic_language_in_manuscript():
     assert "Functional Repositioning of *Llgl2*: Myeloid Nutrient-Scavenging" in ms_text, "Missing Llgl2 nutrient adaptation section"
     assert "Resolving the Blood-Brain Barrier Pharmacokinetic Paradox" in ms_text, "Missing BBB pharmacokinetics section"
     assert "In Silico Cerebrovascular Ligand Relay" in ms_text, "Missing NicheNet ligand relay section"
+
+
+def test_web_paper_unified_results_and_discussion():
+    """Verify that docs/index.html contains the Unified Four-Movement Results Architecture, Discussion, Conclusions, and Methods."""
+    html_path = "docs/index.html"
+    assert os.path.exists(html_path), f"Missing {html_path}"
+
+    with open(html_path, "r", encoding="utf-8") as f:
+        html = f.read()
+
+    # Verify Four Results Movements
+    assert 'id="results-part1"' in html, "Missing Movement I in web paper"
+    assert 'id="results-part2"' in html, "Missing Movement II in web paper"
+    assert 'id="results-part3"' in html, "Missing Movement III in web paper"
+    assert 'id="results-part4"' in html, "Missing Movement IV in web paper"
+
+    # Verify Discussion Subsections
+    assert 'id="discussion"' in html, "Missing Discussion section in web paper"
+    assert 'id="disc-defense"' in html, "Missing Dual Adaptive Defense subsection in web paper"
+    assert 'id="disc-llgl2"' in html, "Missing Llgl2 nutrient subsection in web paper"
+    assert 'id="disc-bbb"' in html, "Missing BBB pharmacokinetics subsection in web paper"
+    assert 'id="disc-ligand"' in html, "Missing Cerebrovascular ligand relay subsection in web paper"
+    assert 'id="disc-chromatin"' in html, "Missing Chromatin vs histone subsection in web paper"
+
+    # Verify Conclusions & Online Methods
+    assert 'id="conclusions"' in html, "Missing Conclusions section in web paper"
+    assert 'id="methods"' in html, "Missing Online Methods section in web paper"
+
+    # Verify Biological Callouts
+    assert 'callout-finding' in html, "Missing empirical finding callouts in web paper"
+    assert 'callout-control' in html, "Missing technical control callouts in web paper"
+    assert 'callout-concept' in html, "Missing conceptual breakthrough callouts in web paper"
+    assert 'callout-mechanism' in html, "Missing mechanistic model callouts in web paper"
+

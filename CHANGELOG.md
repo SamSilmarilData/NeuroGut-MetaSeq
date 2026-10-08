@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2026-10-08
+### Academic Release: Unified Four-Movement Results Architecture, Comprehensive Discussion & Methods
+
+### Added
+- **Unified Four-Movement Results Architecture** (`docs/index.html` & `scripts/07_build_web_paper.py`):
+  - Consolidated former flat Sections 2–8 into **Four Cohesive Thematic Movements** answering core biological questions:
+    - *Movement I: Multi-Cohort Synthesis Resolves an Invariant Myeloid Core Distinct from Perturbation Shocks* (incorporating QC lineage purity, isolation stress invariance, single-cohort GLM divergence, and REML-HKSJ meta-analysis).
+    - *Movement II: Single-Cell Deconvolution Proves Cell-Intrinsic Silencing of Basal Tonic Interferon Surveillance* (incorporating Hallmark GSEA, TRRUST upstream master IRF1 regulon deconvolution, and BayesPrism 5-state deconvolution with $\kappa = 1.54 < 30$).
+    - *Movement III: Multi-Omic Triangulation Deciphers Vascular Relays, Epigenomic Footprints, and Myeloid Nutrient-Scavenging* (incorporating factorial sex meta-regression, microglial ATAC TOBIAS footprinting, NicheNet BMEC/BAM ligand relays, and the *Llgl2*-LAT1 metabolic axis).
+    - *Movement IV: In Vivo Metabolite Reversibility and Resolution of the Blood-Brain Barrier Pharmacokinetic Paradox* (incorporating GSE64977 empirical SCFA rescue, 1,000-permutation specificity null test, and the Three-Pillar in vivo BBB flux model).
+- **Comprehensive Discussion Section** (`docs/index.html` Section 4):
+  - Five dedicated, synthesized subsections matching `docs/MANUSCRIPT.md`:
+    - `4.1 The Dual Adaptive & Homeostatic Defense Model: Energy Conservation vs. Antiviral Vulnerability`.
+    - `4.2 Functional Repositioning of Llgl2: Myeloid Nutrient-Scavenging and LAT1 Amino Acid Transport`.
+    - `4.3 Resolving the Blood-Brain Barrier Pharmacokinetic Paradox: Central Acetate vs. Border Macrophage Relays`.
+    - `4.4 In Silico Cerebrovascular Ligand Relay: Peripheral OMVs and Endothelial IFN-β Withdrawal`.
+    - `4.5 Distinguishing Chromatin Accessibility Dynamics from Histone Post-Translational Modifications`.
+- **Conclusions & Translational Frontiers** (`docs/index.html` Section 5):
+  - Articulating the neuroimmunological paradigm shift (re-framing dysbiosis from "uncontrolled hyperactivation" to "quiescent interferon blunting paired with nutrient-scavenging adaptation").
+  - Outlining therapeutic implications (central acetate delivery, BAM-targeted therapeutics) and future spatial/epigenomic frontiers.
+- **Online Methods & Analytical Architecture** (`docs/index.html` Section 6):
+  - Comprehensive mathematical descriptions and LaTeX MathJax formulas for PyDESeq2 Negative Binomial GLMs, REML log-likelihood maximization, HKSJ $t_3$ adjustment, Higgins $I^2$, BayesPrism ridge deconvolution, and TOBIAS footprint depth shifts.
+- **Automated Validation** (`tests/test_academic_upgrades.py`):
+  - Added `test_web_paper_unified_results_and_discussion()` ensuring all movements, discussion subsections, methods, and callouts render properly with zero jargon.
+
+### Changed
+- Recompiled `docs/index.html` (665.6 KB standalone) with inlined interactive volcano plot engine and 518 curated genes.
+- Enhanced sidebar navigation with nested tree structure and direct anchor jumps.
+
+---
+
 ## [1.2.1] - 2026-10-08
 ### Final Academic Polish: Calibrated Epigenomics & Unified Transcriptomic Discovery Studio
 

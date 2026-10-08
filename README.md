@@ -4,9 +4,9 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![R 4.3+](https://img.shields.io/badge/R-4.3+-276DC3.svg)](https://www.r-project.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version: v1.2.1](https://img.shields.io/badge/version-v1.2.1%20(Reference%20Edition)-blue.svg)](CHANGELOG.md)
+[![Version: v1.3.0](https://img.shields.io/badge/version-v1.3.0%20(Unified%20Narrative%20Edition)-blue.svg)](CHANGELOG.md)
 [![Manuscript: Nature Neuro Style](https://img.shields.io/badge/Manuscript-7%2C200%2B%20words-darkgreen.svg)](docs/MANUSCRIPT.md)
-[![Tests: 58 passed](https://img.shields.io/badge/tests-58%20passed%20(100%25)-success.svg)](tests/)
+[![Tests: 61 passed](https://img.shields.io/badge/tests-61%20passed%20(100%25)-success.svg)](tests/)
 [![Samples: 60](https://img.shields.io/badge/samples-60%20(51%20sex--informative)-teal.svg)](data/metadata/)
 [![Cohorts: 4](https://img.shields.io/badge/cohorts-4%20GEO%20studies-orange.svg)](config/datasets.yaml)
 [![Evaluated Genes: 33,171](https://img.shields.io/badge/genes-33%2C171%20evaluated-green.svg)](results/meta_results/)
@@ -58,6 +58,7 @@ flowchart TD
 | **Academic Overhaul (v1.1.0)** | Rigorous Statistical Adjustments | 23,096 Genes, 60 Samples | REML & HKSJ small-sample adjustments ($t_3$ critical threshold); Two-Tier Subgroup Decomposition; 1,000-permutation SCFA specificity null model; 12 vector SVGs. | **Completed** |
 | **Multi-Omic Release (v1.2.0)** | Epigenomic Footprinting, Sex & BBB Relay | 33,171 Genes, Multi-Omics | **Factorial Sex Meta-Regression** (99.1% sex-shared, male *Slfn2* vulnerability); **BayesPrism 5-State Deconvolution** ($\kappa = 1.54$, cell-intrinsic shutoff); **Tripartite ATAC-Seq TOBIAS Footprinting** (88.9% *Irf1*/*Stat1* reversal); **NicheNet Ligand Prioritization** (gut OMVs $r=0.658$, endothelial *Ifnb1* $r=0.600$); **Myeloid *Llgl2*-LAT1 Amino Acid Scavenging** and Three-Pillar in vivo BBB flux model. | **Completed** |
 | **Reference Polish (v1.2.1)** | Calibrated Epigenomics & Discovery Studio | 60 Samples, Web & Docs | **Chromatin-poised transcriptional reversibility calibration**; **Llgl2-LAT1 myeloid nutrient axis** & BBB acetate/ACSS2 discussion; **Unified Transcriptomic Discovery Studio** with live Interactive SVG Volcano Plot synchronized to dynamic Forest Plot. | **Completed** |
+| **Unified Narrative (v1.3.0)** | Four-Movement Results & Comprehensive Synthesis | 60 Samples, Production Web | **Four-Movement Results Architecture** (Multi-Cohort Invariant Core, Cell-Intrinsic Tonic Interferon Shutoff, Multi-Omic Relays & Llgl2-LAT1 Nutrient Axis, SCFA Reversibility & BBB Flux); **Comprehensive Discussion** (Dual Adaptive Defense, Nutrient Moonlighting, BBB Flux, Chromatin vs Histones); **Conclusions & Online Methods Architecture**. | **Completed** |
 
 ---
 
