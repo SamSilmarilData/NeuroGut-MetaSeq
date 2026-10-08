@@ -169,17 +169,24 @@ The repository generates 28 publication-grade scientific figures across all anal
 
 ---
 
+## 👥 Authors
+
+- **Samyak Meshram** — *Independent Researcher, Open-Science Initiative* — [GitHub](https://github.com/samyakmeshram)
+- **Dr. Soumya Dhokey** — *Independent Researcher, Open-Science Initiative*
+
+---
+
 ## 📝 Academic Citation
 
 If you use **NeuroGut-MetaSeq** or its empirical discoveries in your research, please cite:
 
 ```bibtex
 @article{meshram2026neurogut,
-  author       = {Samyak Meshram},
+  author       = {Samyak Meshram and Soumya Dhokey},
   title        = {Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility},
   journal      = {bioRxiv / GitHub Open Science Release},
   year         = {2026},
-  version      = {1.2.0},
+  version      = {1.3.0},
   publisher    = {GitHub},
   url          = {https://github.com/samyakmeshram/NeuroGut-MetaSeq}
 }
@@ -189,3 +196,4 @@ If you use **NeuroGut-MetaSeq** or its empirical discoveries in your research, p
 
 ## 📄 License
 This project is licensed under the [MIT License](LICENSE).
+

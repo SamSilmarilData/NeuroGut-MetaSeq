@@ -1,7 +1,7 @@
 # NeuroGut-MetaSeq Living Research Lab Notebook
 
 **Project:** Cross-Study RNA-Seq Meta-Analysis of Microglial Transcriptomic Signatures in Response to Microbiome Depletion and Microbial Metabolites  
-**Principal Investigator / Author:** Samyak Meshram  
+**Investigators / Authors:** Samyak Meshram, Dr. Soumya Dhokey  
 **Protocol:** Standard Operating Procedure defined in [`docs/ADAPTIVE_DISCOVERY_FRAMEWORK.md`](ADAPTIVE_DISCOVERY_FRAMEWORK.md)  
 **Repository:** [NeuroGut-MetaSeq](https://github.com/samyakmeshram/NeuroGut-MetaSeq)  
 

@@ -271,3 +271,42 @@ def test_web_paper_unified_results_and_discussion():
     assert 'callout-concept' in html, "Missing conceptual breakthrough callouts in web paper"
     assert 'callout-mechanism' in html, "Missing mechanistic model callouts in web paper"
 
+
+def test_coauthorship_and_discoverability_metadata():
+    """Verify co-authorship by Samyak Meshram and Dr. Soumya Dhokey across all assets and discoverability metadata."""
+    # 1. Manuscript
+    with open("docs/MANUSCRIPT.md", "r", encoding="utf-8") as f:
+        ms_text = f.read()
+    assert "Samyak Meshram" in ms_text, "Missing Samyak Meshram in MANUSCRIPT.md"
+    assert "Dr. Soumya Dhokey" in ms_text, "Missing Dr. Soumya Dhokey in MANUSCRIPT.md"
+    assert "Author Contributions" in ms_text, "Missing Author Contributions in MANUSCRIPT.md"
+
+    # 2. Web Paper
+    with open("docs/index.html", "r", encoding="utf-8") as f:
+        html_text = f.read()
+    assert "Samyak Meshram" in html_text, "Missing Samyak Meshram in docs/index.html"
+    assert "Dr. Soumya Dhokey" in html_text, "Missing Dr. Soumya Dhokey in docs/index.html"
+    assert 'property="og:image"' in html_text, "Missing og:image meta tag in docs/index.html"
+    assert 'name="twitter:card"' in html_text, "Missing twitter:card meta tag in docs/index.html"
+
+    # 3. CITATION.cff
+    with open("CITATION.cff", "r", encoding="utf-8") as f:
+        cff_text = f.read()
+    assert "Meshram" in cff_text and "Dhokey" in cff_text, "CITATION.cff must contain both authors"
+
+    # 4. README.md
+    with open("README.md", "r", encoding="utf-8") as f:
+        readme_text = f.read()
+    assert "Dr. Soumya Dhokey" in readme_text, "README.md must list Dr. Soumya Dhokey as co-author"
+
+    # 5. pyproject.toml
+    with open("pyproject.toml", "r", encoding="utf-8") as f:
+        pyproject_text = f.read()
+    assert "Dr. Soumya Dhokey" in pyproject_text, "pyproject.toml must list Dr. Soumya Dhokey"
+
+    # 6. LICENSE
+    with open("LICENSE", "r", encoding="utf-8") as f:
+        license_text = f.read()
+    assert "Dr. Soumya Dhokey" in license_text, "LICENSE must list Dr. Soumya Dhokey"
+
+

@@ -10,7 +10,8 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [
-    { name = "NeuroGut-MetaSeq Contributors" }
+    { name = "Samyak Meshram" },
+    { name = "Dr. Soumya Dhokey" }
 ]
 dependencies = [
     "pydeseq2>=0.4.8",

@@ -1,7 +1,7 @@
 # Comprehensive Literature Review: The Gut-Brain-Microglia Axis & Transcriptomic Meta-Analysis
 
 **Title:** Transcriptomic and Epigenetic Calibration of Microglia by Gut Microbiota Metabolites: Biological Mechanisms, Priming Paradigms, and Computational Meta-Analysis Methodologies  
-**Author:** Samyak Meshram  
+**Authors:** Samyak Meshram, Dr. Soumya Dhokey  
 **Project:** NeuroGut-MetaSeq  
 **Date:** October 2026  
 **Document Class:** Academic Review & Methodological Framework  

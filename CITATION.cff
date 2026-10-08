@@ -1,25 +1,25 @@
 cff-version: 1.2.0
 message: "If you use NeuroGut-MetaSeq or its findings in your research, please cite it as below."
-title: "NeuroGut-MetaSeq: Cross-Study RNA-Seq Meta-Analysis of Microglial Transcriptomic Signatures in Response to Microbiome Depletion and Microbial Metabolites"
-version: 1.1.0
+title: "Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility"
+version: 1.3.0
 date-released: 2026-10-08
 url: "https://github.com/samyakmeshram/NeuroGut-MetaSeq"
 authors:
   - family-names: "Meshram"
     given-names: "Samyak"
+    affiliation: "Independent Researcher, Open-Science Initiative"
+  - family-names: "Dhokey"
+    given-names: "Soumya"
+    affiliation: "Independent Researcher, Open-Science Initiative"
 keywords:
   - "neuroinflammation"
   - "microglia"
   - "gut-brain-axis"
   - "metabolomics"
   - "short-chain-fatty-acids"
-  - "butyrate"
   - "RNA-seq"
-  - "DESeq2"
+  - "ATAC-seq"
   - "meta-analysis"
   - "systems-biology"
-  - "WGCNA"
-  - "regulon-deconvolution"
-  - "IRF1"
+  - "open-science"
 license: "MIT"
-

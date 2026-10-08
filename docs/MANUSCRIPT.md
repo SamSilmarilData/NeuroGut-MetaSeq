@@ -1,9 +1,9 @@
 # Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility
 
-**Samyak Meshram**$^{1,*}$
+**Samyak Meshram**$^{1,*}$, **Dr. Soumya Dhokey**$^{1}$
 
-$^{1}$ Open-Science Computational Neuroimmunology Initiative, Independent Research Program  
-$^*$ Corresponding Author: Samyak Meshram (`samyak.meshram@alumni.iitd.ac.in` / `https://github.com/samyakmeshram/NeuroGut-MetaSeq`)
+$^{1}$ Independent Researchers, Open-Science Initiative  
+$^*$ Correspondence: Samyak Meshram (`https://github.com/samyakmeshram/NeuroGut-MetaSeq`)
 
 ---
 
@@ -429,6 +429,12 @@ Microglial SCFA response coefficients were grounded in Erny et al. 2015 (GSE6497
 
 **Figure 11 | In Vivo SCFA Metabolite Reversibility Modeling and Genomic Specificity Null Test.**  
 (A) Reciprocal signature inversion between meta-analytic depletion and empirical SCFA response in vivo (GSE64977, $r = -0.873, p = 1.07 \times 10^{-6}$). (B) 1,000-permutation specificity null test against non-DEGs ($p_{\text{perm}} < 0.001$). (C) Ranked reversibility waterfall plot across microglial landmarks.
+
+---
+
+## Author Contributions
+
+**S.M.** and **S.D.** conceived and designed the study. **S.M.** implemented the computational meta-analysis, multi-omic pipelines, and interactive web platform. **S.D.** evaluated the biological findings, neuroimmunological models, and clinical interpretations. Both authors reviewed, refined, and approved the final manuscript.
 
 ---
 

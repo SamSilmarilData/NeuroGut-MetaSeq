@@ -243,6 +243,18 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NeuroGut-MetaSeq: Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis</title>
+  <meta name="description" content="Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility.">
+  <meta name="author" content="Samyak Meshram, Dr. Soumya Dhokey">
+
+  <!-- OpenGraph / Social Media Previews -->
+  <meta property="og:title" content="NeuroGut-MetaSeq: Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis">
+  <meta property="og:description" content="Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://samyakmeshram.github.io/NeuroGut-MetaSeq/assets/fig_meta_volcano.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NeuroGut-MetaSeq: Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis">
+  <meta name="twitter:description" content="Multi-cohort synthesis across 60 biological transcriptomes decouples shared microbial surveillance from perturbation shocks.">
+  <meta name="twitter:image" content="https://samyakmeshram.github.io/NeuroGut-MetaSeq/assets/fig_meta_volcano.png">
   
   <!-- Modern Typography & MathJax -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -959,9 +971,9 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       </div>
 
       <div class="author-block">
-        <strong>Samyak Meshram</strong>
+        <strong>Samyak Meshram</strong> &bull; <strong>Dr. Soumya Dhokey</strong>
         <div class="affiliations">
-          Computational Neuroimmunology &amp; Systems Biology Consortium &bull; Open-Science Research Initiative
+          Independent Researchers &bull; Open-Science Initiative
         </div>
       </div>
 
@@ -1843,7 +1855,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       </p>
 
       <pre class="bibtex">@article{meshram2026neurogut,
-  author       = {Samyak Meshram},
+  author       = {Samyak Meshram and Soumya Dhokey},
   title        = {Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility},
   journal      = {bioRxiv / GitHub Open Science Release},
   year         = {2026},
