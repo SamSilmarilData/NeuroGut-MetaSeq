@@ -368,9 +368,8 @@ def plot_subgroup_decomposition(sub_df: pd.DataFrame, expr_matrix: pd.DataFrame,
                   va="center", ha="left", fontsize=8.5, fontweight="bold")
     ax_d.set_xlim(0, max(counts_vals) * 1.25)
 
-    plt.tight_layout()
-    plt.savefig(out_png, dpi=300)
-    plt.savefig(out_svg, format="svg")
+    plt.savefig(out_png, dpi=300, bbox_inches="tight")
+    plt.savefig(out_svg, format="svg", bbox_inches="tight")
     plt.close()
     logger.info(f"Saved PNG -> {out_png}")
     logger.info(f"Saved SVG -> {out_svg}")

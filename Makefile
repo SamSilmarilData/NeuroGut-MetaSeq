@@ -24,7 +24,7 @@ help:
 	@echo "  make production   : Run full real-cohort pipeline end-to-end"
 	@echo ""
 	@echo "Validation & Containerization:"
-	@echo "  make test         : Run full 42-test automated unit test suite"
+	@echo "  make test         : Run full 53-test automated unit test suite"
 	@echo "  make docker-build : Build reproducible Docker container"
 	@echo "  make docker-run   : Run pipeline inside Docker container"
 	@echo "  make clean        : Remove intermediate generated results"
@@ -58,10 +58,13 @@ horizon1:
 horizon2:
 	@echo "[*] Horizon 2: Running negative binomial GLMs across 4 cohorts..."
 	$(PYTHON) scripts/03b_pydeseq2_analysis.py
+	$(PYTHON) scripts/03c_cohort_phenotyping.py
 
 horizon3:
-	@echo "[*] Horizon 3: Running DerSimonian-Laird Random-Effects meta-analysis..."
+	@echo "[*] Horizon 3: Running Random-Effects meta-analysis across 23,096 genes..."
 	$(PYTHON) scripts/04_meta_analysis.py
+	$(PYTHON) scripts/04b_meta_diagnostics.py
+	$(PYTHON) scripts/04c_perturbation_subgroups.py
 
 horizon4:
 	@echo "[*] Horizon 4: Executing Systems Biology & Regulon Networks..."
@@ -71,6 +74,7 @@ horizon4:
 	$(PYTHON) scripts/05c_coexpression_network.py
 	$(PYTHON) scripts/05d_metabolite_rescue.py
 	$(PYTHON) scripts/05e_systems_diagnostics.py
+	$(PYTHON) scripts/05f_single_cell_deconvolution.py
 	@echo "[SUCCESS] Horizon 4 complete! Figures in results/pathways/figures/"
 
 systems: horizon4

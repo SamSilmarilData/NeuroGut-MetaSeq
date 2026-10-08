@@ -322,8 +322,8 @@ Where $S_{\text{Lineage}} = \{\textit{Hexb}, \textit{Csf1r}, \textit{Tmem119}\}$
 | `scfa_rescue_log2fc` | Float | Effect size under SCFA metabolite supplementation |
 | `net_post_rescue_log2fc` | Float | Residual difference $\hat{\theta}_{\text{depletion}} + \hat{\theta}_{\text{rescue}}$ |
 | `in_silico_rescue_index` | Float | Direction-adjusted In Silico Rescue Index (ISRI) |
-| `rescue_percentage` | Float | Clamped rescue percentage ($0 - 100\%$) |
-| `rescue_status` | String | `Metabolite-Reversible Responder` or `Irreversible/Non-responder` |
+| `rescue_percentage` | Float | Clamped rescue percentage ($0 - 150\%$, where $100\%$ denotes exact 1:1 neutralization) |
+| `rescue_status` | String | Classification (`Candidate Metabolite-Reversible`, `Partial Responder`, or `Priming-Locked / Refractory`) |
 | `proposed_mechanism` | String | Biochemical mechanism (e.g., HDAC inhibition, FFAR2 signaling) |
 
 ### 3.7 Perturbation Subgroup Decomposition Schema (`results/meta_results/perturbation_subgroup_decomposition.csv`)

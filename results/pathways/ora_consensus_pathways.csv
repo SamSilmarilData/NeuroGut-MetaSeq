@@ -1,5 +1,5 @@
 pathway,pathway_size,core_overlap,core_p_value,core_odds_ratio,core_overlap_genes,shock_overlap,shock_p_value,shock_odds_ratio,shock_overlap_genes,up_overlap,up_p_value,up_overlap_genes,core_fdr,shock_fdr,up_fdr
-SCFA_Metabolite_Responsive_Regulon,16,3,2.7253267342561824e-09,2662.85,Clu;Fosb;Llgl2,4,0.0002860043893853279,15.66,Ddit4;Hcar2;Plin3;Tsc22d3,3,2.28541063669939e-08,Clu;Fosb;Llgl2,2.9978594076818e-08,0.0031460482832386064,2.513951700369329e-07
+SCFA_Metabolite_Responsive_Regulon,16,2,1.3492803803041817e-06,3297.0,Fosb;Llgl2,4,0.0002860043893853279,15.66,Ddit4;Hcar2;Plin3;Tsc22d3,2,2.0182022140894296e-05,Fosb;Llgl2,1.4842084183345998e-05,0.0031460482832386064,0.00022200224354983726
 TNF-alpha Signaling via NF-kB,200,0,1.0,0.0,,1,0.9859224730904659,0.23,F3,0,1.0,,1.0,0.985922473090466,1.0
 Hypoxia,200,0,1.0,0.0,,1,0.9859224730904659,0.23,F3,0,1.0,,1.0,0.985922473090466,1.0
 Complement,200,0,1.0,0.0,,1,0.9859224730904659,0.23,F3,0,1.0,,1.0,0.985922473090466,1.0
