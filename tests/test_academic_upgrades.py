@@ -201,3 +201,39 @@ def test_vector_svg_presence_in_assets():
     for svg in expected_svgs:
         path = os.path.join("docs/assets", svg)
         assert os.path.exists(path), f"Missing vector SVG asset: {path}"
+
+def test_interactive_volcano_plot_in_web_paper():
+    """Verify that the interactive SVG Volcano Plot engine is properly embedded in docs/index.html."""
+    html_path = "docs/index.html"
+    assert os.path.exists(html_path), f"Missing {html_path}"
+
+    with open(html_path, "r", encoding="utf-8") as f:
+        html_text = f.read()
+
+    assert 'id="volcanoContainer"' in html_text, "Missing volcanoContainer in web paper"
+    assert 'id="volcanoSvgWrapper"' in html_text, "Missing volcanoSvgWrapper in web paper"
+    assert 'id="volcanoTooltip"' in html_text, "Missing volcanoTooltip in web paper"
+    assert 'renderInteractiveVolcanoPlot' in html_text, "Missing renderInteractiveVolcanoPlot JS function"
+    assert 'filterVolcano' in html_text, "Missing filterVolcano JS function"
+    assert 'volcano-filter-btn' in html_text, "Missing volcano-filter-btn elements"
+
+def test_calibrated_epigenetic_language_in_manuscript():
+    """Verify that manuscript uses calibrated life-sciences phrasing and contains new dedicated Discussion subsections."""
+    manuscript_path = "docs/MANUSCRIPT.md"
+    assert os.path.exists(manuscript_path), f"Missing {manuscript_path}"
+
+    with open(manuscript_path, "r", encoding="utf-8") as f:
+        ms_text = f.read()
+
+    # Calibrated phrases must be present
+    assert "chromatin-poised" in ms_text.lower(), "Manuscript must frame reversibility as chromatin-poised"
+    assert "chromatin accessibility" in ms_text.lower(), "Manuscript must discuss chromatin accessibility"
+
+    # Overreaching unmeasured claims must be absent
+    assert "proves epigenetic reversibility" not in ms_text.lower(), "Manuscript must not claim proof of epigenetic reversibility without direct ChIP-seq"
+    assert "epigenetically reversible activation" not in ms_text.lower(), "Manuscript must not overreach in title or narrative"
+
+    # Discussion subsections must be present
+    assert "Functional Repositioning of *Llgl2*: Myeloid Nutrient-Scavenging" in ms_text, "Missing Llgl2 nutrient adaptation section"
+    assert "Resolving the Blood-Brain Barrier Pharmacokinetic Paradox" in ms_text, "Missing BBB pharmacokinetics section"
+    assert "In Silico Cerebrovascular Ligand Relay" in ms_text, "Missing NicheNet ligand relay section"

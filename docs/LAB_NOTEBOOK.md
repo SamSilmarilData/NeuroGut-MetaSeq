@@ -34,6 +34,8 @@ Each research session follows the standardized 5-stage Micro Discovery Loop:
 | [**Entry 004**](#entry-004--2026-10-07--horizon-4-the-mechanistic-bloom-systems-biology-regulon-networks--scfa-rescue) | 2026-10-07 | Horizon 4: Systems Biology & Networks | GSEA tonic interferon collapse (NES = -2.39), IRF1 regulon shutoff, WGCNA 4 modules |
 | [**Entry 005**](#entry-005--2026-10-07--horizon-5-the-living-narrative-interactive-web-paper-academic-manuscript--v100-gold-release) | 2026-10-07 | Horizon 5: Interactive Web Paper | Distill.pub production site, full preprint manuscript, v1.0.0 Gold Master Release |
 | [**Entry 006**](#entry-006--2026-10-08--academic-peer-review-overhaul-reml-hksj-estimation-two-tier-subgroup-decomposition-in-vivo-scfa-grounding-and-single-cell-deconvolution-v110-release) | 2026-10-08 | Academic Peer-Review Overhaul | REML-HKSJ estimation, two-tier subgroup decomposition, in vivo SCFA null test, sc-deconvolution, v1.1.0 |
+| [**Entry 007**](#entry-007--2026-10-08--multi-omic--mechanistic-expansion-factorial-sex-meta-regression-bayesprism-deconvolution-epigenomic-atac-footprinting-nichenet-ligand-relay-and-llgl2-lat1-pharmacokinetics-v120-release) | 2026-10-08 | Multi-Omic & Mechanistic Expansion | Factorial sex model, BayesPrism deconvolution, ATAC footprinting, NicheNet ligand relay, v1.2.0 |
+| [**Entry 008**](#entry-008--2026-10-08--final-academic-polish-calibrated-epigenomics-nutrient-adaptations-bbb-pharmacokinetics-and-unified-discovery-studio-integration-v121-release) | 2026-10-08 | Final Academic Polish | Calibrated chromatin-poised reversibility, Llgl2-LAT1 myeloid nutrient axis, BBB ACSS2/BAM model, Unified Discovery Studio, v1.2.1 |
 
 ---
 
@@ -659,9 +661,39 @@ To definitively close these gaps, we executed the **Multi-Omic Expansion Pipelin
 - **Consolidation**: Multi-omic empirical integration, mathematical verification, manuscript expansion, and web paper deployment fully complete.
 - **Status**: **MULTI-OMIC RELEASE (v1.2.0) — PRODUCTION GOLD COMPLETE**.
 
+---
 
+### Entry 008 | 2026-10-08 | Final Academic Polish: Calibrated Epigenomics, Nutrient Adaptations, BBB Pharmacokinetics, and Unified Discovery Studio Integration (v1.2.1 Release)
 
+#### 1. Target Hypotheses & Scope
+- **Reviewer Critique**: Address remaining frontiers identified during expert review:
+  1. *Epigenetic semantic overreach*: Delineate measured chromatin accessibility (ATAC-seq/TOBIAS) from unmeasured direct histone modifications (ChIP-seq/CUT&Tag).
+  2. *Myeloid Llgl2 function*: Decouple epithelial cell polarity from its nutrient-sensing moonlighting function via LAT1 (*Slc7a5*) amino acid scavenging (Saito et al. 2019, *Nature*).
+  3. *BBB pharmacokinetic paradox*: Contrast low-micromolar systemic butyrate with high-flux central acetate feeding microglial nuclear ACSS2 for histone acetylation, alongside perimeter BAM relays.
+  4. *Multi-Modal Presentation*: Deliver the Unified Transcriptomic Discovery Studio embedding a live Interactive SVG Volcano Plot synchronized to the Dynamic Multi-Cohort Forest Plot.
 
+#### 2. Analytical & Technical Implementations
+1. **Interactive SVG Volcano Plot Engine (`scripts/07_build_web_paper.py` & `docs/index.html`)**:
+   - Engineered client-side interactive SVG Volcano Plot in Section 9 of the web paper.
+   - Plots 505 curated genes with category color mapping (`Core Invariant` #10b981, `Antiviral / ISGs` #2563eb, `Model Shock` #f59e0b, `LAT1 / Nutrient` #8b5cf6).
+   - Rich hover tooltips with exact effect sizes ($\hat{\theta}_{\text{REML}}$), HKSJ $p$-values, FDRs, Higgins $I^2$, and badges.
+   - Click-to-Explore Synchronization: Clicking any dot sets search input, invokes `renderGeneDetails(symbol)`, updates the Dynamic Forest Plot with cohort points, and renders multi-omic cards.
+   - Added native SVG `<title>` tooltips to each cohort marker in the Dynamic Forest Plot.
+2. **Academic Manuscript Re-Calibration (`docs/MANUSCRIPT.md`)**:
+   - Abstract & Title calibrated to **chromatin-poised transcriptional reversibility**.
+   - Added 3 dedicated Discussion subsections:
+     - `Repositioning Llgl2 as a Myeloid Nutrient-Scavenging Adaptor (LAT1/mTOR Axis)`.
+     - `Resolving the Blood-Brain Barrier Pharmacokinetic Paradox: Central Acetate vs. Border Macrophage Relays`.
+     - `In Silico Cerebrovascular Ligand Relay: Bridging Gut Dysbiosis to Parenchymal IRF1 Shutoff`.
+   - Appended references 41–46 (*Nature Neuroscience*, *Nature*, *Cell*, *Immunity*).
+3. **Project-Wide Documentation Harmonization**:
+   - Synchronized `README.md`, `CHANGELOG.md`, `docs/USER_GUIDE.md`, `docs/LITERATURE_REVIEW.md`, `docs/ADAPTIVE_DISCOVERY_FRAMEWORK.md`.
 
+#### 3. Verification & CI Status
+- **Web Paper Scale**: `docs/index.html` recompiled to **621.3 KB** standalone HTML.
+- **Zero Jargon Rule**: 100% verified across `docs/MANUSCRIPT.md` and `docs/index.html` with zero agile sprint terms.
+- **Pytest Suite**: All automated tests pass cleanly.
 
-
+#### 4. Final Status
+- **Consolidation**: Complete academic peer-review polish achieved.
+- **Status**: **REFERENCE POLISH (v1.2.1) — FINAL ACADEMIC PRODUCTION GOLD RELEASE**.

@@ -179,7 +179,20 @@ python scripts/05i_metabolic_llgl2_and_pharmacokinetics.py
 
 ---
 
-## 4. Deploying the Interactive Paper to GitHub Pages
+## 4. Unified Transcriptomic Discovery Studio (`docs/index.html`)
+
+The compiled interactive web paper includes a client-side **Discovery Studio** in Section 9:
+1. **Interactive SVG Volcano Plot**:
+   - Plots 505 curated landmark and consensus genes with coordinates $(\hat{\theta}_{\text{REML}}, -\log_{10}p_{\text{REML}})$.
+   - Category filtering chips: `All`, `🔵 Antiviral / ISGs`, `🟢 Core Invariant`, `🟠 Model Shock`, `🟣 LAT1 / Nutrient`.
+   - Hover tooltips: Displaying exact effect sizes, HKSJ $p$-values, FDRs, Higgins $I^2$, and multi-omic badges.
+2. **Click-to-Explore Synchronization**:
+   - Clicking any gene in the volcano plot instantaneously selects it in the Dynamic Forest Plot Explorer and renders cohort-specific confidence intervals.
+   - Cohort nodes in the forest plot feature SVG tooltips displaying raw effect sizes and standard errors.
+
+---
+
+## 5. Deploying the Interactive Paper to GitHub Pages
 
 The web paper is pre-configured for automated deployment with **GitHub Pages**:
 

@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.1] - 2026-10-08
+### Final Academic Polish: Calibrated Epigenomics & Unified Transcriptomic Discovery Studio
+
+### Added
+- **Unified Transcriptomic Discovery Studio** (`docs/index.html` & `scripts/07_build_web_paper.py`):
+  - Integrated an interactive, client-side SVG Volcano Plot directly into the Gene Explorer (Section 9) with 505+ curated landmark genes.
+  - Equipped with category filter buttons (`All`, `🔵 Antiviral / ISGs`, `🟢 Core Invariant`, `🟠 Model Shock`, `🟣 LAT1 / Nutrient`), significance threshold toggles, and rich floating hover tooltips.
+  - **Click-to-Explore Synchronization**: Clicking any gene dot in the volcano plot automatically drives the Dynamic Forest Plot Explorer, scrolls to it, and updates cohort-level confidence intervals and multi-omic badges in real time.
+  - Added native SVG `<title>` tooltips to each individual cohort marker in the Dynamic Forest Plot displaying raw effect sizes and standard errors.
+- **Dedicated Academic Discussion Subsections** (`docs/MANUSCRIPT.md`):
+  - `Repositioning Llgl2 as a Myeloid Nutrient-Scavenging Adaptor (LAT1/mTOR Axis)`: Explaining non-polarity moonlighting function (Saito et al. 2019, *Nature*) where LLGL2 stabilizes LAT1 (*Slc7a5*) for essential amino acid scavenging under nutrient starvation.
+  - `Resolving the Blood-Brain Barrier Pharmacokinetic Paradox: Central Acetate vs. Border Macrophage Relays`: Contrasting low-micromolar systemic butyrate/propionate ($1\text{--}10\,\mu\text{M}$) with high-flux central acetate ($100\text{--}300\,\mu\text{M}$) fueling microglial nuclear ACSS2 for histone acetylation, alongside perimeter BAM relays.
+  - `In Silico Cerebrovascular Ligand Relay: Bridging Gut Dysbiosis to Parenchymal IRF1 Shutoff`: Articulating the step-by-step causal chain from peripheral OMV and BMEC *Ifnb1* withdrawal to microglial *Irf1* silencing ($Z = -2.28$).
+- **Calibrated Epigenetic Terminology**:
+  - Replaced overreaching "proves epigenetic reversibility" with life-sciences standard *"chromatin-poised transcriptional reversibility consistent with the loss and restoration of microbial epigenetic cues"*.
+  - Clearly delineated empirical chromatin accessibility / TOBIAS footprint restoration from prospective histone post-translational modification profiling (H3K27ac ChIP-seq/CUT&Tag).
+
+### Changed
+- Recompiled `docs/index.html` (621.3 KB standalone) with inlined interactive volcano plot engine and 518 curated genes.
+- Synchronized literature review (`docs/LITERATURE_REVIEW.md`), user guide (`docs/USER_GUIDE.md`), lab notebook (`docs/LAB_NOTEBOOK.md` Entry 008), and specification (`SPECIFICATION.md`).
+
+---
+
 ## [1.2.0] - 2026-10-08
 ### Multi-Omic & Mechanistic Release: Epigenomic Footprinting, Sex Dimorphism & Cerebrovascular Mapping
 

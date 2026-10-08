@@ -720,6 +720,51 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       margin-bottom: 12px;
     }
 
+    .volcano-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .volcano-filter-btn {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .volcano-filter-btn:hover {
+      background: #e2e8f0;
+      border-color: #94a3b8;
+    }
+    .volcano-filter-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .volcano-tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(15, 23, 42, 0.95);
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      line-height: 1.45;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+      z-index: 100;
+      width: 250px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .download-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1364,17 +1409,31 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       </div>
     </section>
 
-    <!-- Section 9: Interactive Gene Explorer -->
+    <!-- Section 9: Unified Transcriptomic Discovery Studio -->
     <section id="explorer">
-      <h2>9. Interactive Gene & Multi-Omic Explorer</h2>
+      <h2>9. Unified Transcriptomic Discovery Studio: Interactive Volcano & Dynamic Forest Explorer</h2>
       <p>
-        Search and explore pooled meta-analysis effect sizes, between-study heterogeneity, sex dimorphism tiers, ATAC-seq chromatin footprint reversal, and dynamic SVG forest plots across all curated consensus and landmark genes:
+        An integrated multi-modal discovery environment bridging cross-cohort statistical meta-analysis, biological categorization, and dynamic per-gene evidence synthesis. Hover over points in the interactive volcano plot to inspect real-time statistics, or click any gene to immediately render its multi-cohort forest plot and multi-omic badges:
       </p>
 
       <div class="explorer-card">
         <div class="explorer-header">
-          <h3>🔍 Interactive Gene Explorer</h3>
-          <span style="font-size: 13px; color: var(--text-muted);">Instant client-side query with multi-omic overlay</span>
+          <div>
+            <h3>🌋 Interactive REML-HKSJ Volcano Plot (Curated Landmark Loci)</h3>
+            <span style="font-size: 13px; color: var(--text-muted);">Hover points for statistical metrics • Click any gene to load dynamic multi-cohort forest plot</span>
+          </div>
+          <div class="volcano-controls">
+            <button class="volcano-filter-btn active" onclick="filterVolcano('all', this)">All (505)</button>
+            <button class="volcano-filter-btn" onclick="filterVolcano('isg', this)">🔵 Antiviral / ISGs</button>
+            <button class="volcano-filter-btn" onclick="filterVolcano('core', this)">🟢 Core Invariant</button>
+            <button class="volcano-filter-btn" onclick="filterVolcano('shock', this)">🟠 Model Shock</button>
+            <button class="volcano-filter-btn" onclick="filterVolcano('nutrient', this)">🟣 LAT1 / Nutrient</button>
+          </div>
+        </div>
+
+        <div id="volcanoContainer" style="position: relative; width: 100%; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 24px; overflow-x: auto;">
+          <div id="volcanoSvgWrapper"></div>
+          <div id="volcanoTooltip" class="volcano-tooltip" style="display: none;"></div>
         </div>
 
         <div class="search-row">
@@ -1511,6 +1570,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <script>
   const GENE_DATABASE = __GENE_DATABASE_JSON__;
   const META_DATA = GENE_DATABASE;
+  let currentVolcanoFilter = 'all';
+  let activeVolcanoGene = 'Llgl2';
 
   function switchTab(btn, panelId) {
     const parentGallery = btn.closest('.figure-gallery');
@@ -1521,14 +1582,238 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     if (targetPanel) targetPanel.classList.add('active');
   }
 
+  function getGeneCategory(sym, d) {
+    const s = sym.toUpperCase();
+    if (d.atac_footprint || ['IRF1', 'STAT1', 'OAS1A', 'GBP2', 'TAP1', 'IFIT3', 'MX1', 'ISG15', 'STAT2', 'IRF7', 'CXCL10', 'IFI44', 'IFIT1'].includes(s)) {
+      return 'isg';
+    }
+    if (d.metabolic_axis || ['LLGL2', 'SLC7A5', 'MTOR', 'RPTOR', 'SLC16A1', 'SLC16A3', 'SLC16A7', 'ACSS2'].includes(s)) {
+      return 'nutrient';
+    }
+    if (d.i2_heterogeneity > 70 || ['TSC22D3', 'DDIT4', 'PLIN3', 'FOSB'].includes(s)) {
+      return 'shock';
+    }
+    if (d.i2_heterogeneity < 25 && Math.abs(d.meta_log2fc) >= 0.35) {
+      return 'core';
+    }
+    return 'other';
+  }
+
+  function getCategoryColor(cat) {
+    switch (cat) {
+      case 'isg': return '#2563eb';      // Blue
+      case 'core': return '#10b981';     // Emerald
+      case 'shock': return '#f59e0b';    // Amber
+      case 'nutrient': return '#8b5cf6'; // Violet
+      default: return '#64748b';         // Slate
+    }
+  }
+
+  function renderInteractiveVolcanoPlot() {
+    const container = document.getElementById("volcanoSvgWrapper");
+    if (!container) return;
+
+    const width = 800;
+    const height = 400;
+    const margin = { left: 65, right: 35, top: 30, bottom: 45 };
+    const pWidth = width - margin.left - margin.right;
+    const pHeight = height - margin.top - margin.bottom;
+
+    const xMin = -2.8;
+    const xMax = 2.8;
+    const yMin = 0.0;
+    const yMax = 15.0;
+
+    function scaleX(val) {
+      return margin.left + ((val - xMin) / (xMax - xMin)) * pWidth;
+    }
+
+    function scaleY(val) {
+      const clamped = Math.min(Math.max(val, yMin), yMax);
+      return margin.top + pHeight - ((clamped - yMin) / (yMax - yMin)) * pHeight;
+    }
+
+    const xZero = scaleX(0.0);
+    const ySig = scaleY(1.301); // -log10(0.05)
+
+    let gridHtml = '';
+    for (let x = -2.5; x <= 2.51; x += 0.5) {
+      const sx = scaleX(x);
+      gridHtml += `
+        <line x1="${sx}" y1="${margin.top}" x2="${sx}" y2="${margin.top + pHeight}" stroke="#f1f5f9" stroke-width="1"/>
+        <line x1="${sx}" y1="${margin.top + pHeight}" x2="${sx}" y2="${margin.top + pHeight + 5}" stroke="#94a3b8" stroke-width="1"/>
+        <text x="${sx}" y="${margin.top + pHeight + 18}" font-family="Inter, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">${x > 0 ? "+" : ""}${x.toFixed(1)}</text>
+      `;
+    }
+
+    for (let y = 0; y <= 15; y += 3) {
+      const sy = scaleY(y);
+      gridHtml += `
+        <line x1="${margin.left}" y1="${sy}" x2="${margin.left + pWidth}" y2="${sy}" stroke="#f1f5f9" stroke-width="1"/>
+        <line x1="${margin.left - 5}" y1="${sy}" x2="${margin.left}" y2="${sy}" stroke="#94a3b8" stroke-width="1"/>
+        <text x="${margin.left - 10}" y="${sy + 3.5}" font-family="Inter, sans-serif" font-size="10" fill="#64748b" text-anchor="end">${y}</text>
+      `;
+    }
+
+    const threshHtml = `
+      <line x1="${xZero}" y1="${margin.top}" x2="${xZero}" y2="${margin.top + pHeight}" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,4"/>
+      <text x="${xZero}" y="${margin.top - 10}" font-family="Inter, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">0.0 (Null)</text>
+      <line x1="${margin.left}" y1="${ySig}" x2="${margin.left + pWidth}" y2="${ySig}" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.75"/>
+      <text x="${margin.left + pWidth - 5}" y="${ySig - 6}" font-family="Inter, sans-serif" font-size="10" fill="#ef4444" text-anchor="end" font-weight="600">p = 0.05</text>
+    `;
+
+    let pointsHtml = '';
+    const keyLabels = ['Irf1', 'Stat1', 'Oas1a', 'Llgl2', 'Slfn2', 'Clu', 'Slc7a5', 'Tsc22d3', 'Ddit4', 'Plin3', 'Fosb', 'Sap30'];
+    let labelsHtml = '';
+
+    Object.keys(GENE_DATABASE).forEach(sym => {
+      const d = GENE_DATABASE[sym];
+      const cat = getGeneCategory(sym, d);
+      const color = getCategoryColor(cat);
+      const lfc = d.meta_log2fc;
+      const pval = Math.max(d.p_random_effects, 1e-15);
+      const nlp = -Math.log10(pval);
+
+      const cx = scaleX(lfc);
+      const cy = scaleY(nlp);
+
+      pointsHtml += `
+        <circle id="dot-${sym}" class="volcano-dot" data-sym="${sym}" data-cat="${cat}" cx="${cx}" cy="${cy}" r="5.5" fill="${color}" stroke="#ffffff" stroke-width="1.2" opacity="0.85" style="cursor: pointer; transition: all 0.15s ease;"
+          onmouseenter="showVolcanoTooltip(event, '${sym}')"
+          onmouseleave="hideVolcanoTooltip()"
+          onclick="selectVolcanoGene('${sym}')">
+        </circle>
+      `;
+
+      if (keyLabels.includes(sym)) {
+        const isRight = lfc >= 0;
+        const tx = isRight ? cx + 8 : cx - 8;
+        const anchor = isRight ? "start" : "end";
+        labelsHtml += `
+          <text x="${tx}" y="${cy - 6}" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#0f172a" text-anchor="${anchor}" style="pointer-events: none; text-shadow: 0 1px 2px #fff, 0 -1px 2px #fff, 1px 0 2px #fff, -1px 0 2px #fff;">
+            ${sym}
+          </text>
+        `;
+      }
+    });
+
+    const activeRingHtml = `<circle id="volcanoActiveRing" cx="-100" cy="-100" r="10" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="3,3" style="display: none;"></circle>`;
+
+    const svgContent = `
+      <svg id="volcanoSvg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="display: block; width: 100%; height: auto; max-width: 100%;">
+        ${gridHtml}
+        ${threshHtml}
+        <line x1="${margin.left}" y1="${margin.top + pHeight}" x2="${margin.left + pWidth}" y2="${margin.top + pHeight}" stroke="#334155" stroke-width="1.2"/>
+        <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + pHeight}" stroke="#334155" stroke-width="1.2"/>
+        <text x="${margin.left + pWidth / 2}" y="${height - 8}" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#334155" text-anchor="middle">REML Pooled Effect Size (θ_REML, log2 fold change)</text>
+        <text transform="rotate(-90)" x="${-(margin.top + pHeight / 2)}" y="20" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#334155" text-anchor="middle">-log10(p_REML)</text>
+        <g id="volcanoPointsGroup">${pointsHtml}</g>
+        <g id="volcanoLabelsGroup">${labelsHtml}</g>
+        ${activeRingHtml}
+      </svg>
+    `;
+
+    container.innerHTML = svgContent;
+    if (activeVolcanoGene) highlightVolcanoGene(activeVolcanoGene);
+  }
+
+  function showVolcanoTooltip(e, sym) {
+    const tooltip = document.getElementById("volcanoTooltip");
+    const d = GENE_DATABASE[sym];
+    if (!tooltip || !d) return;
+
+    const cat = getGeneCategory(sym, d);
+    let catBadge = '';
+    if (cat === 'isg') catBadge = '<span class="badge badge-blue">Antiviral / ISG</span>';
+    else if (cat === 'core') catBadge = '<span class="badge badge-green">Core Invariant</span>';
+    else if (cat === 'shock') catBadge = '<span class="badge badge-amber">Model Shock</span>';
+    else if (cat === 'nutrient') catBadge = '<span class="badge badge-purple">LAT1 / Nutrient</span>';
+    else catBadge = '<span class="badge badge-slate">Curated Locus</span>';
+
+    tooltip.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+        <h4 style="margin: 0; color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 14px;">${sym}</h4>
+        ${catBadge}
+      </div>
+      <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.5;">
+        <div><strong>θ_REML:</strong> ${d.meta_log2fc > 0 ? "+" : ""}${d.meta_log2fc.toFixed(3)}</div>
+        <div><strong>HKSJ p-val:</strong> ${d.p_random_effects < 0.001 ? d.p_random_effects.toExponential(2) : d.p_random_effects.toFixed(4)}</div>
+        <div><strong>Higgins I²:</strong> ${d.i2_heterogeneity.toFixed(1)}% (${d.heterogeneity_tier})</div>
+        ${d.atac_footprint ? `<div><strong>ATAC Reversal:</strong> ${d.atac_footprint.reversal_pct.toFixed(1)}%</div>` : ''}
+        ${d.metabolic_axis ? `<div><strong>LAT1 Axis:</strong> r = ${d.metabolic_axis.pearson_r.toFixed(3)}</div>` : ''}
+      </div>
+      <div style="margin-top: 6px; font-size: 11px; color: #38bdf8; font-weight: 600;">👉 Click to load multi-cohort Forest Plot</div>
+    `;
+
+    tooltip.style.display = 'block';
+
+    const rect = e.target.getBoundingClientRect();
+    const containerRect = document.getElementById("volcanoContainer").getBoundingClientRect();
+    const left = rect.left - containerRect.left + 15;
+    const top = rect.top - containerRect.top - 10;
+
+    tooltip.style.left = Math.min(left, containerRect.width - 250) + "px";
+    tooltip.style.top = Math.max(top, 10) + "px";
+
+    e.target.setAttribute("r", "8.5");
+    e.target.setAttribute("stroke", "#0f172a");
+    e.target.setAttribute("stroke-width", "2");
+  }
+
+  function hideVolcanoTooltip() {
+    const tooltip = document.getElementById("volcanoTooltip");
+    if (tooltip) tooltip.style.display = 'none';
+    document.querySelectorAll(".volcano-dot").forEach(d => {
+      d.setAttribute("r", "5.5");
+      d.setAttribute("stroke", "#ffffff");
+      d.setAttribute("stroke-width", "1.2");
+    });
+  }
+
+  function selectVolcanoGene(sym) {
+    activeVolcanoGene = sym;
+    highlightVolcanoGene(sym);
+    queryGene(sym);
+  }
+
+  function highlightVolcanoGene(sym) {
+    const dot = document.getElementById("dot-" + sym);
+    const ring = document.getElementById("volcanoActiveRing");
+    if (dot && ring) {
+      const cx = dot.getAttribute("cx");
+      const cy = dot.getAttribute("cy");
+      ring.setAttribute("cx", cx);
+      ring.setAttribute("cy", cy);
+      ring.style.display = "block";
+    }
+  }
+
+  function filterVolcano(cat, btn) {
+    currentVolcanoFilter = cat;
+    document.querySelectorAll(".volcano-filter-btn").forEach(b => b.classList.remove("active"));
+    if (btn) btn.classList.add("active");
+
+    document.querySelectorAll(".volcano-dot").forEach(dot => {
+      const dotCat = dot.getAttribute("data-cat");
+      if (cat === 'all' || dotCat === cat) {
+        dot.style.display = "block";
+        dot.style.opacity = "0.85";
+      } else {
+        dot.style.display = "none";
+      }
+    });
+  }
+
   function queryGene(symbol) {
+    activeVolcanoGene = symbol;
     document.getElementById("geneSearchInput").value = symbol;
     renderGeneDetails(symbol);
+    highlightVolcanoGene(symbol);
   }
 
   function handleSearch() {
     const val = document.getElementById("geneSearchInput").value.trim();
-    if (val) renderGeneDetails(val);
+    if (val) queryGene(val);
   }
 
   document.getElementById("geneSearchInput").addEventListener("keyup", function(e) {
@@ -1712,10 +1997,13 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
         const xHigh = scaleX(e.log2fc + 1.96 * e.se);
 
         svgRows += `
-          <text x="10" y="${y + 4}" font-family="Inter, sans-serif" font-size="12" fill="#334155">${c}</text>
-          <line x1="${xLow}" y1="${y}" x2="${xHigh}" y2="${y}" stroke="#64748b" stroke-width="2"/>
-          <rect x="${xEst - 4}" y="${y - 4}" width="8" height="8" fill="#1e3a8a"/>
-          <text x="${plotRight + 10}" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="#475569">${e.log2fc > 0 ? "+" : ""}${e.log2fc.toFixed(2)}</text>
+          <g class="forest-cohort-row">
+            <title>${c}: Log2FC = ${e.log2fc > 0 ? "+" : ""}${e.log2fc.toFixed(3)}, SE = ${e.se.toFixed(3)}, 95% CI [${(e.log2fc - 1.96 * e.se).toFixed(2)}, ${(e.log2fc + 1.96 * e.se).toFixed(2)}]</title>
+            <text x="10" y="${y + 4}" font-family="Inter, sans-serif" font-size="12" fill="#334155">${c}</text>
+            <line x1="${xLow}" y1="${y}" x2="${xHigh}" y2="${y}" stroke="#64748b" stroke-width="2"/>
+            <rect x="${xEst - 4}" y="${y - 4}" width="8" height="8" fill="#1e3a8a" rx="1"/>
+            <text x="${plotRight + 10}" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="#475569">${e.log2fc > 0 ? "+" : ""}${e.log2fc.toFixed(2)}</text>
+          </g>
         `;
       } else {
         svgRows += `
@@ -1732,9 +2020,12 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 
     svgRows += `
       <line x1="10" y1="${yPool - 12}" x2="${plotRight + 50}" y2="${yPool - 12}" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,2"/>
-      <text x="10" y="${yPool + 5}" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#0f172a">REML / HKSJ Pooled</text>
-      <polygon points="${xPoolLow},${yPool} ${xPoolEst},${yPool - 6} ${xPoolHigh},${yPool} ${xPoolEst},${yPool + 6}" fill="#b91c1c" stroke="#991b1b" stroke-width="1"/>
-      <text x="${plotRight + 10}" y="${yPool + 5}" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#b91c1c">${data.meta_log2fc > 0 ? "+" : ""}${data.meta_log2fc.toFixed(2)}</text>
+      <g class="forest-pooled-row">
+        <title>REML / HKSJ Pooled: Log2FC = ${data.meta_log2fc > 0 ? "+" : ""}${data.meta_log2fc.toFixed(3)}, 95% CI [${data.ci_lower.toFixed(2)}, ${data.ci_upper.toFixed(2)}], p = ${data.p_random_effects < 0.001 ? data.p_random_effects.toExponential(2) : data.p_random_effects.toFixed(4)}, I² = ${data.i2_heterogeneity.toFixed(1)}%</title>
+        <text x="10" y="${yPool + 5}" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#0f172a">REML / HKSJ Pooled</text>
+        <polygon points="${xPoolLow},${yPool} ${xPoolEst},${yPool - 6} ${xPoolHigh},${yPool} ${xPoolEst},${yPool + 6}" fill="#b91c1c" stroke="#991b1b" stroke-width="1"/>
+        <text x="${plotRight + 10}" y="${yPool + 5}" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#b91c1c">${data.meta_log2fc > 0 ? "+" : ""}${data.meta_log2fc.toFixed(2)}</text>
+      </g>
     `;
 
     return `
@@ -1747,6 +2038,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   }
 
   window.addEventListener("DOMContentLoaded", () => {
+    renderInteractiveVolcanoPlot();
     queryGene("Llgl2");
   });
 </script>
@@ -1757,7 +2049,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 
 def main():
     logger.info("=" * 60)
-    logger.info("NeuroGut-MetaSeq: Production Web Paper Compiler (v1.2.0 Multi-Omic)")
+    logger.info("NeuroGut-MetaSeq: Production Web Paper Compiler (v1.2.1 Reference Edition)")
     logger.info("=" * 60)
 
     synchronize_assets()

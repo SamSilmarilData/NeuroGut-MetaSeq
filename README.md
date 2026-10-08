@@ -4,7 +4,7 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![R 4.3+](https://img.shields.io/badge/R-4.3+-276DC3.svg)](https://www.r-project.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version: v1.2.0](https://img.shields.io/badge/version-v1.2.0%20(Multi--Omic)-blue.svg)](CHANGELOG.md)
+[![Version: v1.2.1](https://img.shields.io/badge/version-v1.2.1%20(Reference%20Edition)-blue.svg)](CHANGELOG.md)
 [![Manuscript: Nature Neuro Style](https://img.shields.io/badge/Manuscript-7%2C200%2B%20words-darkgreen.svg)](docs/MANUSCRIPT.md)
 [![Tests: 58 passed](https://img.shields.io/badge/tests-58%20passed%20(100%25)-success.svg)](tests/)
 [![Samples: 60](https://img.shields.io/badge/samples-60%20(51%20sex--informative)-teal.svg)](data/metadata/)
@@ -21,7 +21,7 @@
 
 **NeuroGut-MetaSeq** is an open-science computational neuroimmunology meta-analysis framework and interactive web paper that synthesizes multi-cohort transcriptomic and multi-omic data to resolve how the gut microbiome and microbial metabolites govern microglial maturation, immune quiescence, and antiviral surveillance.
 
-Instead of relying on single-cohort analyses prone to laboratory-specific batch effects and isolation artifacts, **NeuroGut-MetaSeq (v1.2.0)** executes a **unified, multi-scale computational meta-analysis**:
+Instead of relying on single-cohort analyses prone to laboratory-specific batch effects and isolation artifacts, **NeuroGut-MetaSeq (v1.2.1)** executes a **unified, multi-scale computational meta-analysis**:
 1. **Multi-Cohort Harmonization**: Curating 60 biological samples across 4 diverse experimental paradigms (germ-free housing, acute broad-spectrum antibiotic cocktails, dietary fiber starvation).
 2. **Quality Control & Lineage Auditing**: Enforcing rigorous lineage marker checks (>99% purity) and proving statistical independence from enzymatic dissociation stress ($p \ge 0.18$).
 3. **Random-Effects Meta-Analysis (REML & HKSJ)**: Restricted Maximum Likelihood (REML) between-study variance optimization and Hartung-Knapp-Sidik-Jonkman (HKSJ) adjustment ($t_3$ critical threshold, $t_{\text{crit}} = 3.1824$) across 23,096 common genes, confirming robustness via Leave-One-Out (LOO) sensitivity ($r = 0.725$).
@@ -30,7 +30,7 @@ Instead of relying on single-cohort analyses prone to laboratory-specific batch 
 6. **Tripartite Microglial ATAC-Seq Footprinting (Erny 2021)**: Quantifying TOBIAS transcription factor footprints across SPF, Depleted, and SCFA states, proving **88.9% chromatin footprint restoration** at *Irf1* and *Stat1* promoters upon SCFA repletion.
 7. **In Silico NicheNet Upstream Ligand Mapping**: Prioritizing candidate upstream drivers across BMEC endothelium, BAMs, and blood, identifying gut bacterial OMVs (TLR4/CD14, $r = 0.658$) and endothelial *Ifnb1* (IFNAR1/2, $r = 0.600$) as master drivers of basal IRF1 tone.
 8. **Myeloid Llgl2-LAT1 Nutrient Sensing & Three-Pillar BBB Pharmacokinetics**: Uncovering coordinate upregulation of *Llgl2* (+0.290 LFC) and large neutral amino acid transporter **LAT1 (*Slc7a5*)** (+0.641 LFC, $r = 0.612$) alongside mTOR suppression (-0.469 LFC), and resolving the in vivo BBB delivery paradox via a Three-Pillar flux framework.
-9. **Interactive Scientific Web Paper**: An interactive, publication-grade academic article compiled to [`docs/index.html`](docs/index.html) (deployed via **GitHub Pages**), complete with a dynamic **Gene Explorer**, forest plots, zoomable vector SVGs, and a 12-table data download hub.
+9. **Unified Transcriptomic Discovery Studio**: An interactive, publication-grade academic article compiled to [`docs/index.html`](docs/index.html) (deployed via **GitHub Pages**), complete with a live **Interactive SVG Volcano Plot** synchronized to the dynamic **Forest Plot Engine**, zoomable vector SVGs, and a 12-table data download hub.
 
 ---
 
@@ -44,7 +44,7 @@ flowchart TD
     B --> E["Tripartite ATAC-Seq Footprinting<br/>(TOBIAS: 88.9% Irf1 Reversal)"]
     B --> F["NicheNet Cerebrovascular Relay<br/>(OMVs: r=0.658, BMEC Ifnb1: r=0.600)"]
     B --> G["Llgl2-LAT1 Scavenging & BBB Model<br/>(Slc7a5 r=0.612, mTOR Repression)"]
-    C & D & E & F & G --> H["Interactive Web Paper & Manuscript<br/>(docs/index.html & docs/MANUSCRIPT.md)"]
+    C & D & E & F & G --> H["Interactive Discovery Studio & Manuscript<br/>(docs/index.html & docs/MANUSCRIPT.md)"]
 ```
 
 ### Synthesis Matrix of Milestones
@@ -57,6 +57,7 @@ flowchart TD
 | **Systems Biology** | Regulons, WGCNA & SCFA | Whole Transcriptome, 357 TFs | Tonic Interferon collapse (NES = -2.39) & *Irf1* repression ($Z=-2.28$); SCFA rescue reciprocal inversion ($r = -0.873, p_{\text{perm}} < 0.001$); E2F cell-cycle release. | **Completed** |
 | **Academic Overhaul (v1.1.0)** | Rigorous Statistical Adjustments | 23,096 Genes, 60 Samples | REML & HKSJ small-sample adjustments ($t_3$ critical threshold); Two-Tier Subgroup Decomposition; 1,000-permutation SCFA specificity null model; 12 vector SVGs. | **Completed** |
 | **Multi-Omic Release (v1.2.0)** | Epigenomic Footprinting, Sex & BBB Relay | 33,171 Genes, Multi-Omics | **Factorial Sex Meta-Regression** (99.1% sex-shared, male *Slfn2* vulnerability); **BayesPrism 5-State Deconvolution** ($\kappa = 1.54$, cell-intrinsic shutoff); **Tripartite ATAC-Seq TOBIAS Footprinting** (88.9% *Irf1*/*Stat1* reversal); **NicheNet Ligand Prioritization** (gut OMVs $r=0.658$, endothelial *Ifnb1* $r=0.600$); **Myeloid *Llgl2*-LAT1 Amino Acid Scavenging** and Three-Pillar in vivo BBB flux model. | **Completed** |
+| **Reference Polish (v1.2.1)** | Calibrated Epigenomics & Discovery Studio | 60 Samples, Web & Docs | **Chromatin-poised transcriptional reversibility calibration**; **Llgl2-LAT1 myeloid nutrient axis** & BBB acetate/ACSS2 discussion; **Unified Transcriptomic Discovery Studio** with live Interactive SVG Volcano Plot synchronized to dynamic Forest Plot. | **Completed** |
 
 ---
 
