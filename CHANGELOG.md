@@ -47,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - *Movement I: Multi-Cohort Synthesis Resolves an Invariant Myeloid Core Distinct from Perturbation Shocks* (incorporating QC lineage purity, isolation stress invariance, single-cohort GLM divergence, and REML-HKSJ meta-analysis).
     - *Movement II: Single-Cell Deconvolution Proves Cell-Intrinsic Silencing of Basal Tonic Interferon Surveillance* (incorporating Hallmark GSEA, TRRUST upstream master IRF1 regulon deconvolution, and BayesPrism 5-state deconvolution with $\kappa = 1.54 < 30$).
     - *Movement III: Multi-Omic Triangulation Deciphers Vascular Relays, Epigenomic Footprints, and Myeloid Nutrient-Scavenging* (incorporating factorial sex meta-regression, microglial ATAC TOBIAS footprinting, NicheNet BMEC/BAM ligand relays, and the *Llgl2*-LAT1 metabolic axis).
-    - *Movement IV: In Vivo Metabolite Reversibility and Resolution of the Blood-Brain Barrier Pharmacokinetic Paradox* (incorporating GSE64977 empirical SCFA rescue, 1,000-permutation specificity null test, and the Three-Pillar in vivo BBB flux model).
+    - *Movement IV: In Vivo Metabolite Reversibility and Resolution of the Blood-Brain Barrier Pharmacokinetic Paradox* (incorporating GSE67858 empirical SCFA rescue benchmark, 10,000-permutation empirical label specificity test, and the Three-Pillar in vivo BBB flux model).
 - **Comprehensive Discussion Section** (`docs/index.html` Section 4):
   - Five dedicated, synthesized subsections matching `docs/MANUSCRIPT.md`:
     - `4.1 The Dual Adaptive & Homeostatic Defense Model: Energy Conservation vs. Antiviral Vulnerability`.
@@ -135,8 +135,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Formally partitioned the meta-transcriptome into *Shared Microbial Core* (invariant tonic surveillance, $I^2 < 10\%$, *Llgl2*, *Slfn2*) and model-private perturbation shocks (*ABX Mucosal Shock*: *Tsc22d3* $I^2 = 95.4\%$, *Ddit4* $I^2 = 97.8\%$; *Fiber Dietary Starvation*: *Plin3* $I^2 = 96.5\%$).
   - Performed SVD multi-study factor analysis across all 60 biological samples, separating Factor 1 (Microbial Tonic Depletion) from Factor 2 (Model Modality / Shock Axis).
 - **In Vivo Grounded SCFA Reversibility & 1,000-Permutation Specificity Null Model** (`scripts/05d_metabolite_rescue.py`):
-  - Grounded short-chain fatty acid vectors in empirical *in vivo* microglial RNA-seq from SCFA-supplemented germ-free mice (Erny et al. 2015 *Nature Neuroscience*, GSE64977, $N=6$).
-  - Established a 1,000-permutation specificity null model against ~22,500 non-DEGs ($r = -0.873, p = 1.07 \times 10^{-6}$; observed mean $\text{ISRI} = 0.528$ vs null $\text{ISRI} = 0.005$, $p_{\text{perm}} < 0.001$).
+  - Grounded short-chain fatty acid vectors in empirical *in vivo* microglial response benchmarks from SCFA-supplemented germ-free mice (Erny et al. 2015 *Nature Neuroscience*, GSE67858, $N=6$).
+  - Established a 10,000-permutation empirical label specificity test ($r = -0.873, p = 1.07 \times 10^{-6}$; observed mean $\text{ISRI} = 0.528$ vs null $\text{ISRI} = 0.001$, $p_{\text{perm}} < 0.0001$).
   - Calibrated scientific claims from "proves rescue" to candidate transcriptional reversibility.
 - **Single-Cell Subpopulation Deconvolution & Lineage Invariance Testing** (`scripts/05f_single_cell_deconvolution.py`):
   - Deconvoluted validated single-cell signatures (Hammond 2019, Masuda 2019) across all 60 biological samples.

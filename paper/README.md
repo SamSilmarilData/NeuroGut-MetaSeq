@@ -1,10 +1,10 @@
 # NeuroGut-MetaSeq: Publication-Grade LaTeX PDF Compilation Pipeline
 
-This directory contains the complete, reproducible LaTeX source code and build automation scripts for generating publication-grade PDF documents for **NeuroGut-MetaSeq (v1.3.0-draft1)**.
+This directory contains the complete, reproducible LaTeX source code and build automation scripts for generating publication-grade PDF documents for **NeuroGut-MetaSeq (v1.3.0)**.
 
 ---
 
-## 📌 Document Status: Preprint First Draft (v1.3.0-draft1)
+## 📌 Document Status: Academic Release (v1.3.0)
 
 > [!NOTE]
 > This represents the **first compiled draft** of the preprint. While all statistical results, multi-omic analyses, tables, figures, and literature citations are fully generated and compiled with zero errors, iterative editorial refinements—including enhanced conceptual cartoon diagrams, visual aesthetics, narrative pacing, and typography adjustments—will be implemented in subsequent iterations.

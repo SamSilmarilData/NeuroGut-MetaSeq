@@ -35,7 +35,7 @@ Use this checklist prior to and during submission to the [bioRxiv Submission Por
   ```
 - [ ] **Data Availability Statement**: Enter:
   ```
-  All analyzed raw datasets are publicly available in the NCBI Gene Expression Omnibus (GEO) under accession numbers GSE107925, GSE108045, GSE186210, GSE266602, GSE152865, and GSE64977. All curated metadata, normalized count matrices, and meta-analytic summary tables are deposited in the study GitHub repository (https://github.com/samyakmeshram/NeuroGut-MetaSeq).
+  All analyzed raw datasets are publicly available in the NCBI Gene Expression Omnibus (GEO) under accession numbers GSE107925, GSE108045, GSE186210, GSE266602, GSE152865, and GSE67858. All curated metadata, normalized count matrices, and meta-analytic summary tables are deposited in the study GitHub repository (https://github.com/samyakmeshram/NeuroGut-MetaSeq).
   ```
 - [ ] **License**: Select **CC BY-NC-ND 4.0** (standard for preprints) or **CC BY 4.0** (open-access re-use).
 

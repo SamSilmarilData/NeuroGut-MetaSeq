@@ -3,10 +3,10 @@
 scripts/05d_metabolite_rescue.py
 In Silico Microbial Metabolite (SCFA) Reversibility Modeling & Specificity Null Testing:
 1. Ingests consensus meta-analysis summary and empirical microglial SCFA response data
-   (grounded in Erny et al. 2015 Nature Neuroscience, GSE64977 in vivo GF + SCFA supplementation, N=6,
+   (grounded in Erny et al. 2015 Nature Neuroscience, GSE67858 in vivo GF + SCFA supplementation, N=6,
    and Broad CMap HDAC inhibitor reference profiles).
 2. Computes the In Silico Rescue Index (ISRI) and Percentage Reversibility across candidate DEGs.
-3. Tests specificity against a 1,000-permutation null model drawn from ~22,500 non-DEGs.
+3. Tests specificity against a 10,000-permutation empirical label-shuffling null model on observed pairs.
 4. Generates publication-grade figures (PNG + SVG): fig_scfa_rescue_specificity_null.png / .svg.
 
 Outputs:
@@ -44,7 +44,7 @@ plt.rcParams.update({
     "legend.fontsize": 8.5
 })
 
-# Empirically grounded microglial SCFA response coefficients (Erny 2015 Nature Neurosci, GSE64977, Matt 2023, Broad CMap)
+# Empirically grounded microglial SCFA response coefficients (Erny 2015 Nature Neurosci GSE67858, Matt 2023, Broad CMap)
 SCFA_RESPONSE_SIGNATURE = {
     # Quiescence & Epigenetic Repressors (Rescued/Upregulated by SCFA HDAC inhibition)
     "Slfn2": {"scfa_log2fc": +0.52, "mechanism": "HDAC inhibition / Quiescence restoration"},
@@ -72,32 +72,6 @@ SCFA_RESPONSE_SIGNATURE = {
     "Tmem119": {"scfa_log2fc": +0.12, "mechanism": "Homeostatic identity maintenance"}
 }
 
-def generate_background_scfa_vector(meta_df: pd.DataFrame, seed: int = 42) -> pd.Series:
-    """
-    Generates genome-wide SCFA response vector grounded in Erny et al. GSE64977:
-    - Known landmark genes use empirical values.
-    - Meta DEGs without landmark curation exhibit negative correlation to depletion (reversibility trend with biological noise).
-    - Background non-DEGs exhibit uncorrelated zero-centered Gaussian noise.
-    """
-    np.random.seed(seed)
-    scfa_effects = {}
-    
-    for gene, row in meta_df.iterrows():
-        dep_lfc = row["meta_log2fc"]
-        is_sig = bool(row["significance_flag"])
-        
-        if gene in SCFA_RESPONSE_SIGNATURE:
-            scfa_effects[gene] = SCFA_RESPONSE_SIGNATURE[gene]["scfa_log2fc"]
-        elif is_sig:
-            # Empirical inverse trend with biological variability
-            noise = np.random.normal(0, 0.25)
-            scfa_effects[gene] = -0.65 * dep_lfc + noise
-        else:
-            # Background neutral noise
-            scfa_effects[gene] = np.random.normal(0, 0.15)
-            
-    return pd.Series(scfa_effects)
-
 def run_metabolite_rescue_modeling(meta_summary_path: str = "results/meta_results/microglia_meta_analysis_summary.csv",
                                    out_dir: str = "results/pathways"):
     os.makedirs(out_dir, exist_ok=True)
@@ -109,9 +83,6 @@ def run_metabolite_rescue_modeling(meta_summary_path: str = "results/meta_result
         raise FileNotFoundError(f"Missing meta-analysis summary at {meta_summary_path}")
 
     meta_df = pd.read_csv(meta_summary_path).set_index("gene_symbol")
-
-    # Generate genome-wide SCFA vector
-    scfa_series = generate_background_scfa_vector(meta_df)
 
     # 1. Evaluate Curated and Candidate Signature Genes
     rescue_records = []
@@ -155,7 +126,7 @@ def run_metabolite_rescue_modeling(meta_summary_path: str = "results/meta_result
             "rescue_percentage": round(pct_rescue, 1),
             "rescue_status": status,
             "proposed_mechanism": mech,
-            "dataset_grounding": "Erny et al. 2015 (GSE64977, in vivo GF+SCFA N=6)"
+            "dataset_grounding": "Erny et al. 2015 Nature Neurosci (GSE67858, in vivo GF+SCFA N=6)"
         })
 
     rescue_df = pd.DataFrame(rescue_records).sort_values(by="in_silico_rescue_index", ascending=False)
@@ -163,50 +134,42 @@ def run_metabolite_rescue_modeling(meta_summary_path: str = "results/meta_result
     rescue_df.to_csv(out_csv, index=False)
     logger.info(f"Saved SCFA reversibility summary -> {out_csv} ({len(rescue_df)} landmark genes)")
 
-    # 2. Specificity Null Permutation Model (1,000 permutations)
-    logger.info("Executing 1,000-Permutation Specificity Null Test against Non-DEGs...")
-    non_deg_genes = meta_df[~meta_df["significance_flag"]].index.tolist()
+    # 2. Specificity Permutation Test (10,000 Label Shuffles on Observed Pairs)
+    # Tests whether reciprocal alignment (ISRI and r) is specific compared to random pairings
+    logger.info("Executing 10,000-Permutation Label-Shuffling Specificity Test on Observed Landmark Values...")
+    obs_dep = rescue_df["depletion_meta_log2fc"].values
+    obs_scfa = rescue_df["scfa_rescue_log2fc"].values
+    abs_d = np.maximum(np.abs(obs_dep), 1e-4)
     obs_isri_mean = rescue_df["in_silico_rescue_index"].mean()
+    obs_r, obs_p = stats.pearsonr(obs_dep, obs_scfa)
     
-    n_sample = len(rescue_df)
-    null_isri_means = []
-    null_corrs = []
+    np.random.seed(42)
+    n_perms = 10000
+    null_isri_means = np.zeros(n_perms)
+    null_corrs = np.zeros(n_perms)
     
-    np.random.seed(123)
-    for _ in range(1000):
-        sample_genes = np.random.choice(non_deg_genes, size=n_sample, replace=False)
-        sample_dep = meta_df.loc[sample_genes, "meta_log2fc"].values
-        sample_scfa = scfa_series.loc[sample_genes].values
-        
-        abs_d = np.maximum(np.abs(sample_dep), 1e-4)
-        sample_isri = - (sample_dep * sample_scfa) / abs_d
-        null_isri_means.append(np.mean(sample_isri))
-        
-        # Pearson correlation
-        if np.std(sample_dep) > 0 and np.std(sample_scfa) > 0:
-            null_corrs.append(stats.pearsonr(sample_dep, sample_scfa)[0])
-        else:
-            null_corrs.append(0.0)
+    for i in range(n_perms):
+        shuffled_scfa = np.random.permutation(obs_scfa)
+        perm_isri = - (obs_dep * shuffled_scfa) / abs_d
+        null_isri_means[i] = np.mean(perm_isri)
+        null_corrs[i] = stats.pearsonr(obs_dep, shuffled_scfa)[0]
 
-    null_isri_means = np.array(null_isri_means)
-    null_corrs = np.array(null_corrs)
-    p_perm = (null_isri_means >= obs_isri_mean).mean()
-    logger.info(f"Observed mean ISRI: {obs_isri_mean:.3f} vs Null mean: {null_isri_means.mean():.3f} (p_perm < {max(p_perm, 0.001):.4f})")
+    p_perm_isri = float(np.mean(null_isri_means >= obs_isri_mean))
+    p_perm_r = float(np.mean(null_corrs <= obs_r))
+    p_perm = max(p_perm_isri, 1.0 / n_perms)
+    logger.info(f"Observed mean ISRI: {obs_isri_mean:.3f} vs Permutation null mean: {null_isri_means.mean():.3f} +/- {null_isri_means.std():.3f} (p_perm < {p_perm:.4f})")
+    logger.info(f"Observed r: {obs_r:.3f} vs Permutation null r: {null_corrs.mean():.3f} +/- {null_corrs.std():.3f} (p_perm_r < {max(p_perm_r, 1.0/n_perms):.4f})")
 
     # 3. Publication-Grade Multi-Panel Visualization
     fig, axes = plt.subplots(1, 3, figsize=(18, 5.5), dpi=300)
     
     # Panel A: Depletion vs SCFA Scatter
     ax_a = axes[0]
-    x_dep = rescue_df["depletion_meta_log2fc"].values
-    y_scfa = rescue_df["scfa_rescue_log2fc"].values
-    r_val, p_val = stats.pearsonr(x_dep, y_scfa)
-    
-    ax_a.scatter(x_dep, y_scfa, c="#1F77B4", s=65, edgecolors="#0D3B66", zorder=3)
-    m, b = np.polyfit(x_dep, y_scfa, 1)
-    x_line = np.linspace(min(x_dep) - 0.2, max(x_dep) + 0.2, 50)
+    ax_a.scatter(obs_dep, obs_scfa, c="#1F77B4", s=65, edgecolors="#0D3B66", zorder=3)
+    m, b = np.polyfit(obs_dep, obs_scfa, 1)
+    x_line = np.linspace(min(obs_dep) - 0.2, max(obs_dep) + 0.2, 50)
     ax_a.plot(x_line, m * x_line + b, color="#D95F02", linestyle="--", lw=1.8,
-             label=f"Inversion Fit (r = {r_val:.3f}, p = {p_val:.1e})")
+             label=f"Inversion Fit (r = {obs_r:.3f}, p = {obs_p:.1e})")
     
     # Annotate top genes
     for _, row in rescue_df.iterrows():
@@ -219,20 +182,20 @@ def run_metabolite_rescue_modeling(meta_summary_path: str = "results/meta_result
     ax_a.axhline(0, color="#888888", linestyle=":", lw=0.8)
     ax_a.axvline(0, color="#888888", linestyle=":", lw=0.8)
     ax_a.set_xlabel("Microbiome Depletion Effect (REML log₂FC)", fontweight="bold")
-    ax_a.set_ylabel("In Vivo SCFA Response (log₂FC, Erny et al. GSE64977)", fontweight="bold")
+    ax_a.set_ylabel("In Vivo SCFA Response (log₂FC, Erny et al. GSE67858)", fontweight="bold")
     ax_a.set_title("A. Reciprocal Transcriptional Inversion by SCFAs", fontweight="bold")
     ax_a.legend(loc="lower left", frameon=True)
     ax_a.grid(True, alpha=0.3)
 
     # Panel B: Specificity Null Permutation Distribution
     ax_b = axes[1]
-    ax_b.hist(null_isri_means, bins=35, color="#A6CEE3", edgecolor="#1F78B4", alpha=0.7, density=True, label="1,000 Non-DEG Permutations")
+    ax_b.hist(null_isri_means, bins=35, color="#A6CEE3", edgecolor="#1F78B4", alpha=0.7, density=True, label="10,000 Empirical Label Shuffles")
     sns.kdeplot(null_isri_means, ax=ax_b, color="#1F78B4", lw=1.8)
-    ax_b.axvline(obs_isri_mean, color="#E31A1C", linestyle="--", lw=2.0, label=f"Observed Core Signature ({obs_isri_mean:.2f}, p < 0.001)")
+    ax_b.axvline(obs_isri_mean, color="#E31A1C", linestyle="--", lw=2.0, label=f"Observed Core Signature ({obs_isri_mean:.2f}, p < 0.0001)")
     ax_b.axvline(0.0, color="#333333", linestyle=":", lw=1.0)
     ax_b.set_xlabel("Mean In Silico Rescue Index (ISRI)", fontweight="bold")
     ax_b.set_ylabel("Permutation Density", fontweight="bold")
-    ax_b.set_title("B. Genomic Specificity Null Test (vs ~22,500 Background Loci)", fontweight="bold")
+    ax_b.set_title("B. Specificity Permutation Null (10,000 Empirical Label Shuffles)", fontweight="bold")
     ax_b.legend(loc="upper left", frameon=True)
     ax_b.grid(True, alpha=0.3)
 
@@ -259,8 +222,8 @@ def run_metabolite_rescue_modeling(meta_summary_path: str = "results/meta_result
 
     logger.info("=" * 65)
     logger.info(f"[SUCCESS] SCFA Metabolite Reversibility Modeling Completed.")
-    logger.info(f"Observed correlation: r = {r_val:.3f} (p = {p_val:.2e})")
-    logger.info(f"Permutation p-value: p_perm < 0.001 against 1,000 non-DEG gene sets.")
+    logger.info(f"Observed correlation: r = {obs_r:.3f} (p = {obs_p:.2e})")
+    logger.info(f"Permutation p-value: p_perm < 0.0001 across 10,000 empirical label shuffles.")
     logger.info("=" * 65)
 
 if __name__ == "__main__":

@@ -30,6 +30,7 @@ from scipy import stats
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import seaborn as sns
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -162,7 +163,8 @@ def run_metabolic_llgl2_and_pk_analysis():
 
 def plot_figures(coexp_df: pd.DataFrame, expr_df: pd.DataFrame, samples_df: pd.DataFrame, trans_expr: dict, fig_dir: str):
     logger.info("Generating Publication Figures (PNG + SVG) for Llgl2 & Pharmacokinetics...")
-    fig, axes = plt.subplots(1, 2, figsize=(15, 6.5), dpi=300)
+    import shutil
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5.6), dpi=300)
     
     # -------------------------------------------------------------
     # Panel A: Llgl2 vs Slc7a5 (LAT1) Co-Expression Scatter
@@ -177,49 +179,95 @@ def plot_figures(coexp_df: pd.DataFrame, expr_df: pd.DataFrame, samples_df: pd.D
     pert_idx = samples_df[samples_df["condition"] == "perturbed"].index
     
     ax_a.scatter(expr_df.loc["Llgl2", ref_idx], expr_df.loc[target_comp, ref_idx],
-                 color="#4E79A7", s=50, edgecolors="#111111", lw=0.8, label="Reference (SPF/Normal)")
+                 color="#1B365D", s=45, edgecolors="#111111", lw=0.8, alpha=0.85,
+                 label="Reference (SPF/Normal, N=25)")
     ax_a.scatter(expr_df.loc["Llgl2", pert_idx], expr_df.loc[target_comp, pert_idx],
-                 color="#E15759", s=50, edgecolors="#111111", lw=0.8, label="Microbiome-Depleted (GF/ABX)")
+                 color="#D9534F", s=45, edgecolors="#111111", lw=0.8, alpha=0.85,
+                 label="Microbiome-Depleted (GF/ABX, N=35)")
                  
     r_val, p_val = stats.pearsonr(llgl2_vals, comp_vals)
     m, b = np.polyfit(llgl2_vals, comp_vals, 1)
     x_range = np.linspace(llgl2_vals.min() - 0.2, llgl2_vals.max() + 0.2, 50)
-    ax_a.plot(x_range, m * x_range + b, color="#222222", linestyle="--", lw=1.2,
-              label=f"Fit (r = {r_val:.2f}, p = {p_val:.2e})")
+    ax_a.plot(x_range, m * x_range + b, color="#222222", linestyle="--", lw=1.3,
+              label=f"Fit (r = {r_val:.2f}, p = {p_val:.1e})")
               
     ax_a.set_xlabel("Llgl2 Expression (log2 CPM)", fontweight="bold")
     ax_a.set_ylabel(f"{target_comp} (LAT1 Leucine Transporter, log2 CPM)", fontweight="bold")
-    ax_a.set_title("A. Llgl2 Co-Expression with LAT1 Amino Acid Transporter\n(Compensatory Nutrient Scavenging Axis, N=60)", fontweight="bold")
-    ax_a.legend(frameon=True, fontsize=9)
-    ax_a.grid(True, alpha=0.3)
+    ax_a.set_title("A. Llgl2 vs. LAT1 Co-Expression\n(Compensatory Nutrient Scavenging, N=60)", fontweight="bold", loc="left")
+    ax_a.legend(frameon=True, fontsize=8.5, loc="lower right")
+    ax_a.grid(True, alpha=0.25, linestyle=":")
     
     # -------------------------------------------------------------
-    # Panel B: Three-Pillar Pharmacokinetic BBB Relay Model
+    # Panel B: Transporters vs GPCRs Empirical Expression
     # -------------------------------------------------------------
     ax_b = axes[1]
-    
-    pillars = [
-        "Pillar A:\nBorder Macrophages (BAMs)\n(Direct Blood Contact,\nHigh MCT1/Slc16a1)",
-        "Pillar B:\nAcetate - ACSS2 Flux\n(Crosses BBB, Fuels\nNuclear HAT Acetyl-CoA)",
-        "Pillar C:\nNeuro-Immune Vagal Reflex\n(Gut-Brain Neural Relay\nBypassing BBB Diffusion)"
+    genes = ["Slc16a7", "Slc16a3", "Slc16a1", "Acss2", "Ffar2", "Ffar3"]
+    labels = ["Slc16a7\n(MCT2)", "Slc16a3\n(MCT4)", "Slc16a1\n(MCT1)", "Acss2\n(Acetyl-CoA)", "Ffar2\n(GPR43)", "Ffar3\n(GPR41)"]
+    x = np.arange(len(genes))
+    width = 0.36
+
+    ref_means = [expr_df.loc[g, ref_idx].mean() for g in genes]
+    ref_sems = [expr_df.loc[g, ref_idx].sem() for g in genes]
+    pert_means = [expr_df.loc[g, pert_idx].mean() for g in genes]
+    pert_sems = [expr_df.loc[g, pert_idx].sem() for g in genes]
+
+    ax_b.bar(x - width/2, ref_means, width, yerr=ref_sems, capsize=3,
+             color="#1B365D", edgecolor="#111111", lw=0.8, label="Reference (SPF, N=25)")
+    ax_b.bar(x + width/2, pert_means, width, yerr=pert_sems, capsize=3,
+             color="#D9534F", edgecolor="#111111", lw=0.8, label="Depleted (GF/ABX, N=35)")
+
+    ax_b.set_xticks(x)
+    ax_b.set_xticklabels(labels, fontsize=8.5)
+    ax_b.set_ylabel("Normalized Microglial Expression (log2 CPM)", fontweight="bold")
+    ax_b.set_title("B. Microglial Transporters vs. GPCR Receptors\n(Empirical Bulk RNA-Seq Expression, N=60)", fontweight="bold", loc="left")
+    ax_b.axvspan(-0.5, 3.5, color="#008080", alpha=0.07, label="Monocarboxylate Transporters / Flux")
+    ax_b.axvspan(3.5, 5.5, color="#888888", alpha=0.07, label="Surface GPCR Receptors")
+    ax_b.legend(frameon=True, fontsize=8.0, loc="upper right")
+    ax_b.grid(True, axis="y", alpha=0.25, linestyle=":")
+    ax_b.set_ylim(0, 7.5)
+
+    # -------------------------------------------------------------
+    # Panel C: Three-Pillar Pharmacokinetic BBB Relay Schematic
+    # -------------------------------------------------------------
+    ax_c = axes[2]
+    ax_c.axis("off")
+    ax_c.set_title("C. Three-Pillar Resolution of the BBB SCFA Paradox\n(Reconciling Micromolar In Vivo Flux with In Vitro IC50)", fontweight="bold", loc="left")
+
+    pillar_data = [
+        ("Pillar 1: BAM Vascular Relay",
+         "• Border-Associated Macrophages\n• Positioned on blood-facing BBB\n• High MCT1; direct SCFA sensing\n• Transmits secondary signals (TGFb/IL-10)",
+         "#008080"),
+        ("Pillar 2: Central Acetate / ACSS2",
+         "• Acetate crosses BBB (Km ~1.5-3 mM)\n• Microglial ACSS2 converts to acetyl-CoA\n• Directly replenishes nuclear HAT pools\n• Bypasses millimolar HDAC inhibition",
+         "#1B365D"),
+        ("Pillar 3: Vagal Sensory Afferent",
+         "• Enteric mucosal SCFA sensing\n• Nodose ganglion -> NTS projection\n• Central neuro-immune reflex circuit\n• Bypasses direct BBB parenchymal entry",
+         "#D9534F")
     ]
-    # Biological support score (0 - 100%)
-    support_scores = [92.0, 88.0, 81.0]
-    colors = ["#F28E2B", "#4E79A7", "#2CA02C"]
-    
-    bars = ax_b.bar(np.arange(len(pillars)), support_scores, color=colors, edgecolor="#222222", lw=0.9, width=0.55)
-    ax_b.set_xticks(np.arange(len(pillars)))
-    ax_b.set_xticklabels(pillars, fontsize=9.5, fontweight="bold")
-    ax_b.set_ylabel("Mechanistic Biological Support Score (%)", fontweight="bold")
-    ax_b.set_ylim(0, 115)
-    ax_b.set_title("B. Three-Pillar Resolution of the Pharmacokinetic BBB Paradox\n(Reconciling Micromolar Systemic Levels with In Vivo Efficacy)", fontweight="bold")
-    ax_b.grid(True, axis="y", alpha=0.3)
-    
-    for bar in bars:
-        h = bar.get_height()
-        ax_b.text(bar.get_x() + bar.get_width()/2., h + 2.5, f"{h:.0f}%",
-                  ha="center", va="bottom", fontsize=10, fontweight="bold")
-                  
+
+    y_top = 0.95
+    box_height = 0.22
+    spacing = 0.05
+    for i, (title, desc, accent) in enumerate(pillar_data):
+        y = y_top - (i + 1) * (box_height + spacing) + spacing
+        rect = patches.FancyBboxPatch((0.02, y), 0.96, box_height,
+                                      boxstyle="round,pad=0.02,rounding_size=0.03",
+                                      facecolor="#F8FAFC", edgecolor=accent, lw=1.5)
+        ax_c.add_patch(rect)
+        strip = patches.FancyBboxPatch((0.02, y), 0.025, box_height,
+                                       boxstyle="round,pad=0.0,rounding_size=0.01",
+                                       facecolor=accent, edgecolor=accent)
+        ax_c.add_patch(strip)
+        ax_c.text(0.07, y + box_height - 0.045, title, fontsize=9.5, fontweight="bold", color="#111111", va="top")
+        ax_c.text(0.07, y + box_height - 0.075, desc, fontsize=7.8, color="#333333", va="top", linespacing=1.25)
+
+    summary_rect = patches.FancyBboxPatch((0.02, 0.02), 0.96, 0.12,
+                                          boxstyle="round,pad=0.02,rounding_size=0.03",
+                                          facecolor="#EDF2F7", edgecolor="#718096", lw=1.0)
+    ax_c.add_patch(summary_rect)
+    ax_c.text(0.5, 0.08, "Pharmacokinetic Paradox Resolved:\nSystemic SCFAs (1-10 uM) << In Vitro HDAC IC50 (500-2000 uM)\nResolved by ACSS2 flux, BAM border signaling, & vagal afferents",
+              fontsize=7.8, ha="center", va="center", color="#2D3748", fontweight="bold")
+
     plt.tight_layout()
     out_png = os.path.join(fig_dir, "fig_pharmacokinetic_bbb_metabolic_axis.png")
     out_svg = os.path.join(fig_dir, "fig_pharmacokinetic_bbb_metabolic_axis.svg")
@@ -227,6 +275,13 @@ def plot_figures(coexp_df: pd.DataFrame, expr_df: pd.DataFrame, samples_df: pd.D
     plt.savefig(out_svg, format="svg", bbox_inches="tight")
     plt.close()
     logger.info(f"Saved {out_png} and {out_svg}")
+
+    # Sync to paper and docs directories
+    for dest_dir in ["paper/figures", "docs/assets"]:
+        if os.path.exists(dest_dir):
+            shutil.copyfile(out_png, os.path.join(dest_dir, "fig_pharmacokinetic_bbb_metabolic_axis.png"))
+            shutil.copyfile(out_svg, os.path.join(dest_dir, "fig_pharmacokinetic_bbb_metabolic_axis.svg"))
+            logger.info(f"Copied figure assets to {dest_dir}")
 
 if __name__ == "__main__":
     run_metabolic_llgl2_and_pk_analysis()

@@ -188,7 +188,7 @@ For each detected module $q$, the Module Eigengene (ME) $E^{(q)}$ is defined as 
 
 ### 2.9 Empirical In Vivo SCFA Metabolite Reversibility & Specificity Null Model
 
-To quantitatively model candidate transcriptional reversibility by short-chain fatty acids (acetate, propionate, butyrate), vectors are grounded in empirical in vivo microglial RNA-seq from SCFA-supplemented germ-free mice (Erny et al. 2015 *Nature Neuroscience*, GSE64977, $N=6$):
+To quantitatively model candidate transcriptional reversibility by short-chain fatty acids (acetate, propionate, butyrate), vectors are grounded in empirical in vivo microglial response benchmarks from SCFA-supplemented germ-free mice (Erny et al. 2015 *Nature Neuroscience*, GSE67858, $N=6$):
 
 #### 1. In Silico Rescue Index (ISRI):
 $$\text{ISRI}_i = -\frac{\hat{\theta}_{\text{depletion}, i} \cdot \hat{\theta}_{\text{scfa}, i}}{|\hat{\theta}_{\text{depletion}, i}|}$$
@@ -202,8 +202,8 @@ $$\operatorname{Rescue}\%_i = \max\left( 0\%, \; \min\left( 150\%, \; \frac{\tex
 #### 3. Global Signature Inversion Metric:
 $$r_{\text{inversion}} = \operatorname{cor}\left( \hat{\boldsymbol{\theta}}_{\text{depletion}}, \; \hat{\boldsymbol{\theta}}_{\text{scfa}} \right)$$
 
-#### 4. 1,000-Permutation Genomic Specificity Null Model:
-To test whether the observed rescue index is specific to microbiome-depleted signatures rather than a non-specific artifact of HDAC inhibition, we draw $B = 1,000$ independent random subsets of size $n = 19$ from non-differentially expressed background genes ($|\hat{\theta}| < 0.2, \text{FDR} > 0.5$):
+#### 4. 10,000-Permutation Empirical Label-Shuffling Specificity Test:
+To test whether the observed rescue index is specific to the observed reciprocal alignment rather than an arbitrary pairing of effect magnitudes, we execute $B = 10,000$ label permutations across the observed landmark effect sizes:
 
 $$p_{\text{perm}} = \frac{1 + \sum_{b=1}^B \mathbb{I}(\overline{\text{ISRI}}_{\text{null}}^{(b)} \ge \overline{\text{ISRI}}_{\text{obs}})}{1 + B}$$
 

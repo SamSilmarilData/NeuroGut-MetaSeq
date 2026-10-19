@@ -204,52 +204,25 @@ def plot_wgcna_module_traits(trait_csv: str, out_path: str):
     logger.info(f"Saved -> {out_path} and SVG")
 
 def plot_network_subgraph(edges_csv: str, mod_csv: str, out_path: str):
-    """Network topology diagram of consensus hits and hub genes using NetworkX."""
-    logger.info("Generating Consensus Hub Network Interactome Subgraph...")
+    """Network topology diagram of consensus hits and hub genes using NetworkX (100% empirical TOM edges)."""
+    logger.info("Generating Consensus Hub Network Interactome Subgraph (Empirical TOM)...")
     edges_df = pd.read_csv(edges_csv)
     mod_df = pd.read_csv(mod_csv).set_index("gene_symbol")
 
-    # Define key nodes to visualize
-    nodes_to_show = [
-        "Fosb", "Clu", "Llgl2", "Slfn2", "Sap30", "Card6", "Neat1", "Ppif",
-        "Tsc22d3", "Ddit4", "Plin3", "Tnf", "Sall1", "Ffar2", "Cx3cr1", "Tmem119", "Fos"
-    ]
-
+    # Build graph strictly from empirical topological overlap edges
     G = nx.Graph()
-    for n in nodes_to_show:
-        mname = mod_df.loc[n, "module_name"] if n in mod_df.index else "M_Quiescence"
-        G.add_node(n, module=mname)
-
-    # Add edges
     for _, r in edges_df.iterrows():
-        s, t = r["source"], r["target"]
-        if s in nodes_to_show and t in nodes_to_show:
-            G.add_edge(s, t, weight=r["tom_weight"])
-
-    # Ensure all nodes have at least some layout edges for aesthetic connectivity
-    # Connect landmarks within functional biological axes
-    functional_edges = [
-        ("Tsc22d3", "Tnf", 0.08),
-        ("Tsc22d3", "Fosb", 0.07),
-        ("Slfn2", "Sap30", 0.09),
-        ("Slfn2", "Card6", 0.08),
-        ("Llgl2", "Clu", 0.07),
-        ("Fosb", "Fos", 0.12),
-        ("Tnf", "Fos", 0.09),
-        ("Plin3", "Ffar2", 0.06),
-        ("Sall1", "Tmem119", 0.08),
-        ("Cx3cr1", "Tmem119", 0.11),
-        ("Neat1", "Tnf", 0.07),
-        ("Ppif", "Ddit4", 0.06)
-    ]
-    for s, t, w in functional_edges:
-        if not G.has_edge(s, t):
-            G.add_edge(s, t, weight=w)
+        s, t, w = r["source"], r["target"], float(r["tom_weight"])
+        s_mod = mod_df.loc[s, "module_name"] if s in mod_df.index else "M_Quiescence"
+        t_mod = mod_df.loc[t, "module_name"] if t in mod_df.index else "M_Quiescence"
+        G.add_node(s, module=s_mod)
+        G.add_node(t, module=t_mod)
+        G.add_edge(s, t, weight=w)
 
     fig, ax = plt.subplots(figsize=(10, 8.5), dpi=300)
 
     # Layout using spring layout with fixed seed
-    pos = nx.spring_layout(G, k=0.65, seed=42)
+    pos = nx.spring_layout(G, k=0.85, seed=42)
 
     # Color mapping for modules
     mod_colors = {

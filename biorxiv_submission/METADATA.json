@@ -22,7 +22,7 @@
     }
   ],
   "competing_interests": "The authors declare no competing interests.",
-  "data_availability": "All analyzed raw datasets are publicly available in the NCBI Gene Expression Omnibus (GEO) under accession numbers GSE107925, GSE108045, GSE186210, GSE266602, GSE152865, and GSE64977. All curated metadata, normalized count matrices, and meta-analytic summary tables are deposited in the study GitHub repository (https://github.com/samyakmeshram/NeuroGut-MetaSeq).",
+  "data_availability": "All analyzed raw datasets are publicly available in the NCBI Gene Expression Omnibus (GEO) under accession numbers GSE107925, GSE108045, GSE186210, GSE266602, GSE152865, and GSE67858. All curated metadata, normalized count matrices, and meta-analytic summary tables are deposited in the study GitHub repository (https://github.com/samyakmeshram/NeuroGut-MetaSeq).",
   "code_availability": "All analytical pipelines, statistical modeling scripts, and visualization code are publicly available under the MIT license at https://github.com/samyakmeshram/NeuroGut-MetaSeq. The workflows are fully reproducible using Python 3.9+ and R 4.3+.",
   "target_repository": "bioRxiv",
   "code_freeze_tag": "v1.3.0-preprint",

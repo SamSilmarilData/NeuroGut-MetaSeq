@@ -44,7 +44,7 @@ def test_biorxiv_metadata_json_integrity():
     assert meta["competing_interests"] == "The authors declare no competing interests."
     
     # Verify all 6 GEO accessions in data availability
-    for acc in ["GSE107925", "GSE108045", "GSE186210", "GSE266602", "GSE152865", "GSE64977"]:
+    for acc in ["GSE107925", "GSE108045", "GSE186210", "GSE266602", "GSE152865", "GSE67858"]:
         assert acc in meta["data_availability"], f"Missing accession {acc} in data availability"
 
 def test_bibtex_database_integrity():

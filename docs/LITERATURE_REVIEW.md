@@ -461,7 +461,7 @@ A rigorous life-sciences critique requires demarcating **chromatin accessibility
 6. **Reproducibility Deficits**: Many computational workflows are distributed as undocumented, non-reproducible scripts lacking containerization, locked dependency files, or interactive exploration tools.
 
 ### The NeuroGut-MetaSeq Solution:
-**NeuroGut-MetaSeq (v1.2.1)** bridges these gaps by:
+**NeuroGut-MetaSeq (v1.3.0)** bridges these gaps by:
 - Integrating 4 independent, highly curated bulk RNA-seq cohorts (`GSE107925`, `GSE108045`, `GSE266602`, `GSE186210`) across 60 biological samples (51 sex-informative) and 33,171 evaluated genes.
 - Executing **Restricted Maximum Likelihood (REML)** with **Hartung-Knapp-Sidik-Jonkman (HKSJ)** variance adjustments ($t_3$ critical threshold) alongside benchmark DerSimonian-Laird modeling and LOO sensitivity.
 - Implementing a **Factorial Sex-Dimorphism Meta-Regression** proving 99.1% sex-invariance while uncovering male-biased vulnerability in *Slfn2* and *Oas1a*.
@@ -470,7 +470,7 @@ A rigorous life-sciences critique requires demarcating **chromatin accessibility
 - Prioritizing upstream cerebrovascular drivers via **NicheNet**, uncovering circulating bacterial OMVs (TLR4/CD14, $r = 0.658$) and endothelial *Ifnb1* (IFNAR1/2, $r = 0.600$).
 - Resolving the BBB pharmacokinetic paradox through the **Three-Pillar Flux Framework** (central acetate/ACSS2 capture vs. perimeter BAM relays) and uncovering the **myeloid *Llgl2*-LAT1 nutrient-scavenging axis**.
 - Delivering the **Unified Transcriptomic Discovery Studio** with an interactive SVG Volcano Plot synchronized to the dynamic Multi-Cohort Forest Plot engine (`docs/index.html` on GitHub Pages).
-- Presenting a formal academic manuscript (`docs/MANUSCRIPT.md`) calibrated to life-sciences standards with 100% passing automated test suite (58+ tests).
+- Presenting a formal academic manuscript (`docs/MANUSCRIPT.md`) calibrated to life-sciences standards with 100% passing automated test suite (67 passing tests).
 
 ---
 

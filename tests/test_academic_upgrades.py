@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
 tests/test_academic_upgrades.py
-Comprehensive verification suite for Academic Peer-Review Overhaul (v1.1.0):
+Comprehensive verification suite for Academic Peer-Review Overhaul (v1.3.0):
 1. Test REML and Hartung-Knapp-Sidik-Jonkman (HKSJ) statistical implementation.
 2. Test Two-Tier Subgroup Decomposition schema and output table.
 3. Test Single-Cell Subpopulation Deconvolution and lineage invariance test.
-4. Test In Vivo SCFA Metabolite Reversibility & 1,000-permutation specificity null model.
+4. Test In Vivo SCFA Metabolite Reversibility & 10,000-permutation specificity null model.
 5. Test Zero-Jargon enforcement in formal manuscript and web paper.
 6. Test vector SVG availability across all publication figures.
 """
+
 
 import os
 import re

@@ -98,7 +98,7 @@ python scripts/05b_tf_regulon_analysis.py
 # 4. Construct WGCNA co-expression network and identify hub genes
 python scripts/05c_coexpression_network.py
 
-# 5. In vivo SCFA metabolite rescue modeling (GSE64977) & 1,000-permutation null model
+# 5. In vivo SCFA metabolite rescue modeling (GSE67858) & 10,000-permutation empirical label test
 python scripts/05d_metabolite_rescue.py
 
 # 6. BayesPrism 5-state subpopulation deconvolution & ISG cell-intrinsic normalization

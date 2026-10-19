@@ -38,3 +38,11 @@ scratch/
 *.lot
 *.lof
 *.synctex.gz
+
+# Agent skills & tooling artifacts
+.agents/
+.diagram-design*
+skills-lock.json
+.gemini/
+.agy/
+
