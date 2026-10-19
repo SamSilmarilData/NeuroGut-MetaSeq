@@ -28,3 +28,13 @@ Thumbs.db
 # Logs & Temp
 *.log
 scratch/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.out
+*.toc
+*.lot
+*.lof
+*.synctex.gz

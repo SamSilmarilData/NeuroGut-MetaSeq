@@ -259,8 +259,9 @@ def plot_diagnostics(df: pd.DataFrame, s_vals: np.ndarray, out_png: str, out_svg
     # Panel B: SVD Singular Value Spectrum & Condition Index
     ax_b = axes[0, 1]
     ax_b.plot(np.arange(1, len(s_vals) + 1), s_vals, marker="o", lw=2.0, color="#2CA02C", markersize=7)
+    ax_b.set_ylim(min(s_vals) - 0.04, max(s_vals) + 0.06)
     for i, s in enumerate(s_vals):
-        ax_b.text(i + 1, s + 0.05, f"{s:.2f}", ha="center", fontsize=9, fontweight="bold")
+        ax_b.text(i + 1, s + 0.012, f"{s:.2f}", ha="center", va="bottom", fontsize=9, fontweight="bold")
     ax_b.set_xlabel("Singular Value Index", fontweight="bold")
     ax_b.set_ylabel("Singular Value", fontweight="bold")
     ax_b.set_title(f"B. Multicollinearity Diagnostic (Condition Index kappa = {s_vals[0]/s_vals[-1]:.2f} < 30)", fontweight="bold")

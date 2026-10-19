@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0-draft1] - 2026-10-19
+### Academic Release: Publication-Grade LaTeX Pipeline, bioRxiv Preprint Package & Iterative First Draft Roadmap
+
+### Added
+- **Publication-Grade LaTeX PDF Compilation Pipeline** (`paper/`):
+  - `paper/manuscript.tex` & `paper/manuscript.pdf`: Complete 23-page, single-column bioRxiv-formatted manuscript with continuous line numbering (`lineno`), 8 `booktabs` formatted tables, and 11 high-resolution inline figures with full legends.
+  - `paper/supplementary.tex` & `paper/supplementary.pdf`: Standalone 8-page supplementary document with independent S1–S8 pagination, table of contents, mathematical derivations, Supplementary Tables S1–S4, and Supplementary Figures S1–S6.
+  - `paper/references.bib`: Complete 46-entry curated BibTeX bibliography with full DOIs, PMIDs, and journal titles, mapped sequentially from citations.
+  - `paper/compile.sh` & `paper/Makefile`: Automated shell and makefile build scripts executing `pdflatex -> bibtex -> pdflatex -> pdflatex` with automatic build cleaning.
+  - `scripts/build_latex_sources.py`: Automated compiler synthesizing `paper/manuscript.tex`, `paper/supplementary.tex`, and `paper/references.bib` from `docs/MANUSCRIPT.md`, with automatic regex-based LaTeX symbol unescaping for citations/labels.
+- **Dedicated bioRxiv Submission Package** (`biorxiv_submission/`):
+  - `biorxiv_submission/ABSTRACT_SUBMISSION.txt`: 236-word, 2,022-character bioRxiv pre-flight compliant abstract strictly adhering to the bioRxiv 2,500-character portal limit.
+  - `biorxiv_submission/METADATA.md`: Formal dossier containing article title, subject categorizations (Primary: Bioinformatics, Secondary: Neuroscience), author affiliations, competing interests, data availability statements, and code availability statements.
+  - `biorxiv_submission/CHECKLIST.md`: Step-by-step submission pre-flight verification checklist for the bioRxiv submission portal.
+- **Editorial, Aesthetic & Storytelling Roadmap (Iterative First Draft Strategy)**:
+  - Documented in `README.md` and `paper/README.md` establishing `v1.3.0-draft1` as the baseline compiled preprint.
+  - Defined four priority iteration dimensions:
+    1. *Conceptual Diagrams & Schematics*: Designing professional overview schematics (e.g., Study Overview / Movement I funnel, Vascular Relay mechanism, Three-Pillar in vivo metabolite flux).
+    2. *Visual Aesthetics & Typography*: Harmonizing cross-panel palettes, multi-panel alignments, typography, and callout boxes.
+    3. *Storytelling, Pacing & Narrative Transitions*: Refining rhetorical transitions between multi-cohort synthesis, single-cell deconvolution, and metabolic reversibility.
+    4. *Web Paper Synchronization*: Synchronizing narrative enhancements with `docs/index.html`.
+- **Automated Validation** (`tests/test_biorxiv_and_latex_pipeline.py`):
+  - 8 new automated test cases validating bioRxiv abstract character limits ($\le 2,500$), BibTeX citation completeness (all 46 cited keys resolved), LaTeX syntax safety, PDF existence and page thresholds (manuscript $\ge 20$ pages, supplementary $\ge 6$ pages), and metadata compliance. Total suite expands to 67 passing tests.
+
+### Changed
+- `scripts/05f_single_cell_deconvolution.py`: Calibrated Figure 6 Panel B y-axis limits to `[-0.05, 0.48]` with `clip_on=False`, preventing percentage text (`0.43`) from colliding with figure margins. Regenerated high-resolution PNG/SVG assets in `paper/figures/`, `results/pathways/figures/`, and `docs/assets/`.
+- `docs/MANUSCRIPT.md`: Synchronized title, abstract version to `v1.3.0-draft1`, updated author correspondence email to `sam.meshram18@gmail.com`, and strictly aligned figure citation numbering (1–11) monotonically across the Results and Figure Legends.
+- `paper/README.md` and `README.md`: Updated badges (`version: v1.3.0-draft1`, `manuscript: 23 pages`, `tests: 67 passed`) and added detailed documentation for preprint compilation and future aesthetic roadmap.
+
+---
+
 ## [1.3.0] - 2026-10-08
 ### Academic Release: Unified Four-Movement Results Architecture, Comprehensive Discussion & Methods
 

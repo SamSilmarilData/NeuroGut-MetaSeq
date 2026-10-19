@@ -1,0 +1,286 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.8cm,top=2.0cm,bottom=2.0cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\setlist{noitemsep,topsep=3pt,parsep=1pt}
+\usepackage{lineno}
+\usepackage[numbers,super,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!70!black,citecolor=blue!70!black,urlcolor=blue!70!black]{hyperref}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{float}
+\usepackage{url}
+\usepackage{caption}
+
+% Figure path
+\graphicspath{{figures/}{../docs/assets/}}
+
+% Change caption and numbering prefixes to Supplementary (Fig S1, Tab S1)
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thepage}{S\arabic{page}}
+
+\title{\textbf{\Large Supplementary Information: Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility}}
+
+\author{
+  \textbf{Samyak Meshram}$^{1,*}$, \textbf{Dr. Soumya Dhokey}$^{1}$ \\[0.4em]
+  \small $^{1}$Independent Researchers, Open-Science Initiative \\
+  \small $^*$Correspondence: \texttt{sam.meshram18@gmail.com} \quad $|$ \quad GitHub: \url{https://github.com/samyakmeshram/NeuroGut-MetaSeq}
+}
+
+\date{\small \today}
+
+\begin{document}
+
+\maketitle
+
+\linenumbers
+
+\section*{Supplementary Information Overview}
+This document contains extended methodological formulations, supplementary diagnostic figures (Figures S1--S6), and supplementary statistical tables (Tables S1--S4) supporting the main text findings of \textbf{NeuroGut-MetaSeq (v1.3.0)}.
+
+\tableofcontents
+
+\vspace{1.5em}
+\section{Extended Supplementary Methods}
+
+\subsection{Small-Sample Random-Effects Derivation: REML and Hartung-Knapp-Sidik-Jonkman}
+In classical meta-analysis, the DerSimonian-Laird (DL) method of moments estimator is widely used due to computational simplicity:
+\begin{equation}
+\hat{\tau}^2_{\text{DL}} = \max\left(0, \frac{Q - (K - 1)}{\sum w_k - \frac{\sum w_k^2}{\sum w_k}}\right)
+\end{equation}
+However, when the number of studies is small ($K < 5$), DL significantly underestimates between-study variance $\tau^2$, producing artificially narrow confidence intervals and inflated type I error rates. To overcome this limitation, NeuroGut-MetaSeq implements Restricted Maximum Likelihood (REML) variance estimation:
+\begin{equation}
+\ln L_{\text{REML}}(\tau^2) = -\frac{1}{2}\sum_{k=1}^K \ln(v_k + \tau^2) - \frac{1}{2}\ln\left(\sum_{k=1}^K \frac{1}{v_k + \tau^2}\right) - \frac{1}{2}\sum_{k=1}^K \frac{(\hat{\theta}_k - \hat{\theta}_{\text{RE}})^2}{v_k + \tau^2}
+\end{equation}
+The global maximum $\hat{\tau}^2_{\text{REML}}$ is found numerically via bounded Nelder-Mead optimization on $[0, \infty)$. Inverse-variance random-effects weights are then calculated as:
+\begin{equation}
+w_k^* = \frac{1}{v_k + \hat{\tau}^2_{\text{REML}}}, \quad \hat{\theta}_{\text{RE}} = \frac{\sum_{k=1}^K w_k^* \hat{\theta}_k}{\sum_{k=1}^K w_k^*}
+\end{equation}
+To ensure nominal 95\% coverage under small degrees of freedom ($K - 1 = 3$), standard errors are computed using the Hartung-Knapp-Sidik-Jonkman (HKSJ) adjustment:
+\begin{equation}
+q^* = \frac{1}{K - 1}\sum_{k=1}^K w_k^* (\hat{\theta}_k - \hat{\theta}_{\text{RE}})^2, \quad q_{\text{adj}}^* = \max(1.0, q^*)
+\end{equation}
+\begin{equation}
+\operatorname{SE}_{\text{HKSJ}}(\hat{\theta}_{\text{RE}}) = \sqrt{\frac{q_{\text{adj}}^*}{\sum_{k=1}^K w_k^*}}
+\end{equation}
+Statistical significance and confidence intervals are computed using the Student's $t$-distribution critical value with $K - 1 = 3$ degrees of freedom ($t_{0.975, 3} = 3.1824$):
+\begin{equation}
+95\% \text{ CI}_{\text{HKSJ}} = \left[ \hat{\theta}_{\text{RE}} - 3.1824 \times \operatorname{SE}_{\text{HKSJ}}, \; \hat{\theta}_{\text{RE}} + 3.1824 \times \operatorname{SE}_{\text{HKSJ}} \right]
+\end{equation}
+
+\subsection{BayesPrism Ridge-Regularized Quadratic Programming Formulation}
+To deconvolve microglial cell states without assuming mutually orthogonal basis vectors, we formulated Ridge-regularized constrained quadratic programming:
+\begin{equation}
+\min_{\mathbf{p}_j} \left\{ \frac{1}{2}\mathbf{p}_j^T (\mathbf{S}^T \mathbf{S} + \lambda \mathbf{I}) \mathbf{p}_j - (\mathbf{S}^T \mathbf{y}_j)^T \mathbf{p}_j \right\}
+\end{equation}
+subject to the biological constraints:
+\begin{equation}
+\sum_{s=1}^5 p_{js} = 1.0, \quad p_{js} \ge 0 \quad \forall s \in \{1,\dots,5\}
+\end{equation}
+Collinearity was evaluated via singular value decomposition $\mathbf{S} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$, defining condition number $\kappa = \sigma_{\max} / \sigma_{\min}$.
+
+\clearpage
+\section{Supplementary Tables}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Complete Quality Control and Alignment Metrics Across 60 Biological Samples.}}
+\label{tab:s1_qc}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllccp{5.5cm}}
+\toprule
+\textbf{Cohort} & \textbf{Condition} & \textbf{Library Depth Range} & \textbf{Mean Depth} & \textbf{Microglia Purity} & \textbf{Stress $Z$-Score} & \textbf{Sorting Technology} \\
+\midrule
+GSE107925 & SPF Control ($n=12$) & 18.4M -- 42.1M & 28.5M & $99.4\% \pm 0.2\%$ & $-0.08 \pm 0.31$ & FACS CD11b$^{+}$CD45$^{\text{low}}$ \\
+GSE107925 & Germ-Free ($n=13$) & 19.1M -- 44.8M & 29.2M & $99.5\% \pm 0.2\%$ & $+0.06 \pm 0.29$ & FACS CD11b$^{+}$CD45$^{\text{low}}$ \\
+GSE108045 & Vehicle ($n=6$) & 14.2M -- 31.0M & 22.4M & $99.2\% \pm 0.3\%$ & $-0.12 \pm 0.25$ & FACS CD11b$^{+}$CD45$^{\text{low}}$ \\
+GSE108045 & Antibiotics ($n=6$) & 15.6M -- 33.5M & 23.8M & $99.3\% \pm 0.2\%$ & $+0.09 \pm 0.28$ & FACS CD11b$^{+}$CD45$^{\text{low}}$ \\
+GSE186210 & Standard Fiber ($n=7$) & 22.5M -- 54.2M & 36.1M & $97.8\% \pm 0.5\%$ & $+0.04 \pm 0.35$ & MACS CD11b Microbeads \\
+GSE186210 & Zero-Fiber ($n=7$) & 21.0M -- 51.8M & 34.8M & $97.9\% \pm 0.4\%$ & $-0.03 \pm 0.33$ & MACS CD11b Microbeads \\
+GSE266602 & Colonized ($n=4$) & 6.8M -- 14.5M & 10.2M & $95.1\% \pm 1.1\%$ & $+0.15 \pm 0.41$ & Percoll Density Gradient \\
+GSE266602 & Germ-Free ($n=5$) & 7.2M -- 15.1M & 10.8M & $94.8\% \pm 1.2\%$ & $+0.11 \pm 0.38$ & Percoll Density Gradient \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\vspace{1.5em}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Top Consensus Significant Meta-DEGs under REML-HKSJ Pooling Across 23,096 Genes.}}
+\label{tab:s2_top_meta}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccl}
+\toprule
+\textbf{Gene Symbol} & \textbf{$k$} & \textbf{REML $\log_2\text{FC}$} & \textbf{HKSJ 95\% CI} & \textbf{$p_{\text{HKSJ}}$} & \textbf{$I^2$} & \textbf{Consensus Designation} \\
+\midrule
+\textit{Llgl2} & 4 & +0.672 & [0.166, 1.178] & 0.0243 & 0.0\% & Invariant Basolateral Core \\
+\textit{Slfn2} & 4 & -0.465 & [-0.789, -0.141] & 0.0197 & 9.6\% & Invariant Quiescence Guardian \\
+\textit{Clu} & 3 & +0.850 & [0.251, 1.448] & 0.0215 & 0.0\% & Invariant Extracellular Chaperone \\
+\textit{Fosb} & 3 & +1.345 & [0.797, 1.892] & 0.0160 & 0.0\% & Invariant Immediate Early Activator \\
+\textit{Sap30} & 3 & -0.393 & [-0.653, -0.131] & 0.0409 & 0.0\% & Invariant Sin3A-HDAC Corepressor \\
+\textit{Card6} & 3 & -0.431 & [-0.715, -0.146] & 0.0398 & 0.0\% & Invariant NF-$\kappa$B / NOD Modulator \\
+\textit{Hes1} & 3 & -0.365 & [-0.684, -0.046] & 0.0412 & 0.0\% & Notch Pathway Transcriptional Brake \\
+\textit{Tnf} & 3 & +1.038 & [-0.183, 2.259] & 0.0821 & 32.2\% & Conserved Low-Grade Priming \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\vspace{1.5em}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Factorial Interaction Meta-Regression Metrics for Sex Dimorphism ($N=51$).}}
+\label{tab:s3_sex}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccclp{6.5cm}}
+\toprule
+\textbf{Gene} & \textbf{Male LFC} & \textbf{Female LFC} & \textbf{$\hat{\theta}_{\text{int}}$} & \textbf{$p_{\text{int}}$} & \textbf{$I^2_{\text{sex}}$} & \textbf{Dimorphism Status} & \textbf{Biological Interpretation} \\
+\midrule
+\textit{Slfn2} & -0.521 & -0.183 & +0.3382 & 0.017 & 0.0\% & Male-Biased Vulnerability & Steeper loss of quiescence in males \\
+\textit{Oas1a} & -0.489 & -0.154 & +0.3348 & 0.051 & 0.0\% & Male-Biased Vulnerability & Antiviral surveillance collapse \\
+\textit{Irf1} & -0.061 & -0.079 & -0.0177 & 0.863 & 0.0\% & Sex-Shared (Invariant) & Master regulon shutoff is sex-invariant \\
+\textit{Stat1} & -0.285 & -0.377 & -0.0918 & 0.362 & 0.0\% & Sex-Shared (Invariant) & Downstream JAK/STAT shutdown \\
+\textit{Llgl2} & +0.076 & +0.051 & -0.0247 & 0.941 & 35.8\% & Sex-Shared (Invariant) & Nutrient adaptation is sex-invariant \\
+\textit{Clu} & +0.412 & +0.380 & -0.0321 & 0.786 & 0.0\% & Sex-Shared (Invariant) & Chaperone secretion is sex-invariant \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\vspace{1.5em}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Top TRRUST Transcription Factor Regulon Enrichments Across Common Transcriptome.}}
+\label{tab:s4_trrust}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{clccccl}
+\toprule
+\textbf{Rank} & \textbf{Regulon TF} & \textbf{Targets ($n$)} & \textbf{Mean Target LFC} & \textbf{$Z_{\text{activity}}$} & \textbf{FDR} & \textbf{Regulon Response} \\
+\midrule
+1 & \textbf{IRF1} & 23 & -0.208 & -2.284 & 0.0384 & \textbf{Significant Master Repression} \\
+2 & STAT1 & 41 & -0.145 & -1.821 & 0.0892 & Repressed Interferon Cascade \\
+3 & RELA (NF-$\kappa$B) & 82 & +0.092 & +1.341 & 0.1820 & Modest Pro-inflammatory Priming \\
+4 & JUN (AP-1) & 54 & +0.114 & +1.520 & 0.1540 & Immediate Early Priming \\
+5 & FOS (AP-1) & 38 & +0.142 & +1.684 & 0.1210 & Immediate Early Priming \\
+6 & SP1 & 95 & -0.042 & -0.612 & 0.5410 & Stable Basal Transcription \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\clearpage
+\section{Supplementary Figures}
+
+% Figure S1
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{figures/fig_qc_microglial_purity.png}
+  \caption{Microglial Lineage Purity Audit}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{figures/fig_qc_library_depths.png}
+  \caption{Library Depth Distributions}
+\end{subfigure}
+\caption{\textbf{Detailed Quality Control Audit and Microglial Lineage Validation.} 
+(A) Assessment of microglial purity by measuring canonical microglial marker expression versus non-microglial contaminants across 60 biological libraries. 
+(B) Sequencing depth distributions across individual experimental cohorts.}
+\label{fig:figs1}
+\end{figure}
+
+\vspace{1.5em}
+
+% Figure S2
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{figures/fig_lfc_correlation_heatmap.png}
+  \caption{Cross-Cohort Log2FC Correlation}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{figures/fig_cohort_deg_overlap.png}
+  \caption{Cohort DEG Overlap}
+\end{subfigure}
+\caption{\textbf{Study-Specific Variance and Unpooled DEG Concordance.} 
+(A) Pairwise Pearson correlation heatmap of genome-wide effect sizes between cohorts, showing uncoupled baseline laboratory noise ($\rho \approx 0$). 
+(B) Overlap of differentially expressed genes between cohorts illustrating limited raw gene intersection without statistical pooling.}
+\label{fig:figs2}
+\end{figure}
+
+\clearpage
+
+% Figure S3
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/fig_heterogeneity_distribution.png}
+\caption{\textbf{Distribution of Higgins $I^2$ Heterogeneity Across 23,096 Evaluated Genes.} 
+Histogram of Higgins $I^2$ values across the common transcriptome. Over 70.5\% of genes exhibit low between-study heterogeneity ($I^2 < 25\%$), with only 4.5\% displaying extreme heterogeneity ($I^2 > 75\%$).}
+\label{fig:figs3}
+\end{figure}
+
+\vspace{1.5em}
+
+% Figure S4
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/fig_loo_stability.png}
+\caption{\textbf{Systematic Leave-One-Out (LOO) Sensitivity Meta-Analyses.} 
+Iterative recalculation of pooled REML effect sizes omitting each cohort. Core consensus loci (\textit{Llgl2}, \textit{Clu}, \textit{Slfn2}, \textit{Sap30}) remain tightly centered along the unity line across all iterations, while acute shock effectors (\textit{Tsc22d3}, \textit{Ddit4}) shift to zero upon omission of the antibiotic cohort.}
+\label{fig:figs4}
+\end{figure}
+
+\clearpage
+
+% Figure S5
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{figures/fig_wgcna_modules_eigengenes.png}
+  \caption{WGCNA Module-Trait Correlations}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{figures/fig_network_hub_subgraph.png}
+  \caption{Topological Overlap Hub Network}
+\end{subfigure}
+\caption{\textbf{Weighted Gene Co-Expression Networks and Consensus Hub Subgraphs.} 
+(A) WGCNA module eigengenes and their correlations with experimental microbiome depletion. 
+(B) Consensus co-expression hub subgraph highlighting topological overlap connections centered on \textit{Llgl2} and \textit{Clu}.}
+\label{fig:figs5}
+\end{figure}
+
+\vspace{1.5em}
+
+% Figure S6
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{figures/fig_scfa_rescue_specificity_null.png}
+  \caption{Specificity Null Distribution}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+  \includegraphics[width=\textwidth]{figures/fig_scfa_rescue_inversion.png}
+  \caption{SCFA Signature Inversion}
+\end{subfigure}
+\caption{\textbf{SCFA Metabolite Rescue Specificity Null Model Permutations and Trajectory.} 
+(A) 1,000-iteration permutation test against background non-DEGs ($p_{\text{perm}} < 0.001$), confirming specificity of the rescue index. 
+(B) Scatter plot illustrating the profound reciprocal correlation ($r = -0.873$) between meta-analytic depletion and in vivo SCFA repletion.}
+\label{fig:figs6}
+\end{figure}
+
+\end{document}
