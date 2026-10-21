@@ -753,7 +753,7 @@
     </nav>
     <div style="margin-top: 30px; font-size: 11px; color: var(--text-muted); line-height: 1.6;">
       <strong>NeuroGut-MetaSeq</strong><br>
-      v1.3.0 (Preprint Release)<br>
+      v1.4.0 (Production Release)<br>
       67/67 Tests Passing (100%)<br>
       FAIR Compliant Open Science
     </div>
@@ -765,7 +765,7 @@
     <!-- Header -->
     <header class="article-header">
       <div class="badge-bar">
-        <span class="badge badge-gold">v1.3.0 Multi-Omic &amp; Mechanistic Release</span>
+        <span class="badge badge-gold">v1.4.0 Production Academic Release</span>
         <span class="badge badge-green">67/67 Pytest Suites Passed</span>
         <span class="badge">60 Biological Samples</span>
         <span class="badge badge-blue">51 Sex-Informative Samples</span>
@@ -800,7 +800,7 @@
         Microglia are the resident macrophages and immune sentinels of the central nervous system (CNS), continuously calibrated by biochemical cues from the gut microbiome. While individual RNA-sequencing studies have established that gut microbiota depletion disrupts microglial morphology and maturation, disparate experimental models (lifelong germ-free housing vs. acute antibiotic cocktails vs. dietary fiber starvation) and cell-isolation techniques have yielded discordant differentially expressed gene (DEG) lists ($\rho \approx 0$).
       </p>
       <p>
-        Here, we present <strong>NeuroGut-MetaSeq (v1.3.0)</strong>, synthesizing 60 biological transcriptomes across four independent rodent cohorts using negative binomial generalized linear models, Restricted Maximum Likelihood (REML) variance estimation, and Hartung-Knapp-Sidik-Jonkman (HKSJ) random-effects pooling across 23,096 common genes. We separate an invariant multi-study core led by basolateral polarity protein <em>Llgl2</em> ($k=4, I^2=0\%$) and extracellular chaperone hub <em>Clu</em> ($k=3, I^2=0\%$) from model-private perturbation shocks (*Tsc22d3*, *Ddit4*; $I^2 > 95\%$). Factorial sex-interaction modeling across 51 sex-informative samples reveals that <strong>99.1% of the microglial transcriptome is sex-invariant</strong> ($I^2_{\text{sex}} = 0.0\%$), with selective male-biased vulnerability in <em>Slfn2</em> and <em>Oas1a</em>.
+        Here, we present <strong>NeuroGut-MetaSeq (v1.4.0)</strong>, synthesizing 60 biological transcriptomes across four independent rodent cohorts using negative binomial generalized linear models, Restricted Maximum Likelihood (REML) variance estimation, and Hartung-Knapp-Sidik-Jonkman (HKSJ) random-effects pooling across 23,096 common genes. We separate an invariant multi-study core led by basolateral polarity protein <em>Llgl2</em> ($k=4, I^2=0\%$) and extracellular chaperone hub <em>Clu</em> ($k=3, I^2=0\%$) from model-private perturbation shocks (*Tsc22d3*, *Ddit4*; $I^2 > 95\%$). Factorial sex-interaction modeling across 51 sex-informative samples reveals that <strong>99.1% of the microglial transcriptome is sex-invariant</strong> ($I^2_{\text{sex}} = 0.0\%$), with selective male-biased vulnerability in <em>Slfn2</em> and <em>Oas1a</em>.
       </p>
       <p>
         Whole-transcriptome GSEA and TRRUST upstream transcription factor deconvolution establish the collapse of basal tonic interferon surveillance (Hallmark Interferon Gamma Response NES = -2.27, FDR &lt; 0.001) driven by shutoff of master regulator <strong>IRF1</strong> ($Z = -2.45, p = 0.00098, \text{FDR} = 0.0380$). High-resolution single-cell deconvolution (BayesPrism, $\kappa = 1.54 < 30$) establishes that Interferon-Responsive Microglia (IRM) are physically preserved ($17.5\%$ depleted vs $16.8\%$ reference), proving that the collapse is a genuine <strong>cell-intrinsic per-cell transcriptional shutoff</strong> ($p < 0.001$). Tripartite microglial ATAC-seq footprinting (Erny 2021) directly demonstrates that TOBIAS open chromatin footprints at <em>Irf1</em> and <em>Stat1</em> motifs collapse during depletion and are <strong>88.9% restored</strong> upon short-chain fatty acid (SCFA) repletion. In silico NicheNet ligand-receptor prioritization identifies circulating outer membrane vesicles (TLR4/CD14, $r = 0.658$) and brain microvascular endothelial <em>Ifnb1</em> (IFNAR1/2, $r = 0.600$) as primary upstream drivers of basal IRF1 tone. Finally, co-expression analysis reveals coordinate upregulation of <em>Llgl2</em> and the large neutral amino acid transporter <strong>LAT1 (*Slc7a5*)</strong> (+0.641 LFC) alongside mTOR suppression (-0.469 LFC), establishing an invariant nutrient-scavenging adaptation. We resolve the in vivo blood-brain barrier (BBB) pharmacokinetic paradox through a Three-Pillar relay framework (border-associated macrophages, ACSS2/acetate central metabolic replenishment, and vagal signaling).
@@ -1719,7 +1719,7 @@
     <section id="discussion">
       <h2>4. Comprehensive Discussion</h2>
       <p>
-        Through multi-cohort harmonization, REML-HKSJ random-effects meta-analysis, factorial sex-interaction modeling, BayesPrism deconvolution, and tripartite ATAC-seq footprinting across 60 biological transcriptomes, <strong>NeuroGut-MetaSeq (v1.3.0)</strong> establishes a unified, rigorous portrait of microglial regulation along the gut-brain axis. Our findings resolve several long-standing controversies in neuroimmunology while introducing novel mechanistic paradigms.
+        Through multi-cohort harmonization, REML-HKSJ random-effects meta-analysis, factorial sex-interaction modeling, BayesPrism deconvolution, and tripartite ATAC-seq footprinting across 60 biological transcriptomes, <strong>NeuroGut-MetaSeq (v1.4.0)</strong> establishes a unified, rigorous portrait of microglial regulation along the gut-brain axis. Our findings resolve several long-standing controversies in neuroimmunology while introducing novel mechanistic paradigms.
       </p>
 
       <div id="disc-defense">
@@ -1973,7 +1973,7 @@
   title        = {Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility},
   journal      = {bioRxiv / GitHub Open Science Release},
   year         = {2026},
-  version      = {1.3.0},
+  version      = {1.4.0},
   publisher    = {GitHub},
   url          = {https://github.com/samyakmeshram/NeuroGut-MetaSeq}
 }</pre>

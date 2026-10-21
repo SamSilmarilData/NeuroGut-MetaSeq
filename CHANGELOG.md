@@ -7,6 +7,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.0] - 2026-10-21
+### Academic Release: 6 Biological Acts Architecture, Edge-to-Edge Panoramic Schematics, and Consensus Concordance Matrix
+
+### Added
+- **Master Unified Figure Engine** (`scripts/build_unified_figures.py`):
+  - Consolidated 11 fragmented display items into **6 high-density multi-panel composite plates** (`Figures 1–6`) for the main manuscript and **9 diagnostic plates** (`Figures S1–S9`) for the supplementary information.
+  - Generates synchronized publication-grade assets across 3 formats simultaneously: 300 DPI PNG, vector SVG, and vector PDF in `paper/figures/` and `docs/assets/`.
+- **Edge-to-Edge Panoramic Widescreen Schematics**:
+  - Decoupled top overview panels (`Figure 1A` Study Overview & Harmonization Design; `Figure 6A` In Vivo Three-Pillar BBB Flux Model) via independent top `GridSpec` (`gs_top`) with margins `[0.015, 0.985]`, matching exactly the 0 px / 1 px left/right margin alignment of bottom panels.
+  - Increased vertical height budget by +27% (`height_ratios=[1.4, 1.0]`), eliminating white gutters and dramatically improving biological readability.
+- **Cross-Cohort Consensus Concordance Matrix** (`Figure 2D`):
+  - Replaced the uninterpretable 60-sample Z-score clustered heatmap with a clean 12-gene $\times$ 5-column consensus matrix showing exact numerical $\log_2\text{FC}$ values and significance asterisks ($*p<0.05, **p<0.01, ***p<0.001$).
+  - Explicit visual partition separating the **Invariant Multi-Cohort Core** (*Llgl2, Clu, Slfn2, Sap30, Slc25a19, Fosb, Card6, Tnf*) from **Model-Private Perturbation Shocks** (*Tsc22d3, Ddit4, Plin3, Ccl2*).
+  - Prominent red dashed box highlighting the pooled REML synthesis effect size and confidence intervals.
+  - Decoupled right panel width ratio (`width_ratios=[0.95, 1.20]`, `wspace=0.38`) preventing label clipping against Panel 2C's axis spine.
+- **Single-Panel Table-Forest & Bland-Altman Transforms**:
+  - Implemented Table-Forest integration in `Figure 2B`, embedding sample sizes, study weights, effect sizes, and HKSJ confidence intervals directly within forest displays.
+  - Implemented Bland-Altman MA difference plots ($M$ vs $A$) in `Figure 3A` evaluating cross-sex concordance and homoscedasticity.
+- **Manuscript Skeleton Design** (`docs/MANUSCRIPT_SKELETON_DESIGN.md`):
+  - Restructured the narrative into **6 Biological Acts** matching the 6 composite plates:
+    - *Act I: Multi-Cohort Harmonization, Quality Auditing, and Disparate Experimental Paradigms* (Figure 1).
+    - *Act II: Separation of an Invariant Multi-Study Core from Model-Private Perturbation Shocks* (Figure 2).
+    - *Act III: Factorial Sex-Interaction Modeling Proves Universal Core Invariance with Male-Biased Quiescence Vulnerability* (Figure 3).
+    - *Act IV: Single-Cell Deconvolution Uncovers Physical Retention and Cell-Intrinsic Tonic Interferon Shutoff* (Figure 4).
+    - *Act V: Cerebrovascular Endothelial Relays, Epigenomic Footprints, and the Llgl2-LAT1 Nutrient Scavenging Axis* (Figure 5).
+    - *Act VI: In Vivo Metabolite Reversibility and Resolution of the Blood-Brain Barrier Pharmacokinetic Paradox* (Figure 6).
+- **Exact 21-Page Single-Column Layout** (`paper/manuscript.pdf`):
+  - Formatted 4-panel composite figures into dedicated full-page display plates, achieving an exact 21-page publication PDF with 0 compilation errors.
+- **Supplementary Information Expansion** (`paper/supplementary.pdf`):
+  - Expanded supplementary package to 13 pages, integrating Figures S1 through S9, full mathematical derivations for REML-HKSJ and BayesPrism, and Supplementary Tables S1 through S4.
+
+### Changed
+- `docs/MANUSCRIPT.md`, `paper/manuscript.tex`, `paper/supplementary.tex`, `scripts/build_latex_sources.py`, and `scripts/07_build_web_paper.py`: Synchronized all headings, figures, tables, cross-references, and version strings to `v1.4.0`.
+- `biorxiv_submission/METADATA.json`, `biorxiv_submission/METADATA.md`, `biorxiv_submission/ABSTRACT_SUBMISSION.txt`, and `biorxiv_submission/ZENODO_FREEZE_GUIDE.md`: Updated release metadata and abstract character counts to `v1.4.0`.
+- `README.md` and `paper/README.md`: Updated version badges (`v1.4.0`), page counts (manuscript: 21 pages, supplementary: 13 pages), and added architectural documentation for the 6 Biological Acts and panoramic plates.
+- `tests/test_horizon5_narrative.py`: Updated assertion to accept `v1.4.0` release string (67/67 tests passing).
+
+---
+
 ## [1.3.0-draft1] - 2026-10-19
 ### Academic Release: Publication-Grade LaTeX Pipeline, bioRxiv Preprint Package & Iterative First Draft Roadmap
 

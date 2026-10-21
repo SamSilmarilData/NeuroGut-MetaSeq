@@ -1,13 +1,13 @@
 # NeuroGut-MetaSeq: Publication-Grade LaTeX PDF Compilation Pipeline
 
-This directory contains the complete, reproducible LaTeX source code and build automation scripts for generating publication-grade PDF documents for **NeuroGut-MetaSeq (v1.3.0)**.
+This directory contains the complete, reproducible LaTeX source code and build automation scripts for generating publication-grade PDF documents for **NeuroGut-MetaSeq (v1.4.0)**.
 
 ---
 
-## 📌 Document Status: Academic Release (v1.3.0)
+## 📌 Document Status: Academic Release (v1.4.0)
 
 > [!NOTE]
-> This represents the **first compiled draft** of the preprint. While all statistical results, multi-omic analyses, tables, figures, and literature citations are fully generated and compiled with zero errors, iterative editorial refinements—including enhanced conceptual cartoon diagrams, visual aesthetics, narrative pacing, and typography adjustments—will be implemented in subsequent iterations.
+> This represents the **production academic release** (`v1.4.0`) of the preprint. It introduces the unified **6 Biological Acts** narrative, edge-to-edge panoramic schematics (Figures 1A and 6A), single-panel Table-Forest visualizations, Bland-Altman MA concordance transforms, and the Cross-Cohort Consensus Concordance Matrix (Figure 2D). All statistical results, multi-omic analyses, tables, figures, and literature citations compile cleanly with zero errors.
 
 ---
 
@@ -15,15 +15,15 @@ This directory contains the complete, reproducible LaTeX source code and build a
 
 | File | Purpose | Key Details |
 | :--- | :--- | :--- |
-| [`manuscript.tex`](manuscript.tex) | Primary Manuscript LaTeX Source | Line-numbered (`lineno`), `booktabs` Tables 1--8, Figures 1--11 inline in Results, unnumbered title header. |
-| [`supplementary.tex`](supplementary.tex) | Standalone Supplementary Information | Independent pagination (`S1, S2...`), full mathematical derivations, Tables S1--S4, Figures S1--S6. |
+| [`manuscript.tex`](manuscript.tex) | Primary Manuscript LaTeX Source | Line-numbered (`lineno`), `booktabs` Tables 1--8, Figures 1--6 inline in Results, unnumbered title header. |
+| [`supplementary.tex`](supplementary.tex) | Standalone Supplementary Information | Independent pagination (`S1, S2...`), full mathematical derivations, Tables S1--S4, Figures S1--S9. |
 | [`references.bib`](references.bib) | BibTeX Literature Database | 46 fully resolved entries with normalized author names, journal titles, DOIs, and PMIDs. |
 | [`ref_key_map.json`](ref_key_map.json) | Citation Mapping Dictionary | Maps bracketed citation numbers from `docs/MANUSCRIPT.md` to BibTeX keys. |
 | [`build.sh`](build.sh) | Standalone Shell Compilation Script | Executable script running 3 passes of `pdflatex` and `bibtex` for both documents. |
 | [`Makefile`](Makefile) | Standard Unix Build Target | Provides `make all` and `make clean` targets. |
-| [`figures/`](figures/) | High-Resolution Figure Assets | Contains all 300+ DPI PNG assets embedded directly into the LaTeX document. |
-| [`manuscript.pdf`](manuscript.pdf) | Compiled Primary Manuscript PDF | 23 pages, 9.0 MB, publication-grade bioRxiv layout with zero undefined references. |
-| [`supplementary.pdf`](supplementary.pdf) | Compiled Supplementary Information PDF | 8 pages, 3.6 MB, complete with table of contents, derivations, tables, and figures. |
+| [`figures/`](figures/) | High-Resolution Figure Assets | Contains all 300+ DPI PNG and PDF assets embedded directly into the LaTeX document. |
+| [`manuscript.pdf`](manuscript.pdf) | Compiled Primary Manuscript PDF | 21 pages, ~10 MB, publication-grade bioRxiv layout with zero undefined references. |
+| [`supplementary.pdf`](supplementary.pdf) | Compiled Supplementary Information PDF | 13 pages, ~6 MB, complete with table of contents, derivations, tables S1--S4, and figures S1--S9. |
 
 ---
 
@@ -67,9 +67,9 @@ pdflatex -interaction=nonstopmode supplementary.tex
 
 1. **Continuous Narrative Flow**:
    - Section headings flow naturally with balanced page-filling.
-   - Artificial `\clearpage` breaks are restricted strictly to major structural transitions (e.g. before Discussion and Supplementary sections), preventing sparse or half-empty pages.
+   - Dedicated full-page display plates host 4-panel composite figures cleanly within publication float constraints.
 2. **Sequential Figure & Table Chronology**:
-   - Every figure (Figures 1 through 11) and table (Tables 1 through 8) is embedded inline within its respective Results subsection in strictly monotonic narrative order.
+   - Every composite figure (Figures 1 through 6) and table (Tables 1 through 8) is embedded inline within its respective Results section in strictly monotonic narrative order.
 3. **Peer-Review Ready Line Numbering**:
    - `\linenumbers` is activated starting at `\begin{abstract}`, keeping author affiliations clean while ensuring line-by-line reviewer commentary across the text.
 4. **Professional Tabular Formatting**:
@@ -79,15 +79,14 @@ pdflatex -interaction=nonstopmode supplementary.tex
 
 ---
 
-## 🗺️ Editorial & Visual Iteration Roadmap
+## 🗺️ Editorial & Visual Enhancements Implemented (v1.4.0)
 
-While this First Draft is statistically complete and reviewer-proofed, upcoming iterations will focus on:
-
-- [ ] **Conceptual Cartoon Schematics**:
-  - Developing multi-panel visual cartoons (e.g. gut-vascular-meningeal interface, Three-Pillar BBB flux relay, and *Llgl2*-LAT1 nutrient scavenging axis) to complement empirical data plots.
-- [ ] **Visual Hierarchy & Color Harmony**:
-  - Refining color palettes across multi-cohort forest plots and scatter plots for maximum accessibility and visual contrast.
-- [ ] **Storytelling & Narrative Pacing**:
-  - Polishing prose transitions between Results movements and sharpening Discussion emphasis to optimize reader engagement.
-- [ ] **Interactive Web Synchronization**:
-  - Keeping [`docs/index.html`](../docs/index.html) and [`docs/MANUSCRIPT.md`](../docs/MANUSCRIPT.md) continuously synchronized with LaTeX edits.
+- [x] **Conceptual Cartoon Schematics**:
+  - Engineered panoramic widescreen overview schematic (`Fig 1A`) and Three-Pillar in vivo BBB flux model (`Fig 6A`), enlarged by +27% vertically and decoupled to span edge-to-edge (0 px / 1 px gap).
+- [x] **Visual Hierarchy & Color Harmony**:
+  - Replaced crowded 60-sample heatmap with Cross-Cohort Consensus Concordance Matrix (`Fig 2D`) featuring exact numerical LFCs, significance asterisks, and REML synthesis box.
+  - Implemented Single-Panel Table-Forest plots (`Fig 2B`) and Bland-Altman MA concordance scatter plots (`Fig 3A`).
+- [x] **Storytelling & Narrative Pacing**:
+  - Restructured Results into **6 Biological Acts** (`docs/MANUSCRIPT_SKELETON_DESIGN.md`), optimizing page budget and reading momentum.
+- [x] **Interactive Web Synchronization**:
+  - Synchronized [`docs/index.html`](../docs/index.html) and [`docs/MANUSCRIPT.md`](../docs/MANUSCRIPT.md) continuously with LaTeX sources and figures.

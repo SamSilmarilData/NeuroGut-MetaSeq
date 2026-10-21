@@ -44,7 +44,7 @@
 \linenumbers
 
 \section*{Supplementary Information Overview}
-This document contains extended methodological formulations, supplementary diagnostic figures (Figures S1--S6), and supplementary statistical tables (Tables S1--S4) supporting the main text findings of \textbf{NeuroGut-MetaSeq (v1.3.0)}.
+This document contains extended methodological formulations, supplementary diagnostic figures (Figures S1--S9), and supplementary statistical tables (Tables S1--S4) supporting the main text findings of \textbf{NeuroGut-MetaSeq (v1.4.0)}.
 
 \tableofcontents
 
@@ -121,7 +121,7 @@ GSE266602 & Depleted GF/ABX ($n=6$) & 41.7M -- 70.4M & 54.1M & $74.3\% \pm 14.4\
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccl}
 \toprule
-\textbf{Gene Symbol} & \textbf{$k$} & \textbf{REML $\log_2\text{FC}$} & \textbf{HKSJ 95\% CI} & \textbf{$p_{\text{HKSJ}}$} & \textbf{$I^2$} & \textbf{Consensus Designation} \\
+\textbf{Gene Symbol} & \textbf{Cohorts ($k$)} & \textbf{REML $\log_2\text{FC}$} & \textbf{HKSJ 95\% CI} & \textbf{$p_{\text{HKSJ}}$} & \textbf{$I^2$} & \textbf{Consensus Designation} \\
 \midrule
 \textit{Llgl2} & 4 & +0.672 & [0.166, 1.178] & 0.0243 & 0.0\% & Invariant Basolateral Core \\
 \textit{Slfn2} & 4 & -0.465 & [-0.789, -0.141] & 0.0197 & 9.6\% & Invariant Quiescence Guardian \\
@@ -143,7 +143,7 @@ GSE266602 & Depleted GF/ABX ($n=6$) & 41.7M -- 70.4M & 54.1M & $74.3\% \pm 14.4\
 \caption{\textbf{Factorial Interaction Meta-Regression Metrics for Sex Dimorphism ($N=51$).}}
 \label{tab:s3_sex}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccclp{6.5cm}}
+\begin{tabular}{lccccclp{6.5cm}}
 \toprule
 \textbf{Gene} & \textbf{Male LFC} & \textbf{Female LFC} & \textbf{$\hat{\theta}_{\text{int}}$} & \textbf{$p_{\text{int}}$} & \textbf{$I^2_{\text{sex}}$} & \textbf{Dimorphism Status} & \textbf{Biological Interpretation} \\
 \midrule
@@ -187,38 +187,26 @@ GSE266602 & Depleted GF/ABX ($n=6$) & 41.7M -- 70.4M & 54.1M & $74.3\% \pm 14.4\
 % Figure S1
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_qc_microglial_purity.png}
-  \caption{Microglial Lineage Purity Audit}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_qc_library_depths.png}
-  \caption{Library Depth Distributions}
-\end{subfigure}
-\caption{\textbf{Detailed Quality Control Audit and Microglial Lineage Validation.} 
-(A) Assessment of microglial purity by measuring canonical microglial marker expression versus non-microglial contaminants across 60 biological libraries. 
-(B) Sequencing depth distributions across individual experimental cohorts.}
+\includegraphics[width=0.92\textwidth]{figures/fig_s1_qc_unified_audit.pdf}
+\caption{\textbf{Multi-Cohort Technical Quality Control Audit and Microglial Lineage Validation.} 
+(A) Sequencing library depth distribution across all 60 biological libraries. 
+(B) Canonical microglial lineage checkpoint abundance ($>99.2\%$ purity). 
+(C) Non-myeloid contaminant marker depletion ($<0.8\%$ astrocytic, oligodendrocytic, and neuronal transcripts). 
+(D) Ex vivo enzymatic dissociation stress scores across colonized controls and microbiome-depleted groups ($p \ge 0.18$).}
 \label{fig:figs1}
 \end{figure}
 
-\vspace{1.5em}
+\clearpage
 
 % Figure S2
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_lfc_correlation_heatmap.png}
-  \caption{Cross-Cohort Log2FC Correlation}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_cohort_deg_overlap.png}
-  \caption{Cohort DEG Overlap}
-\end{subfigure}
-\caption{\textbf{Study-Specific Variance and Unpooled DEG Concordance.} 
-(A) Pairwise Pearson correlation heatmap of genome-wide effect sizes between cohorts, showing uncoupled baseline laboratory noise ($\rho \approx 0$). 
-(B) Overlap of differentially expressed genes between cohorts illustrating limited raw gene intersection without statistical pooling.}
+\includegraphics[width=0.92\textwidth]{figures/fig_s2_volcano_all_cohorts.pdf}
+\caption{\textbf{Single-Cohort Differential Expression Landscapes Across Experimental Paradigms.} 
+(A) GSE107925 (Lifelong Germ-Free adult microglia). 
+(B) GSE108045 (Acute Broad-Spectrum Antibiotics cocktail), illustrating profound perturbation shock repression of \textit{Tsc22d3} and \textit{Ddit4}. 
+(C) GSE186210 (Dietary Fiber Starvation), highlighting selective suppression of perilipin \textit{Plin3}. 
+(D) GSE266602 (Germ-Free Percoll Baseline).}
 \label{fig:figs2}
 \end{figure}
 
@@ -227,20 +215,23 @@ GSE266602 & Depleted GF/ABX ($n=6$) & 41.7M -- 70.4M & 54.1M & $74.3\% \pm 14.4\
 % Figure S3
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{figures/fig_heterogeneity_distribution.png}
-\caption{\textbf{Distribution of Higgins $I^2$ Heterogeneity Across 23,096 Evaluated Genes.} 
-Histogram of Higgins $I^2$ values across the common transcriptome. Over 70.5\% of genes exhibit low between-study heterogeneity ($I^2 < 25\%$), with only 4.5\% displaying extreme heterogeneity ($I^2 > 75\%$).}
+\includegraphics[width=0.92\textwidth]{figures/fig_s3_cross_cohort_divergence.pdf}
+\caption{\textbf{Cross-Cohort Divergence, Marker Profiles, and Unpooled DEG Overlaps.} 
+(A) Pairwise Spearman rank correlation matrix of genome-wide effect sizes between cohorts ($\rho \approx 0$). 
+(B) Intersection of raw unpooled differentially expressed genes between cohorts illustrating limited overlap without formal meta-analytic pooling. 
+(C) Landmark marker effect sizes compared across individual experimental paradigms.}
 \label{fig:figs3}
 \end{figure}
 
-\vspace{1.5em}
+\clearpage
 
 % Figure S4
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{figures/fig_loo_stability.png}
-\caption{\textbf{Systematic Leave-One-Out (LOO) Sensitivity Meta-Analyses.} 
-Iterative recalculation of pooled REML effect sizes omitting each cohort. Core consensus loci (\textit{Llgl2}, \textit{Clu}, \textit{Slfn2}, \textit{Sap30}) remain tightly centered along the unity line across all iterations, while acute shock effectors (\textit{Tsc22d3}, \textit{Ddit4}) shift to zero upon omission of the antibiotic cohort.}
+\includegraphics[width=0.92\textwidth]{figures/fig_s4_heterogeneity_and_forest.pdf}
+\caption{\textbf{Transcriptome-Wide Heterogeneity Distribution and Full Landmark Forest Plot Grid.} 
+(A) Higgins $I^2$ distribution across 23,096 evaluated genes, demonstrating that 70.5\% of genes exhibit low between-study heterogeneity ($I^2 < 25\%$). 
+(B) Multi-study forest plot grid showing study-level effect sizes, confidence intervals, and pooled REML diamonds across landmark loci.}
 \label{fig:figs4}
 \end{figure}
 
@@ -249,39 +240,58 @@ Iterative recalculation of pooled REML effect sizes omitting each cohort. Core c
 % Figure S5
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_wgcna_modules_eigengenes.png}
-  \caption{WGCNA Module-Trait Correlations}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_network_hub_subgraph.png}
-  \caption{Topological Overlap Hub Network}
-\end{subfigure}
-\caption{\textbf{Weighted Gene Co-Expression Networks and Consensus Hub Subgraphs.} 
-(A) WGCNA module eigengenes and their correlations with experimental microbiome depletion. 
-(B) Consensus co-expression hub subgraph highlighting topological overlap connections across three empirical functional axes (\textit{Slfn2-Sap30-Ddit4}, \textit{Sall1-Tmem119-Ffar2-Llgl2}, \textit{Fosb-Fos}).}
+\includegraphics[width=0.92\textwidth]{figures/fig_s5_loo_sensitivity.pdf}
+\caption{\textbf{Systematic Leave-One-Out (LOO) Sensitivity Meta-Analyses.} 
+Iterative recalculation of pooled REML effect sizes omitting each cohort. Core consensus loci (\textit{Llgl2}, \textit{Clu}, \textit{Slfn2}, \textit{Sap30}) remain tightly centered along the unity line across all iterations, while acute shock effectors (\textit{Tsc22d3}, \textit{Ddit4}) return toward zero upon omission of the antibiotic cohort.}
 \label{fig:figs5}
 \end{figure}
 
-\vspace{1.5em}
+\clearpage
 
 % Figure S6
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_scfa_rescue_specificity_null.png}
-  \caption{Specificity Null Distribution}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_scfa_rescue_inversion.png}
-  \caption{SCFA Signature Inversion}
-\end{subfigure}
-\caption{\textbf{SCFA Metabolite Rescue Specificity Null Model Permutations and Trajectory.} 
-(A) 10,000-iteration empirical label-shuffling permutation test ($p_{\text{perm}} < 0.0001$), confirming specificity of the rescue index. 
-(B) Scatter plot illustrating the profound reciprocal correlation ($r = -0.873$) between meta-analytic depletion and in vivo SCFA repletion.}
+\includegraphics[width=0.92\textwidth]{figures/fig_s6_wgcna_and_interactome.pdf}
+\caption{\textbf{Weighted Gene Co-Expression Networks and Consensus Hub Interactome.} 
+(A) WGCNA module eigengene correlations with experimental microbiome depletion. 
+(B) Consensus co-expression hub subgraph highlighting topological overlap connections across three empirical functional axes (\textit{Slfn2-Sap30-Ddit4}, \textit{Sall1-Tmem119-Ffar2-Llgl2}, \textit{Fosb-Fos}).}
 \label{fig:figs6}
+\end{figure}
+
+\clearpage
+
+% Figure S7
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig_s7_deconvolution_diagnostics.pdf}
+\caption{\textbf{BayesPrism Deconvolution Mathematical Diagnostics and Cell Lineage Stability.} 
+(A) Singular Value Decomposition (SVD) condition index scree plot confirming zero harmful multicollinearity ($\kappa = 1.54 < 30$). 
+(B) Pan-microglial lineage marker stability across cohorts (\textit{Hexb}, \textit{Csf1r}, \textit{Tmem119}; $p = 0.85$).}
+\label{fig:figs7}
+\end{figure}
+
+\clearpage
+
+% Figure S8
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig_s8_extended_nichenet.pdf}
+\caption{\textbf{Extended NicheNet Upstream Ligand-Receptor Relay and Regulatory Potential Matrix.} 
+(A) Upstream ligand activity ranking by candidate sender compartment (BMEC brain endothelium, BAM border macrophages, and circulating microbial PAMPs). 
+(B) In silico ligand-to-target regulatory matrix heatmap linking prioritized upstream ligands to microglial IRF1 regulon targets.}
+\label{fig:figs8}
+\end{figure}
+
+\clearpage
+
+% Figure S9
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/fig_s9_scfa_rescue_specificity_null.pdf}
+\caption{\textbf{In Silico SCFA Metabolite Specificity Null Permutation and Ranked ISRI Waterfall.} 
+(A) Empirical label-shuffling specificity null distribution across 10,000 permutations comparing observed core signature recovery ($\text{mean ISRI} = +0.528$, red dashed line) against the chance null ($\mu = 0.001 \pm 0.125, p_{\text{perm}} < 0.0001$). 
+(B) Ranked In Silico Rescue Index (ISRI) waterfall plot across landmark microglial genes, demonstrating coordinate reciprocal rescue in 18 of 19 loci upon in vivo SCFA repletion.}
+\label{fig:figs9}
 \end{figure}
 
 \end{document}

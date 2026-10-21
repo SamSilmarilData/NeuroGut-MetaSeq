@@ -36,6 +36,10 @@ Each research session follows the standardized 5-stage Micro Discovery Loop:
 | [**Entry 006**](#entry-006--2026-10-08--academic-peer-review-overhaul-reml-hksj-estimation-two-tier-subgroup-decomposition-in-vivo-scfa-grounding-and-single-cell-deconvolution-v110-release) | 2026-10-08 | Academic Peer-Review Overhaul | REML-HKSJ estimation, two-tier subgroup decomposition, in vivo SCFA null test, sc-deconvolution, v1.1.0 |
 | [**Entry 007**](#entry-007--2026-10-08--multi-omic--mechanistic-expansion-factorial-sex-meta-regression-bayesprism-deconvolution-epigenomic-atac-footprinting-nichenet-ligand-relay-and-llgl2-lat1-pharmacokinetics-v120-release) | 2026-10-08 | Multi-Omic & Mechanistic Expansion | Factorial sex model, BayesPrism deconvolution, ATAC footprinting, NicheNet ligand relay, v1.2.0 |
 | [**Entry 008**](#entry-008--2026-10-08--final-academic-polish-calibrated-epigenomics-nutrient-adaptations-bbb-pharmacokinetics-and-unified-discovery-studio-integration-v121-release) | 2026-10-08 | Final Academic Polish | Calibrated chromatin-poised reversibility, Llgl2-LAT1 myeloid nutrient axis, BBB ACSS2/BAM model, Unified Discovery Studio, v1.2.1 |
+| [**Entry 009**](#entry-009--2026-10-08--restructuring-the-scientific-web-paper-unified-four-movement-results-architecture-comprehensive-discussion-conclusions--frontiers-and-online-methods-v130-release) | 2026-10-08 | Horizon 5: Web Paper Synthesis | Four-Movement results, comprehensive discussion, online methods, v1.3.0 |
+| [**Entry 010**](#entry-010--2026-10-19--forensic-scientific-integrity-audit-data-text-harmonization-and-waterfall-synchronization-across-code-manuscripts-and-web-artifacts-v121-unified-standard) | 2026-10-19 | Scientific Integrity Audit | Full waterfall data-text audit, 7-edge TOM network, exponent-shielded regex |
+| [**Entry 011**](#entry-011--2026-10-20--fifth-pass-magnifying-glass-audit-resolving-latent-stale-metrics-regex-exponent-citation-shielding-and-pre-flight-submission-harmonization-v130-standard) | 2026-10-20 | Fifth-Pass Magnifying-Glass Audit | Supplementary Table S2 sync, 10,000-permutation null verification, pre-flight submission package |
+| [**Entry 012**](#entry-012--2026-10-21--narrative-restructuring-into-6-biological-acts-panoramic-schematics-and-figure-2d-consensus-concordance-matrix-v140-release) | 2026-10-21 | 6 Biological Acts & Unified Figures | 6 Acts architecture, Fig 1A/6A edge-to-edge schematics, Fig 2D consensus concordance matrix, v1.4.0 Release |
 
 ---
 
@@ -828,6 +832,44 @@ Following strict paired review instructions, a relentless fifth pass was execute
 - **Numerical Alignment**: Exact 4-decimal place agreement across CSVs, LaTeX sources, compiled PDFs, markdown manuscripts, and web portal.
 - **Citation Integrity**: 100% native BibTeX citations across all sections with 0 undefined references and 0 corrupted exponents.
 - **Preprint Status**: **FIFTH PASS COMPLETE — GOLD PREPRINT ARCHIVAL INTEGRITY VERIFIED**.
+
+---
+
+### Entry 012 | 2026-10-21 | Narrative Restructuring into 6 Biological Acts, Panoramic Schematics, and Figure 2D Consensus Concordance Matrix (v1.4.0 Release)
+
+#### 1. Target Objective & Scope
+1. **Biological Act Consolidation**: Restructure the manuscript narrative from 11 fragmented display items into **6 cohesive Biological Acts** (`docs/MANUSCRIPT_SKELETON_DESIGN.md`), each anchored by a high-density, publication-grade composite plate (Figures 1–6) and supported by 9 diagnostic Supplementary Plates (Figures S1–S9).
+2. **Panoramic Schematic Decoupling (Figures 1A & 6A)**: Eliminate visual gutters and margin mismatch in overview cartoon diagrams by decoupling top panels into dedicated GridSpecs (`gs_top`) with margins `[0.015, 0.985]`, matching the 0 px / 1 px bottom panel width alignment and expanding vertical presence by +27%.
+3. **Consensus Concordance Matrix (Figure 2D)**: Replace the complex 60-sample Z-score clustered heatmap with a high-interpretability 12-gene $\times$ 5-column cross-cohort concordance matrix with numerical effect sizes, significance asterisks, Invariant Core vs. Perturbation Shock partition, and REML synthesis box.
+4. **Publication PDF Page Budget**: Compile the complete single-column manuscript into an exact, beautifully proportioned 21-page PDF (`paper/manuscript.pdf`) with dedicated full-page display plates, 0 compilation errors, and 0 overfull hboxes.
+
+#### 2. Methodological & Computational Actions Taken
+1. **Unified Figure Engine Architecture (`scripts/build_unified_figures.py`)**:
+   - Implemented composite generation for main figures:
+     - `fig1_harmonization_and_design`: Panoramic overview schematic (1A), sequencing depths (1B), lineage purity (1C), cross-cohort PCA (1D).
+     - `fig2_reml_hksj_core`: REML volcano plot (2A), Single-Panel Table-Forest (2B), LOO sensitivity stability (2C), Cross-Cohort Consensus Concordance Matrix (2D).
+     - `fig3_sex_and_subgroups`: Bland-Altman MA concordance transform (3A), sex-stratified forest plots (3B), two-tier subgroup model (3C).
+     - `fig4_interferon_and_deconvolution`: GSEA Hallmark enrichment (4A), TRRUST IRF1 regulon (4B), BayesPrism cell states (4C), cell-intrinsic ISG shutoff (4D).
+     - `fig5_relays_and_nutrient_axis`: Microglial ATAC-seq footprinting (5A), cross-omic correlation (5B), NicheNet cerebrovascular relay (5C), *Llgl2*-LAT1 nutrient axis (5D).
+     - `fig6_reversibility_and_bbb_climax`: Widescreen Three-Pillar in vivo BBB flux model (6A), empirical SCFA rescue inversion (6B), 10,000-permutation specificity null test (6C).
+   - Generates synchronized high-resolution PDF, PNG, and SVG vector formats for all main and supplementary plates.
+2. **Margin and Layout Optimization**:
+   - In Figure 2, decoupled right panel width ratio (`width_ratios=[0.95, 1.20]`, `wspace=0.38`), eliminating label collision between Figure 2D's gene names and Figure 2C's axis spine.
+   - Decoupled Figure 1A and Figure 6A from the 3-panel subgrid, expanding left to 0.015 and right to 0.985 to span the complete page width margin.
+3. **Manuscript & Supplementary Compilation**:
+   - Recompiled `paper/manuscript.pdf`: exactly 21 pages, 0 LaTeX errors, 0 undefined citations.
+   - Recompiled `paper/supplementary.pdf`: 13 pages, containing full derivations, Supplementary Tables S1–S4, and Figures S1–S9.
+4. **Full Test Suite & Web Portal Synchronization**:
+   - Recompiled `docs/index.html` (694.9 KB).
+   - Updated `tests/test_horizon5_narrative.py` and passed all 67 pytest test suites (`67 passed in ~1.2s`).
+   - Synchronized metadata across `biorxiv_submission/METADATA.json`, `METADATA.md`, `ABSTRACT_SUBMISSION.txt`, and `ZENODO_FREEZE_GUIDE.md`.
+
+#### 3. Quantitative Deliverables & Status
+- **Layout Compliance**: 21 pages (manuscript) + 13 pages (supplementary), publication-grade typography.
+- **Figure Density**: 6 unified multi-panel main plates + 9 supplementary plates in vector PDF/SVG/PNG formats.
+- **Test Suite**: 67/67 unit and integration tests passing (100% green).
+- **Release Status**: **OFFICIAL ACADEMIC RELEASE v1.4.0 COMPLETE**.
+
 
 
 

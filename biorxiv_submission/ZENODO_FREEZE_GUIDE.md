@@ -1,4 +1,4 @@
-# Zenodo Code & Data Freeze Guide: Tag `v1.3.0-preprint`
+# Zenodo Code & Data Freeze Guide: Tag `v1.4.0`
 
 bioRxiv strongly recommends linking preprint submissions to a citable, permanently archived version of all code and processed data on [Zenodo](https://zenodo.org/). Follow these steps to execute the freeze and obtain a citable DOI.
 
@@ -13,10 +13,10 @@ From the project repository root:
 git status
 
 # 2. Create annotated tag
-git tag -a v1.3.0-preprint -m "NeuroGut-MetaSeq v1.3.0: bioRxiv Preprint Code and Data Freeze"
+git tag -a v1.4.0 -m "NeuroGut-MetaSeq v1.4.0: Production Academic Release & bioRxiv Preprint Code/Data Freeze"
 
 # 3. Push tag to GitHub
-git push origin v1.3.0-preprint
+git push origin v1.4.0
 ```
 
 ---
@@ -33,20 +33,22 @@ git push origin v1.3.0-preprint
 ## Step 3: Trigger the Archive & Mint the DOI
 
 1. Go to GitHub: `https://github.com/samyakmeshram/NeuroGut-MetaSeq/releases/new`.
-2. Select tag: **`v1.3.0-preprint`**.
-3. Release Title: `NeuroGut-MetaSeq v1.3.0-preprint: bioRxiv Submission Release`.
+2. Select tag: **`v1.4.0`**.
+3. Release Title: `NeuroGut-MetaSeq v1.4.0: Production Academic Release`.
 4. Release Notes:
    ```markdown
    Official release freeze for the bioRxiv preprint:
    "Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility"
 
    Includes:
+   - Consolidated 6 Biological Acts results architecture and dedicated full-page display plates
+   - Master figure engine (scripts/build_unified_figures.py) with edge-to-edge panoramic schematics (Figs 1A, 6A) and Fig 2D Consensus Concordance Matrix
    - Complete multi-cohort count matrices and curated clinical metadata (60 samples, 4 cohorts)
    - PyDESeq2, REML-HKSJ random-effects meta-analysis pipelines
    - Factorial sex-dimorphism interaction models
    - BayesPrism single-cell deconvolution and cell-intrinsic imputation
    - Microglial ATAC-seq TOBIAS footprinting and NicheNet intercellular signaling
-   - Publication-grade LaTeX source and compiled manuscript & supplementary PDFs
+   - Publication-grade LaTeX source and compiled manuscript (21 pages) & supplementary (13 pages) PDFs
    ```
 5. Click **Publish Release**.
 6. Within 1--2 minutes, Zenodo will automatically archive the release tarball and assign a permanent DOI (e.g., `10.5281/zenodo.XXXXXXX`).

@@ -30,7 +30,7 @@ def test_web_paper_production_build():
 
     # Title & Metadata
     assert ("Cross-Study Meta-Analysis" in html or "Cross-Study Transcriptomic Meta-Analysis" in html)
-    assert ("v1.3.0" in html or "v1.2.1" in html or "v1.2.0" in html or "v1.1.0" in html or "v1.0.0" in html) and "Release" in html
+    assert ("v1.4.0" in html or "v1.3.0" in html or "v1.2.1" in html or "v1.2.0" in html or "v1.1.0" in html or "v1.0.0" in html) and "Release" in html
     assert "Dynamic Multi-Cohort Forest Plot" in html
     assert "GENE_DATABASE" in html
 

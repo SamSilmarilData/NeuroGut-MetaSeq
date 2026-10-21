@@ -1,210 +1,200 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 960 600" width="960" height="600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="neurogut-arch-title neurogut-arch-desc" id="gut_microbiota_microglia_architecture-root">
-        <title id="neurogut-arch-title">Mechanistic Architecture of the Gut-Microbiota-Microglia Axis</title>
-        <desc id="neurogut-arch-desc">Schematic showing bacterial OMVs and SCFAs signaling across the blood-brain barrier and border macrophages to calibrate microglial tonic interferon tone, Llgl2-LAT1 scavenging, and epigenetic chromatin footprints.</desc>
-        
-        <defs>
-      <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;family=Noto+Serif:ital@0;1&amp;family=Noto+Sans+KR:wght@400;500;600&amp;family=Noto+Serif+KR:wght@400&amp;family=Noto+Sans+TC:wght@400;500;600&amp;family=Noto+Serif+TC:wght@400&amp;display=swap');
-      #gut_microbiota_microglia_architecture-root { --color-paper:   #f8fafc;   
-      --color-paper-2: #f1f5f9;   
-      --color-ink:     #0f172a;   
-      --color-muted:   #475569;   
-      --color-soft:    #64748b;   
-      --color-accent:  #b91c1c;   
-      --color-link:    #1d4ed8;   
-      --font-sans:     'Geist', system-ui, sans-serif;
-      --font-serif:    'Instrument Serif', 'Noto Serif', serif;
-      --font-mono:     'Geist Mono', ui-monospace, monospace; }
+<svg viewBox="0 0 1140 440" width="1140" height="440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="neurogut-arch-title neurogut-arch-desc" id="gut_microbiota_microglia_architecture-root">
+  <title id="neurogut-arch-title">Mechanistic Architecture of the Gut-Microbiota-Microglia Axis</title>
+  <desc id="neurogut-arch-desc">Panoramic schematic showing bacterial OMVs and SCFAs signaling across the blood-brain barrier and border macrophages to calibrate microglial tonic interferon tone, Llgl2-LAT1 scavenging, and epigenetic chromatin footprints.</desc>
+  
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');
+      #gut_microbiota_microglia_architecture-root {
+        --color-paper:   #f8fafc;
+        --color-paper-2: #f1f5f9;
+        --color-ink:     #0f172a;
+        --color-muted:   #475569;
+        --color-soft:    #64748b;
+        --color-accent:  #b91c1c;
+        --color-link:    #1d4ed8;
+        --font-sans:     'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        --font-serif:    'Instrument Serif', Georgia, serif;
+        --font-mono:     'Geist Mono', ui-monospace, Menlo, monospace;
+      }
       #gut_microbiota_microglia_architecture-root { font-family: var(--font-sans); color: var(--color-ink); }
-      #gut_microbiota_microglia_architecture-root .diagram-container { width: 100%; overflow-x: auto; }
-      #gut_microbiota_microglia_architecture-root .subtitle { font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 1.05rem;
-      color: var(--color-muted);
-      margin-bottom: 1.5rem; }
-      #gut_microbiota_microglia_architecture-root .diagram-container { overflow-x: visible; }</style>
-          <marker id="gut_microbiota_microglia_architecture-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#475569"/>
-          </marker>
-          <marker id="gut_microbiota_microglia_architecture-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#b91c1c"/>
-          </marker>
-          <marker id="gut_microbiota_microglia_architecture-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#1d4ed8"/>
-          </marker>
-        </defs>
+    </style>
+    <marker id="arch-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#475569"/>
+    </marker>
+    <marker id="arch-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#b91c1c"/>
+    </marker>
+    <marker id="arch-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1d4ed8"/>
+    </marker>
+    <marker id="arch-arrow-teal" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0f766e"/>
+    </marker>
+    <marker id="arch-arrow-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#15803d"/>
+    </marker>
+  </defs>
 
-        <!-- Canvas Background -->
-        <rect width="960" height="600" fill="#f8fafc"/>
+  <!-- Canvas Background -->
+  <rect width="1140" height="440" fill="#f8fafc"/>
 
-        <!-- ==================== TISSUE COMPARTMENT ZONES ==================== -->
-        <!-- Zone 1: Gut Lumen -->
-        <rect x="32" y="48" width="260" height="452" rx="8" fill="#0f172a" stroke="#0f172a" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
-        <rect x="52" y="52" width="168" height="14" rx="2" fill="#f8fafc"/>
-        <text x="136" y="63" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.18em">GUT LUMEN &amp; MUCOSA</text>
+  <!-- ==================== TISSUE COMPARTMENT ZONES ==================== -->
+  <!-- Zone 1: Gut Lumen -->
+  <g id="zone-gut">
+    <rect x="16" y="16" width="330" height="360" rx="8" fill="#0f172a" stroke="#0f172a" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
+    <rect x="36" y="20" width="168" height="14" rx="2" fill="#f8fafc"/>
+    <text x="120" y="31" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.18em">GUT LUMEN &amp; MUCOSA</text>
+  </g>
 
-        <!-- Zone 2: BBB & Vasculature -->
-        <rect x="320" y="48" width="296" height="452" rx="8" fill="#0f172a" stroke="#0f172a" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
-        <rect x="340" y="52" width="216" height="14" rx="2" fill="#f8fafc"/>
-        <text x="448" y="63" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.18em">CEREBROVASCULAR RELAY (BBB)</text>
+  <!-- Zone 2: BBB & Vasculature -->
+  <g id="zone-bbb">
+    <rect x="366" y="16" width="360" height="360" rx="8" fill="#0f172a" stroke="#0f172a" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
+    <rect x="386" y="20" width="220" height="14" rx="2" fill="#f8fafc"/>
+    <text x="496" y="31" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.18em">CEREBROVASCULAR RELAY (BBB)</text>
+  </g>
 
-        <!-- Zone 3: Brain Parenchyma -->
-        <rect x="644" y="48" width="284" height="452" rx="8" fill="#0f172a" stroke="#0f172a" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
-        <rect x="664" y="52" width="224" height="14" rx="2" fill="#f8fafc"/>
-        <text x="776" y="63" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.18em">CNS PARENCHYMA &amp; MICROGLIA</text>
+  <!-- Zone 3: Parenchymal Microglia -->
+  <g id="zone-cns">
+    <rect x="746" y="16" width="378" height="360" rx="8" fill="#0f172a" stroke="#0f172a" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
+    <rect x="766" y="20" width="200" height="14" rx="2" fill="#f8fafc"/>
+    <text x="866" y="31" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.18em">PARENCHYMAL MICROGLIA (CNS)</text>
+  </g>
 
-        <!-- ==================== CONNECTORS & PATHWAYS ==================== -->
-        <!-- 1. Microbiota -> Circulation (Horizontal) -->
-        <line x1="272" y1="148" x2="332" y2="148" stroke="#475569" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow)"/>
-        <rect x="282" y="141" width="40" height="14" rx="2" fill="#f8fafc"/>
-        <text x="302" y="151" fill="#475569" font-family="'Geist Mono', monospace" font-size="8" font-weight="500" text-anchor="middle">FLUX</text>
+  <!-- ==================== ZONE 1 NODES ==================== -->
+  <!-- Node 1: Commensal Flora -->
+  <g id="node-commensal">
+    <rect x="32" y="45" width="298" height="85" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.0"/>
+    <rect x="44" y="55" width="120" height="14" rx="2" fill="#f1f5f9"/>
+    <text x="104" y="65" fill="#475569" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">STEADY-STATE INPUT</text>
+    <text x="44" y="87" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Commensal Microbiota</text>
+    <text x="44" y="104" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• Complex luminal ecosystem (10¹¹ CFU/g)</text>
+    <text x="44" y="118" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• Diverse clostridial &amp; bacteroidal taxa</text>
+  </g>
 
-        <!-- 2. Microbiota -> Vagus Nerve (Vertical) -->
-        <line x1="162" y1="216" x2="162" y2="292" stroke="#475569" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow)"/>
-        <rect x="136" y="249" width="52" height="14" rx="2" fill="#f8fafc"/>
-        <text x="162" y="259" fill="#475569" font-family="'Geist Mono', monospace" font-size="8" font-weight="500" text-anchor="middle">AFFERENT</text>
+  <!-- Node 2: Bacterial OMVs -->
+  <g id="node-omvs">
+    <rect x="32" y="148" width="298" height="92" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.0"/>
+    <rect x="44" y="158" width="136" height="14" rx="2" fill="#eff6ff"/>
+    <text x="112" y="168" fill="#1d4ed8" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">SYSTEMIC TRANSLOCATION</text>
+    <text x="44" y="190" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Bacterial OMVs &amp; PAMPs</text>
+    <text x="44" y="207" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• 20–250 nm outer membrane vesicles cross barrier</text>
+    <text x="44" y="221" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• Circulating PAMPs maintain baseline sub-septic tone</text>
+  </g>
 
-        <!-- 3. Circulation -> BMEC (Vertical) -->
-        <line x1="468" y1="208" x2="468" y2="232" stroke="#475569" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow)"/>
-        <rect x="444" y="214" width="48" height="14" rx="2" fill="#f8fafc"/>
-        <text x="468" y="224" fill="#475569" font-family="'Geist Mono', monospace" font-size="8" font-weight="500" text-anchor="middle">TLR4-LPS</text>
+  <!-- Node 3: Circulating SCFAs -->
+  <g id="node-scfas">
+    <rect x="32" y="258" width="298" height="102" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.0"/>
+    <rect x="44" y="268" width="128" height="14" rx="2" fill="#f0fdfa"/>
+    <text x="108" y="278" fill="#0f766e" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">FERMENTATIVE FLUX</text>
+    <text x="44" y="300" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Circulating SCFAs</text>
+    <text x="44" y="317" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• Acetate (100–300 µM), Propionate, Butyrate</text>
+    <text x="44" y="331" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• Dietary fiber microbial anaerobic fermentation</text>
+    <text x="44" y="345" fill="#b91c1c" font-family="'Geist Mono', monospace" font-size="8.5">• Withdrawn in GF, ABX, and zero-fiber diets</text>
+  </g>
 
-        <!-- 4. Circulation -> Microglial Tonic Tone (Horizontal, Accent) -->
-        <line x1="596" y1="148" x2="656" y2="148" stroke="#b91c1c" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow-accent)"/>
-        <rect x="606" y="141" width="40" height="14" rx="2" fill="#f8fafc"/>
-        <text x="626" y="151" fill="#b91c1c" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">TONIC</text>
+  <!-- Intra-Zone 1 Arrows -->
+  <line x1="181" y1="130" x2="181" y2="148" stroke="#475569" stroke-width="1.2" marker-end="url(#arch-arrow)"/>
+  <line x1="181" y1="240" x2="181" y2="258" stroke="#475569" stroke-width="1.2" marker-end="url(#arch-arrow)"/>
 
-        <!-- 5. BMEC -> Microglial Tonic Tone (Right-Up Elbow, Link Blue) -->
-        <path d="M 596,280 H 622 Q 630,280 630,272 V 188 Q 630,180 638,180 H 656" fill="none" stroke="#1d4ed8" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow-link)"/>
-        <rect x="604" y="222" width="52" height="14" rx="2" fill="#f8fafc"/>
-        <text x="630" y="232" fill="#1d4ed8" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">IFNB1</text>
+  <!-- ==================== ZONE 2 NODES ==================== -->
+  <!-- Node 4: BMEC Endothelial Barrier -->
+  <g id="node-bmec">
+    <rect x="382" y="45" width="328" height="140" rx="6" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.2"/>
+    <rect x="394" y="55" width="144" height="14" rx="2" fill="#eff6ff"/>
+    <text x="466" y="65" fill="#1d4ed8" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">VASCULAR SENSING (BMEC)</text>
+    <text x="394" y="87" fill="#1d4ed8" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Brain Endothelial Barrier</text>
+    <text x="394" y="105" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• TLR4 / CD14 recognizes luminal &amp; serum OMVs</text>
+    <text x="394" y="120" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Endothelial Ifnb1 secretion into parenchymal abluminal space</text>
+    <text x="394" y="135" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Calibrates homeostatic microglial IFNAR1/2 signaling</text>
+    <text x="394" y="150" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• NicheNet Top Upstream Driver (Pearson r = 0.58)</text>
+  </g>
 
-        <!-- 6. BMEC -> BAM (Vertical) -->
-        <line x1="468" y1="344" x2="468" y2="368" stroke="#475569" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow)"/>
-        <rect x="438" y="350" width="60" height="14" rx="2" fill="#f8fafc"/>
-        <text x="468" y="360" fill="#475569" font-family="'Geist Mono', monospace" font-size="8" font-weight="500" text-anchor="middle">PARAVASC</text>
+  <!-- Node 5: Border Macrophages (BAMs) -->
+  <g id="node-bam">
+    <rect x="382" y="205" width="328" height="155" rx="6" fill="#ffffff" stroke="#0f766e" stroke-width="1.2"/>
+    <rect x="394" y="215" width="160" height="14" rx="2" fill="#f0fdfa"/>
+    <text x="474" y="225" fill="#0f766e" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">PERIVASCULAR SENSOR (BAM)</text>
+    <text x="394" y="247" fill="#0f766e" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Border Macrophages (BAMs)</text>
+    <text x="394" y="265" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Mrc1⁺ Lyve1⁺ perivascular &amp; dural localization</text>
+    <text x="394" y="280" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Direct micromolar SCFA sensing via high MCT1 expression</text>
+    <text x="394" y="295" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Paracrine relay: TGF-β1 &amp; IL-10 across glia limitans</text>
+    <text x="394" y="310" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Sustains homeostatic microglial dormancy without BBB transit</text>
+    <text x="394" y="325" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• Resolves in vitro millimolar HDAC IC₅₀ paradox</text>
+  </g>
 
-        <!-- 7. BAM -> Chromatin Footprints (Horizontal) -->
-        <line x1="596" y1="424" x2="656" y2="424" stroke="#475569" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow)"/>
-        <rect x="602" y="417" width="48" height="14" rx="2" fill="#f8fafc"/>
-        <text x="626" y="427" fill="#475569" font-family="'Geist Mono', monospace" font-size="8" font-weight="500" text-anchor="middle">RESCUE</text>
+  <!-- ==================== ZONE 3 NODES (CNS) ==================== -->
+  <!-- Node 6: FOCAL ACCENT 1 - Tonic Interferon Shutoff -->
+  <g id="node-interferon">
+    <rect x="762" y="45" width="346" height="100" rx="6" fill="#b91c1c" fill-opacity="0.08" stroke="#b91c1c" stroke-width="1.2"/>
+    <rect x="774" y="55" width="112" height="14" rx="2" fill="#b91c1c"/>
+    <text x="830" y="65" fill="#ffffff" font-family="'Geist Mono', monospace" font-size="7" font-weight="700" text-anchor="middle" letter-spacing="0.1em">MASTER REGULON</text>
+    <text x="774" y="87" fill="#b91c1c" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Tonic Interferon Surveillance Collapse</text>
+    <text x="774" y="105" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Irf1 / Stat1 collapse (Z = -2.45, FDR = 0.038)</text>
+    <text x="774" y="120" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Cell-intrinsic per-cell shutoff (BayesPrism p &lt; 0.001)</text>
+    <text x="774" y="135" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Factorial sex-invariant core signature (99.1%, I² = 0%)</text>
+  </g>
 
-        <!-- 8. Tonic Tone -> Llgl2-LAT1 (Vertical, Accent) -->
-        <line x1="786" y1="212" x2="786" y2="232" stroke="#b91c1c" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow-accent)"/>
-        <rect x="758" y="216" width="56" height="14" rx="2" fill="#f8fafc"/>
-        <text x="786" y="226" fill="#b91c1c" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">COUPLING</text>
+  <!-- Node 7: FOCAL ACCENT 2 - Llgl2-LAT1 Nutrient Axis -->
+  <g id="node-llgl2">
+    <rect x="762" y="158" width="346" height="100" rx="6" fill="#b91c1c" fill-opacity="0.08" stroke="#b91c1c" stroke-width="1.2"/>
+    <rect x="774" y="168" width="120" height="14" rx="2" fill="#b91c1c"/>
+    <text x="834" y="178" fill="#ffffff" font-family="'Geist Mono', monospace" font-size="7" font-weight="700" text-anchor="middle" letter-spacing="0.1em">METABOLIC ADAPTER</text>
+    <text x="774" y="200" fill="#b91c1c" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Llgl2-LAT1 Nutrient Scavenging Adaptation</text>
+    <text x="774" y="218" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Llgl2 polarity hub universally elevated (+0.290 LFC, k=4)</text>
+    <text x="774" y="233" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• LAT1 (Slc7a5) amino acid scavenging mobilization (r = 0.61)</text>
+    <text x="774" y="248" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="8.5">• Coordinated mTOR anabolic translation shutdown (-0.469 LFC)</text>
+  </g>
 
-        <!-- 9. Llgl2-LAT1 -> Chromatin Footprints (Vertical) -->
-        <line x1="786" y1="352" x2="786" y2="368" stroke="#475569" stroke-width="1.2" marker-end="url(#gut_microbiota_microglia_architecture-arrow)"/>
-        <rect x="760" y="354" width="52" height="14" rx="2" fill="#f8fafc"/>
-        <text x="786" y="364" fill="#475569" font-family="'Geist Mono', monospace" font-size="8" font-weight="500" text-anchor="middle">METABOLIC</text>
+  <!-- Node 8: Epigenetic Footprints -->
+  <g id="node-epigenetics">
+    <rect x="762" y="270" width="346" height="90" rx="6" fill="#ffffff" stroke="#0f172a" stroke-width="1.0"/>
+    <rect x="774" y="280" width="108" height="14" rx="2" fill="#f0fdf4"/>
+    <text x="828" y="290" fill="#15803d" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">EPIGENETIC STATUS</text>
+    <text x="774" y="312" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">ATAC Chromatin Footprints</text>
+    <text x="774" y="330" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• 88.9% Irf1 open chromatin footprint restored upon SCFA repletion</text>
+    <text x="774" y="345" fill="#475569" font-family="'Geist Mono', monospace" font-size="8.5">• Sustains chromatin-poised microglial transcriptional reversibility</text>
+  </g>
 
-        <!-- ==================== BIOLOGICAL NODES ==================== -->
-        <!-- Node 1: Commensal Microbiota (Input) -->
-        <g id="node-microbiota">
-          <rect x="52" y="104" width="220" height="112" rx="6" fill="#475569" stroke="#64748b" stroke-width="1" fill-opacity="0.08"/>
-          <rect x="64" y="114" width="76" height="14" rx="2" fill="#0f172a" fill-opacity="0.06"/>
-          <text x="102" y="124" fill="#475569" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">DISTAL COLON</text>
-          <text x="64" y="146" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Commensal Microbiota</text>
-          <text x="64" y="165" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• Clostridia · Bacteroidetes</text>
-          <text x="64" y="180" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• SCFA Synthesis (Ac/Pr/Bu)</text>
-          <text x="64" y="195" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• OMV Secretion (LPS/PAMPs)</text>
-        </g>
+  <!-- ==================== CROSS-ZONE CONNECTORS ==================== -->
+  <!-- OMV -> BMEC Endothelium -->
+  <line x1="330" y1="180" x2="382" y2="115" stroke="#1d4ed8" stroke-width="1.5" marker-end="url(#arch-arrow-link)"/>
+  
+  <!-- SCFA -> BAM Sensor -->
+  <line x1="330" y1="290" x2="382" y2="280" stroke="#0f766e" stroke-width="1.5" marker-end="url(#arch-arrow-teal)"/>
 
-        <!-- Node 2: Vagus Nerve (Backend) -->
-        <g id="node-vagus">
-          <rect x="52" y="300" width="220" height="100" rx="6" fill="#ffffff" stroke="#0f172a" stroke-width="1"/>
-          <rect x="64" y="310" width="88" height="14" rx="2" fill="#0f172a" fill-opacity="0.06"/>
-          <text x="108" y="320" fill="#475569" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">PILLAR 3 · NEURAL</text>
-          <text x="64" y="342" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Vagus Nerve Afferents</text>
-          <text x="64" y="361" fill="#64748b" font-family="'Geist Mono', monospace" font-size="9">• Subdiaphragmatic Cues</text>
-          <text x="64" y="376" fill="#64748b" font-family="'Geist Mono', monospace" font-size="9">• Nucleus Tractus Solitarius</text>
-        </g>
+  <!-- BMEC Ifnb1 -> Microglia IRF1 -->
+  <line x1="710" y1="95" x2="762" y2="95" stroke="#b91c1c" stroke-width="1.5" marker-end="url(#arch-arrow-accent)"/>
 
-        <!-- Node 3: Circulation (Store) -->
-        <g id="node-circulation">
-          <rect x="340" y="104" width="256" height="104" rx="6" fill="#0f172a" stroke="#475569" stroke-width="1" fill-opacity="0.04"/>
-          <rect x="352" y="114" width="80" height="14" rx="2" fill="#0f172a" fill-opacity="0.06"/>
-          <text x="392" y="124" fill="#475569" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">VASCULAR BED</text>
-          <text x="352" y="146" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Circulating OMVs &amp; SCFAs</text>
-          <text x="352" y="165" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• Bacterial OMVs (TLR4/CD14)</text>
-          <text x="352" y="180" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• Acetate Systemic Conc (0.1 mM)</text>
-        </g>
+  <!-- BAM Relay -> Microglia Llgl2/LAT1 -->
+  <line x1="710" y1="260" x2="762" y2="210" stroke="#1d4ed8" stroke-width="1.5" marker-end="url(#arch-arrow-link)"/>
 
-        <!-- Node 4: BMEC Endothelium (Backend) -->
-        <g id="node-bmec">
-          <rect x="340" y="240" width="256" height="104" rx="6" fill="#ffffff" stroke="#0f172a" stroke-width="1"/>
-          <rect x="352" y="250" width="76" height="14" rx="2" fill="#1d4ed8" fill-opacity="0.10"/>
-          <text x="390" y="260" fill="#1d4ed8" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">ENDOTHELIUM</text>
-          <text x="352" y="282" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">BMEC Cerebrovascular Relay</text>
-          <text x="352" y="301" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• Ifnb1 Transduction (r = 0.600)</text>
-          <text x="352" y="316" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• Tight Junctions (Tjp1, Cldn5)</text>
-        </g>
+  <!-- SCFA Central Acetate Direct Entry -> ATAC Footprinting -->
+  <path d="M 330,330 H 350 Q 360,330 360,340 V 372 Q 360,378 370,378 H 730 Q 740,378 740,360 V 325 Q 740,315 750,315 H 762" fill="none" stroke="#15803d" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arch-arrow-green)"/>
 
-        <!-- Node 5: Perivascular BAMs (Backend) -->
-        <g id="node-bam">
-          <rect x="340" y="376" width="256" height="96" rx="6" fill="#ffffff" stroke="#0f172a" stroke-width="1"/>
-          <rect x="352" y="386" width="94" height="14" rx="2" fill="#0f172a" fill-opacity="0.06"/>
-          <text x="399" y="396" fill="#475569" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">PILLAR 1 · MYELOID</text>
-          <text x="352" y="418" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Border Macrophages (BAM)</text>
-          <text x="352" y="437" fill="#64748b" font-family="'Geist Mono', monospace" font-size="9">• Perivascular Sentinel Barrier</text>
-          <text x="352" y="452" fill="#64748b" font-family="'Geist Mono', monospace" font-size="9">• Direct SCFA Sensory Interface</text>
-        </g>
+  <!-- ==================== HORIZONTAL BOTTOM LEGEND STRIP ==================== -->
+  <g id="legend-strip">
+    <rect x="16" y="390" width="1108" height="36" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.8"/>
+    
+    <!-- Item 1: Focal Node -->
+    <rect x="36" y="402" width="12" height="12" rx="2" fill="#b91c1c" stroke="#b91c1c" stroke-width="1.2" fill-opacity="0.15"/>
+    <text x="56" y="412" fill="#0f172a" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600">Key Finding (Focal Accent)</text>
 
-        <!-- Node 6: FOCAL ACCENT 1 - Tonic Interferon Shutoff -->
-        <g id="node-interferon">
-          <rect x="664" y="92" width="244" height="120" rx="6" fill="#b91c1c" stroke="#b91c1c" stroke-width="1.2" fill-opacity="0.08"/>
-          <rect x="676" y="102" width="104" height="14" rx="2" fill="#b91c1c"/>
-          <text x="728" y="112" fill="#ffffff" font-family="'Geist Mono', monospace" font-size="7" font-weight="700" text-anchor="middle" letter-spacing="0.1em">MASTER REGULON</text>
-          <text x="676" y="136" fill="#b91c1c" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Tonic Interferon Shutoff</text>
-          <text x="676" y="155" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="9">• Irf1 / Stat1 Collapse (Z = -2.28)</text>
-          <text x="676" y="170" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="9">• Cell-Intrinsic (BayesPrism p&lt;0.001)</text>
-          <text x="676" y="185" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="9">• Sex-Invariant Core (99.1%, I²=0%)</text>
-        </g>
+    <!-- Item 2: Endothelial / Vascular Relay -->
+    <line x1="260" y1="408" x2="285" y2="408" stroke="#1d4ed8" stroke-width="1.5" marker-end="url(#arch-arrow-link)"/>
+    <text x="295" y="412" fill="#0f172a" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600">Vascular / OMV Relay</text>
 
-        <!-- Node 7: FOCAL ACCENT 2 - Llgl2-LAT1 Nutrient Axis -->
-        <g id="node-llgl2">
-          <rect x="664" y="240" width="244" height="112" rx="6" fill="#b91c1c" stroke="#b91c1c" stroke-width="1.2" fill-opacity="0.08"/>
-          <rect x="676" y="250" width="112" height="14" rx="2" fill="#b91c1c"/>
-          <text x="732" y="260" fill="#ffffff" font-family="'Geist Mono', monospace" font-size="7" font-weight="700" text-anchor="middle" letter-spacing="0.1em">METABOLIC ADAPTER</text>
-          <text x="676" y="284" fill="#b91c1c" font-family="'Geist', sans-serif" font-size="12" font-weight="600">Llgl2-LAT1 Nutrient Axis</text>
-          <text x="676" y="303" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="9">• Llgl2 Polarity (+0.290 LFC, k=4)</text>
-          <text x="676" y="318" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="9">• Slc7a5 LAT1 Scavenging (r = 0.61)</text>
-          <text x="676" y="333" fill="#0f172a" font-family="'Geist Mono', monospace" font-size="9">• mTOR Repression (-0.469 LFC)</text>
-        </g>
+    <!-- Item 3: Perivascular BAM Interface -->
+    <line x1="475" y1="408" x2="500" y2="408" stroke="#0f766e" stroke-width="1.5" marker-end="url(#arch-arrow-teal)"/>
+    <text x="510" y="412" fill="#0f172a" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600">BAM Perivascular Sensing</text>
 
-        <!-- Node 8: Epigenetic Footprinting (Backend) -->
-        <g id="node-epigenetics">
-          <rect x="664" y="376" width="244" height="96" rx="6" fill="#ffffff" stroke="#0f172a" stroke-width="1"/>
-          <rect x="676" y="386" width="96" height="14" rx="2" fill="#15803d" fill-opacity="0.12"/>
-          <text x="724" y="396" fill="#15803d" font-family="'Geist Mono', monospace" font-size="7" font-weight="600" text-anchor="middle" letter-spacing="0.1em">EPIGENETIC STATUS</text>
-          <text x="676" y="418" fill="#0f172a" font-family="'Geist', sans-serif" font-size="12" font-weight="600">ATAC Chromatin Footprints</text>
-          <text x="676" y="437" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• 88.9% Irf1 Footprint Restoration</text>
-          <text x="676" y="452" fill="#475569" font-family="'Geist Mono', monospace" font-size="9">• Chromatin-Poised Reversibility</text>
-        </g>
+    <!-- Item 4: Upstream Flux / Input -->
+    <rect x="710" y="402" width="12" height="12" rx="2" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.0"/>
+    <text x="730" y="412" fill="#0f172a" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600">Cellular / Tissue Sentinel</text>
 
-        <!-- ==================== HORIZONTAL BOTTOM LEGEND STRIP ==================== -->
-        <g id="legend-strip" transform="translate(32, 532)">
-          <rect x="0" y="0" width="896" height="40" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.8"/>
-          
-          <!-- Legend Item 1: Focal Node -->
-          <rect x="24" y="14" width="12" height="12" rx="2" fill="#b91c1c" stroke="#b91c1c" stroke-width="1.2" fill-opacity="0.15"/>
-          <text x="44" y="24" fill="#0f172a" font-family="'Geist', sans-serif" font-size="10" font-weight="500">Key Mechanistic Finding (Focal)</text>
-
-          <!-- Legend Item 2: Endothelial / Vascular Relay -->
-          <line x1="240" y1="20" x2="260" y2="20" stroke="#1d4ed8" stroke-width="1.5" marker-end="url(#gut_microbiota_microglia_architecture-arrow-link)"/>
-          <text x="270" y="24" fill="#0f172a" font-family="'Geist', sans-serif" font-size="10" font-weight="500">Vascular Relay (Link)</text>
-
-          <!-- Legend Item 3: Standard Processing Unit -->
-          <rect x="420" y="14" width="12" height="12" rx="2" fill="#ffffff" stroke="#0f172a" stroke-width="1"/>
-          <text x="440" y="24" fill="#0f172a" font-family="'Geist', sans-serif" font-size="10" font-weight="500">Cellular / Tissue Sentinel</text>
-
-          <!-- Legend Item 4: Upstream Flux / Input -->
-          <rect x="600" y="14" width="12" height="12" rx="2" fill="#475569" stroke="#64748b" stroke-width="1" fill-opacity="0.08"/>
-          <text x="620" y="24" fill="#0f172a" font-family="'Geist', sans-serif" font-size="10" font-weight="500">Upstream Biological Influx</text>
-
-          <!-- Legend Item 5: Epigenetic Restoration -->
-          <rect x="768" y="14" width="12" height="12" rx="2" fill="#15803d" stroke="#15803d" stroke-width="1" fill-opacity="0.12"/>
-          <text x="788" y="24" fill="#0f172a" font-family="'Geist', sans-serif" font-size="10" font-weight="500">SCFA Reversal</text>
-        </g>
-      </svg>
+    <!-- Item 5: Epigenetic Restoration -->
+    <line x1="930" y1="408" x2="955" y2="408" stroke="#15803d" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arch-arrow-green)"/>
+    <text x="965" y="412" fill="#0f172a" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600">SCFA Chromatin Reversal</text>
+  </g>
+</svg>

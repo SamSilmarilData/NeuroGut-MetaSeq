@@ -4,11 +4,11 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![R 4.3+](https://img.shields.io/badge/R-4.3+-276DC3.svg)](https://www.r-project.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version: v1.3.0-draft1](https://img.shields.io/badge/version-v1.3.0--draft1%20(Preprint%20First%20Draft)-blue.svg)](CHANGELOG.md)
+[![Version: v1.4.0](https://img.shields.io/badge/version-v1.4.0%20(Production%20Academic%20Release)-blue.svg)](CHANGELOG.md)
 [![Manuscript: Nature Neuro Style](https://img.shields.io/badge/Manuscript-7%2C200%2B%20words-darkgreen.svg)](docs/MANUSCRIPT.md)
 [![bioRxiv: Preprint Package](https://img.shields.io/badge/bioRxiv-Preprint%20Package-blue.svg)](biorxiv_submission/)
-[![Manuscript PDF](https://img.shields.io/badge/PDF-Manuscript%20(23%20pages)-red.svg)](paper/manuscript.pdf)
-[![Supplementary PDF](https://img.shields.io/badge/PDF-Supplementary%20(8%20pages)-red.svg)](paper/supplementary.pdf)
+[![Manuscript PDF](https://img.shields.io/badge/PDF-Manuscript%20(21%20pages)-red.svg)](paper/manuscript.pdf)
+[![Supplementary PDF](https://img.shields.io/badge/PDF-Supplementary%20(13%20pages)-red.svg)](paper/supplementary.pdf)
 [![Tests: 67 passed](https://img.shields.io/badge/tests-67%20passed%20(100%25)-success.svg)](tests/)
 [![Samples: 60](https://img.shields.io/badge/samples-60%20(51%20sex--informative)-teal.svg)](data/metadata/)
 [![Cohorts: 4](https://img.shields.io/badge/cohorts-4%20GEO%20studies-orange.svg)](config/datasets.yaml)
@@ -24,7 +24,7 @@
 
 **NeuroGut-MetaSeq** is an open-science computational neuroimmunology meta-analysis framework and interactive web paper that synthesizes multi-cohort transcriptomic and multi-omic data to resolve how the gut microbiome and microbial metabolites govern microglial maturation, immune quiescence, and antiviral surveillance.
 
-Instead of relying on single-cohort analyses prone to laboratory-specific batch effects and isolation artifacts, **NeuroGut-MetaSeq (v1.3.0-draft1)** executes a **unified, multi-scale computational meta-analysis**:
+Instead of relying on single-cohort analyses prone to laboratory-specific batch effects and isolation artifacts, **NeuroGut-MetaSeq (v1.4.0)** executes a **unified, multi-scale computational meta-analysis**:
 1. **Multi-Cohort Harmonization**: Curating 60 biological samples across 4 diverse experimental paradigms (germ-free housing, acute broad-spectrum antibiotic cocktails, dietary fiber starvation).
 2. **Quality Control & Lineage Auditing**: Enforcing rigorous lineage marker checks (>99% purity) and proving statistical independence from enzymatic dissociation stress ($p \ge 0.18$).
 3. **Random-Effects Meta-Analysis (REML & HKSJ)**: Restricted Maximum Likelihood (REML) between-study variance optimization and Hartung-Knapp-Sidik-Jonkman (HKSJ) adjustment ($t_3$ critical threshold, $t_{\text{crit}} = 3.1824$) across 23,096 common genes, confirming robustness via Leave-One-Out (LOO) sensitivity ($r = 0.725$).
@@ -62,7 +62,8 @@ flowchart TD
 | **Multi-Omic Release (v1.2.0)** | Epigenomic Footprinting, Sex & BBB Relay | 33,171 Genes, Multi-Omics | **Factorial Sex Meta-Regression** (99.1% sex-shared, male *Slfn2* vulnerability); **BayesPrism 5-State Deconvolution** ($\kappa = 1.54$, cell-intrinsic shutoff); **Tripartite ATAC-Seq TOBIAS Footprinting** (88.9% *Irf1*/*Stat1* reversal); **NicheNet Ligand Prioritization** (gut OMVs $r=0.658$, endothelial *Ifnb1* $r=0.600$); **Myeloid *Llgl2*-LAT1 Amino Acid Scavenging** and Three-Pillar in vivo BBB flux model. | **Completed** |
 | **Reference Polish (v1.2.1)** | Calibrated Epigenomics & Discovery Studio | 60 Samples, Web & Docs | **Chromatin-poised transcriptional reversibility calibration**; **Llgl2-LAT1 myeloid nutrient axis** & BBB acetate/ACSS2 discussion; **Unified Transcriptomic Discovery Studio** with live Interactive SVG Volcano Plot synchronized to dynamic Forest Plot. | **Completed** |
 | **Unified Narrative (v1.3.0)** | Four-Movement Results & Comprehensive Synthesis | 60 Samples, Production Web | **Four-Movement Results Architecture** (Multi-Cohort Invariant Core, Cell-Intrinsic Tonic Interferon Shutoff, Multi-Omic Relays & Llgl2-LAT1 Nutrient Axis, SCFA Reversibility & BBB Flux); **Comprehensive Discussion** (Dual Adaptive Defense, Nutrient Moonlighting, BBB Flux, Chromatin vs Histones); **Conclusions & Online Methods Architecture**. | **Completed** |
-| **Preprint First Draft (v1.3.0-draft1)** | bioRxiv Submission Package & LaTeX Pipeline | Full Multi-Omic Synthesis | **Standalone Publication-Grade LaTeX Pipeline** ([`paper/manuscript.pdf`](paper/manuscript.pdf), 23 pages; [`paper/supplementary.pdf`](paper/supplementary.pdf), 8 pages) with line numbering, `booktabs` tables, high-res figures inline, and zero undefined citations; **bioRxiv Preprint Submission Package** ([`biorxiv_submission/`](biorxiv_submission/)) with $\le 2,500$-char abstract and pre-flight checklist; **Scientific Hardening** (stereological cell-density deconvolution validation, antibiotic off-target toxicity LOO robustness, chromatin-poised reversibility). | **Completed (Draft 1)** |
+| **Preprint First Draft (v1.3.0-draft1)** | bioRxiv Submission Package & LaTeX Pipeline | Full Multi-Omic Synthesis | **Standalone Publication-Grade LaTeX Pipeline** with line numbering, `booktabs` tables, high-res figures inline, and zero undefined citations; **bioRxiv Preprint Submission Package** ([`biorxiv_submission/`](biorxiv_submission/)) with $\le 2,500$-char abstract and pre-flight checklist; **Scientific Hardening** (stereological cell-density deconvolution validation, antibiotic off-target toxicity LOO robustness, chromatin-poised reversibility). | **Completed** |
+| **Production Academic Release (v1.4.0)** | 6 Biological Acts & Unified Plate Figures | 60 Samples, LaTeX & Web | **Consolidated 6 Biological Acts Architecture**; **Panoramic Edge-to-Edge Schematics** (Figs 1A, 6A enlarged +27%); **Cross-Cohort Consensus Concordance Matrix** (Fig 2D); **Single-Panel Table-Forest** (Fig 2B) & **Bland-Altman Concordance** (Fig 3A); Full-Page Plates in 21-page publication PDF ([`paper/manuscript.pdf`](paper/manuscript.pdf)) & 13-page Supplementary ([`paper/supplementary.pdf`](paper/supplementary.pdf)). | **Completed** |
 
 ---
 
@@ -178,8 +179,8 @@ The repository generates 28 publication-grade scientific figures across all anal
 
 NeuroGut-MetaSeq includes a fully reproducible, standalone LaTeX build environment and bioRxiv submission package ready for pre-flight portal validation:
 
-- **Primary Manuscript PDF** (23 pages, line-numbered, 8 `booktabs` tables, 11 inline figures, 46 citations): [`paper/manuscript.pdf`](paper/manuscript.pdf)
-- **Supplementary Information PDF** (8 pages, extended derivations, Figs S1--S6, Tables S1--S4): [`paper/supplementary.pdf`](paper/supplementary.pdf)
+- **Primary Manuscript PDF** (21 pages, line-numbered, 8 `booktabs` tables, 6 composite display plates, 46 citations): [`paper/manuscript.pdf`](paper/manuscript.pdf)
+- **Supplementary Information PDF** (13 pages, extended derivations, Figs S1--S9, Tables S1--S4): [`paper/supplementary.pdf`](paper/supplementary.pdf)
 - **LaTeX Build Environment & Documentation**: [`paper/README.md`](paper/README.md)
 - **Dedicated bioRxiv Abstract** ($\le 2,500$ chars, compliant with bioRxiv portal limits): [`biorxiv_submission/ABSTRACT_SUBMISSION.txt`](biorxiv_submission/ABSTRACT_SUBMISSION.txt)
 - **Pre-Flight Submission Checklist**: [`biorxiv_submission/CHECKLIST.md`](biorxiv_submission/CHECKLIST.md)
@@ -199,22 +200,20 @@ make clean && make all
 
 ---
 
-## 🗺️ Editorial, Aesthetic & Storytelling Roadmap (Iterative First Draft Strategy)
+## 🗺️ Visual Architecture & Figure Redesign Milestone (v1.4.0)
 
 > [!NOTE]
-> This repository release (**v1.3.0-draft1**) marks our **Preprint First Draft**. All underlying statistical computations, multi-omic integrations, and bibliography entries are mathematically solidified and test-verified. Ongoing iterative refinement is actively underway across four core editorial dimensions:
+> This repository release (**v1.4.0**) marks our **Production Academic Release**. The manuscript and display items have been consolidated into **6 Biological Acts** with unified, high-density composite plates and standalone Supplementary plates:
 
-1. **Conceptual Diagrams & Biological Schematics**:
-   - Developing polished cartoon diagrams illustrating the **Three-Pillar BBB flux relay** (luminal endothelial signaling $\to$ perivascular BAM reprogramming $\to$ parenchymal microglial calibration).
-   - Designing an intuitive visual model of **LLGL2-LAT1 amino acid scavenging** versus mTOR translation shutdown.
-2. **Visual Aesthetics & Palette Unification**:
-   - Harmonizing font families, tick marks, and subfigure aspect ratios across standalone vector assets.
-   - Auditing color contrast across all multi-panel figures for colorblind-accessible clarity (Okabe-Ito / Viridis styling).
-3. **Storytelling & Narrative Pacing**:
-   - Polishing section-to-section narrative handoffs between Results movements to maintain compelling momentum.
-   - Streamlining Discussion sections, sharpening emphasis on translational and clinical therapeutic implications (e.g. oral acetate vs. synthetic HDAC inhibitors).
-4. **Interactive Discovery Studio Convergence**:
-   - Continuing bidirectional synchronization between the web paper ([`docs/index.html`](docs/index.html)), markdown manuscript ([`docs/MANUSCRIPT.md`](docs/MANUSCRIPT.md)), and LaTeX sources ([`paper/manuscript.tex`](paper/manuscript.tex)).
+1. **Panoramic Overview & In Vivo Schematics**:
+   - Engineered edge-to-edge widescreen schematics (**Fig 1A** Study Overview & Harmonization Design; **Fig 6A** In Vivo Three-Pillar BBB Flux Model) with decoupled GridSpecs matching bottom-row margins (0 px / 1 px gap) and enlarged by +27% vertically.
+2. **Consensus Concordance Matrix & High-Information Visualizations**:
+   - Replaced sample-level heatmap with the **Figure 2D Consensus Concordance Matrix** showing exact $\log_2\text{FC}$ effect sizes, significance asterisks, Invariant Core vs. Perturbation Shock partition, and REML synthesis box.
+   - Integrated Single-Panel Table-Forest plots (**Fig 2B**) and Bland-Altman MA concordance transforms (**Fig 3A**).
+3. **Dedicated Full-Page Plates & Flow Architecture**:
+   - Structured 4-panel composite plates into dedicated full-page float plates within strict 21-page publication limits.
+4. **Interactive Discovery Studio Synchronization**:
+   - Continuous synchronization across [`docs/index.html`](docs/index.html), [`docs/MANUSCRIPT.md`](docs/MANUSCRIPT.md), and LaTeX sources ([`paper/manuscript.tex`](paper/manuscript.tex)).
 
 ---
 
@@ -235,7 +234,7 @@ If you use **NeuroGut-MetaSeq** or its empirical discoveries in your research, p
   title        = {Cross-Study Meta-Analysis of the Gut-Microbiota-Microglia Axis Uncovers Cell-Intrinsic Interferon Shutoff, Invariant Nutrient-Sensing Adapters, and Multi-Omic Reversibility},
   journal      = {bioRxiv / GitHub Open Science Release},
   year         = {2026},
-  version      = {1.3.0},
+  version      = {1.4.0},
   publisher    = {GitHub},
   url          = {https://github.com/samyakmeshram/NeuroGut-MetaSeq}
 }

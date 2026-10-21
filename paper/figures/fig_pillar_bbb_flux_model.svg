@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1140 422" width="1140" height="422" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="bbb-title bbb-desc" id="pillar_bbb_flux_model-root">
+  <title id="bbb-title">Three-Pillar In Vivo Blood-Brain Barrier (BBB) Pharmacokinetic Resolution</title>
+  <desc id="bbb-desc">Mechanistic schematic illustrating how low micromolar circulating SCFAs rescue microglial phenotypes via BAM vascular sensing, microglial ACSS2 nuclear acetate capture, and vagal neuro-immune reflexes, resolving the in vitro millimolar HDAC IC50 paradox.</desc>
+  
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');
+      #pillar_bbb_flux_model-root {
+        --color-paper:   #f8fafc;
+        --color-card:    #ffffff;
+        --color-ink:     #0f172a;
+        --color-muted:   #475569;
+        --color-soft:    #64748b;
+        --color-teal:    #0f766e;
+        --color-navy:    #1e3a8a;
+        --color-crimson: #991b1b;
+        --color-border:  #cbd5e1;
+        font-family: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      .pillar-card {
+        fill: #ffffff;
+        stroke: #cbd5e1;
+        stroke-width: 1.2;
+        rx: 8;
+      }
+      .pillar-header {
+        font-family: 'Geist', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        fill: #0f172a;
+      }
+      .pillar-subtitle {
+        font-family: 'Geist Mono', monospace;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+      }
+      .badge-teal { fill: #f0fdfa; stroke: #ccfbf1; }
+      .badge-navy { fill: #eff6ff; stroke: #bfdbfe; }
+      .badge-crimson { fill: #fef2f2; stroke: #fecaca; }
+    </style>
+    
+    <marker id="arrow-teal" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0 0, 7 2.5, 0 5" fill="#0f766e"/>
+    </marker>
+    <marker id="arrow-navy" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0 0, 7 2.5, 0 5" fill="#1e3a8a"/>
+    </marker>
+    <marker id="arrow-crimson" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0 0, 7 2.5, 0 5" fill="#991b1b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1140" height="422" fill="#f8fafc"/>
+
+  <!-- Main Title Banner -->
+  <g id="title-group">
+    <text x="16" y="24" font-size="14.5" font-weight="700" fill="#0f172a" font-family="'Geist', sans-serif">Three-Pillar In Vivo Blood-Brain Barrier (BBB) Pharmacokinetic Resolution</text>
+    <text x="16" y="40" font-size="9.5" fill="#475569" font-family="'Geist Mono', monospace">Reconciling Low Micromolar In Vivo Circulating SCFAs (1–10 µM) with High Millimolar In Vitro HDAC IC₅₀ (500–2,000 µM)</text>
+  </g>
+
+  <!-- ==================== PILLAR 1: BAM Perivascular Sensor Relay ==================== -->
+  <g id="pillar-1" transform="translate(16, 54)">
+    <rect width="352" height="286" class="pillar-card"/>
+    <rect width="352" height="5" rx="2" fill="#0f766e"/>
+    
+    <!-- Badge -->
+    <rect x="16" y="14" width="76" height="18" rx="4" class="badge-teal" stroke-width="0.8"/>
+    <text x="54" y="26" fill="#0f766e" class="pillar-subtitle" text-anchor="middle">PILLAR 1</text>
+    
+    <text x="16" y="48" class="pillar-header">BAM Vascular Sensor Relay</text>
+    <text x="16" y="63" fill="#0f766e" font-size="9" font-weight="600">Perivascular Border Interface</text>
+
+    <!-- Schematic illustration inside card -->
+    <rect x="16" y="74" width="320" height="74" rx="6" fill="#f0fdfa" stroke="#ccfbf1" stroke-width="1"/>
+    <text x="28" y="88" font-size="7.5" font-weight="600" fill="#64748b" font-family="'Geist Mono', monospace">CEREBRAL CAPILLARY LUMEN</text>
+    <text x="220" y="88" font-size="8" font-weight="700" fill="#0f766e" font-family="'Geist Mono', monospace">SCFAs (1–10 µM)</text>
+    
+    <!-- BAM cell representation -->
+    <rect x="36" y="98" width="118" height="38" rx="6" fill="#14b8a6" fill-opacity="0.2" stroke="#0f766e" stroke-width="1.2"/>
+    <text x="95" y="114" font-size="8" font-weight="700" fill="#0f766e" text-anchor="middle">Border Macrophage</text>
+    <text x="95" y="126" font-size="7.5" font-weight="600" fill="#0f766e" text-anchor="middle">(BAM / Mrc1⁺ Lyve1⁺)</text>
+
+    <!-- Cytokine arrows to microglia -->
+    <path d="M 154,117 H 220" fill="none" stroke="#0f766e" stroke-width="1.2" marker-end="url(#arrow-teal)"/>
+    <text x="187" y="110" font-size="7" font-weight="700" fill="#0f766e" text-anchor="middle">TGF-β / IL-10</text>
+    
+    <rect x="228" y="98" width="92" height="38" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="1"/>
+    <text x="274" y="114" font-size="8" font-weight="700" fill="#0f172a" text-anchor="middle">Parenchymal</text>
+    <text x="274" y="126" font-size="7.5" font-weight="600" fill="#475569" text-anchor="middle">Microglia</text>
+
+    <!-- Bullet description -->
+    <text x="16" y="165" font-size="8.5" font-weight="700" fill="#0f766e">• Anatomical Positioning:</text>
+    <text x="16" y="178" font-size="8.5" fill="#334155">BAMs populate leptomeningeal, dural, and Virchow-Robin perivascular spaces.</text>
+    <text x="16" y="195" font-size="8.5" font-weight="700" fill="#0f766e">• High MCT1 Transporter Expression:</text>
+    <text x="16" y="208" font-size="8.5" fill="#334155">Blood-facing interface senses micromolar SCFAs without full parenchymal entry.</text>
+    <text x="16" y="225" font-size="8.5" font-weight="700" fill="#0f766e">• Secondary Paracrine Cascade:</text>
+    <text x="16" y="238" font-size="8.5" fill="#334155">Transduces homeostatic cues (TGF-β1, IL-10) across glia limitans to resting microglia.</text>
+    <text x="16" y="255" font-size="8.5" font-weight="700" fill="#0f766e">• Resolves In Vitro Disconnect:</text>
+    <text x="16" y="268" font-size="8.5" fill="#334155">Explains how peripheral depletion alters microglia despite 1–10 µM in vivo levels.</text>
+  </g>
+
+  <!-- ==================== PILLAR 2: Central Acetate / Microglial ACSS2 (Focal Accent) ==================== -->
+  <g id="pillar-2" transform="translate(394, 54)">
+    <rect width="352" height="286" class="pillar-card" stroke="#1e3a8a" stroke-width="1.4"/>
+    <rect width="352" height="5" rx="2" fill="#1e3a8a"/>
+    
+    <!-- Badge -->
+    <rect x="16" y="14" width="76" height="18" rx="4" class="badge-navy" stroke-width="0.8"/>
+    <text x="54" y="26" fill="#1e3a8a" class="pillar-subtitle" text-anchor="middle">PILLAR 2</text>
+    
+    <text x="16" y="48" class="pillar-header">Central Acetate / ACSS2</text>
+    <text x="16" y="63" fill="#1e3a8a" font-size="9" font-weight="600">Nuclear HAT Epigenetic Flux</text>
+
+    <!-- Schematic illustration inside card -->
+    <rect x="16" y="74" width="320" height="74" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    
+    <text x="24" y="90" font-size="8" font-weight="700" fill="#1e3a8a">Blood Acetate</text>
+    <text x="24" y="102" font-size="7.5" fill="#64748b" font-family="'Geist Mono', monospace">(100–300 µM)</text>
+    
+    <!-- MCT1 transporter at BBB -->
+    <path d="M 85,96 H 135" fill="none" stroke="#1e3a8a" stroke-width="1.2" marker-end="url(#arrow-navy)"/>
+    <text x="110" y="90" font-size="7" font-weight="700" fill="#1e3a8a" text-anchor="middle">MCT1</text>
+    <text x="110" y="108" font-size="6.5" fill="#64748b" text-anchor="middle">Km ~2 mM</text>
+
+    <!-- Microglial Cell and Nucleus -->
+    <rect x="145" y="80" width="180" height="60" rx="6" fill="#1e3a8a" fill-opacity="0.08" stroke="#1e3a8a" stroke-width="1"/>
+    <text x="155" y="92" font-size="7" font-weight="700" fill="#1e3a8a">Microglial Cytosol (Acss2 = 3.34 CPM)</text>
+    
+    <!-- Nucleus box -->
+    <rect x="180" y="97" width="135" height="38" rx="4" fill="#ffffff" stroke="#1e3a8a" stroke-width="1"/>
+    <text x="247" y="110" font-size="7" font-weight="700" fill="#1e3a8a" text-anchor="middle">Nucleus: ACSS2</text>
+    <text x="247" y="122" font-size="6.5" font-weight="600" fill="#0f172a" text-anchor="middle">Acetate → Acetyl-CoA → HATs</text>
+    <text x="247" y="131" font-size="6" fill="#15803d" text-anchor="middle">Open Chromatin Poising (88.9%)</text>
+
+    <!-- Bullet description -->
+    <text x="16" y="165" font-size="8.5" font-weight="700" fill="#1e3a8a">• Abundant Circulating Acetate:</text>
+    <text x="16" y="178" font-size="8.5" fill="#334155">Unlike butyrate/propionate (&lt;10 µM), acetate reaches 100–300 µM in systemic serum.</text>
+    <text x="16" y="195" font-size="8.5" font-weight="700" fill="#1e3a8a">• Efficient MCT1 Brain Penetration:</text>
+    <text x="16" y="208" font-size="8.5" fill="#334155">Crosses endothelial BBB via robust monocarboxylate transporter MCT1 expression.</text>
+    <text x="16" y="225" font-size="8.5" font-weight="700" fill="#1e3a8a">• Intranuclear HAT Substrate Capture:</text>
+    <text x="16" y="238" font-size="8.5" fill="#334155">Microglial ACSS2 captures acetate directly to synthesize acetyl-CoA inside the nucleus.</text>
+    <text x="16" y="255" font-size="8.5" font-weight="700" fill="#1e3a8a">• Epigenetic Poising Mechanism:</text>
+    <text x="16" y="268" font-size="8.5" fill="#334155">Fuels histone acetyltransferases directly, sustaining poised chromatin without HDAC IC₅₀.</text>
+  </g>
+
+  <!-- ==================== PILLAR 3: Enteric-Vagal Reflex ==================== -->
+  <g id="pillar-3" transform="translate(772, 54)">
+    <rect width="352" height="286" class="pillar-card"/>
+    <rect width="352" height="5" rx="2" fill="#991b1b"/>
+    
+    <!-- Badge -->
+    <rect x="16" y="14" width="76" height="18" rx="4" class="badge-crimson" stroke-width="0.8"/>
+    <text x="54" y="26" fill="#991b1b" class="pillar-subtitle" text-anchor="middle">PILLAR 3</text>
+    
+    <text x="16" y="48" class="pillar-header">Enteric-Vagal Reflex</text>
+    <text x="16" y="63" fill="#991b1b" font-size="9" font-weight="600">Neuro-Humoral Circuit</text>
+
+    <!-- Schematic illustration inside card -->
+    <rect x="16" y="74" width="320" height="74" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    
+    <!-- Enteric Mucosa -->
+    <rect x="24" y="84" width="72" height="54" rx="4" fill="#fee2e2" stroke="#991b1b" stroke-width="0.8"/>
+    <text x="60" y="98" font-size="7" font-weight="700" fill="#991b1b" text-anchor="middle">Gut Mucosa</text>
+    <text x="60" y="110" font-size="6.5" fill="#7f1d1d" text-anchor="middle">SCFA Sensing</text>
+    <text x="60" y="122" font-size="6.5" fill="#7f1d1d" text-anchor="middle">(FFAR2/3)</text>
+    <text x="60" y="133" font-size="6" font-weight="700" fill="#991b1b" text-anchor="middle">Enteroendocrine</text>
+
+    <!-- Vagus nerve path -->
+    <path d="M 96,111 H 160" fill="none" stroke="#991b1b" stroke-width="1.2" marker-end="url(#arrow-crimson)"/>
+    <text x="128" y="105" font-size="6.5" font-weight="700" fill="#991b1b" text-anchor="middle">Vagus Nerve</text>
+    <text x="128" y="122" font-size="6" fill="#7f1d1d" text-anchor="middle">(Nodose)</text>
+
+    <!-- Brainstem NTS -->
+    <rect x="175" y="82" width="150" height="58" rx="4" fill="#ffffff" stroke="#991b1b" stroke-width="1"/>
+    <text x="250" y="96" font-size="7.5" font-weight="700" fill="#991b1b" text-anchor="middle">Brainstem (NTS)</text>
+    <line x1="185" y1="104" x2="315" y2="104" stroke="#fecaca" stroke-width="0.8"/>
+    <text x="250" y="116" font-size="6.5" font-weight="600" fill="#475569" text-anchor="middle">Central Cholinergic &amp; Noradrenergic</text>
+    <text x="250" y="128" font-size="6.5" font-weight="700" fill="#991b1b" text-anchor="middle">Projections → Microglial Quiescence</text>
+
+    <!-- Bullet description -->
+    <text x="16" y="165" font-size="8.5" font-weight="700" fill="#991b1b">• Mucosal Enteric Sensing:</text>
+    <text x="16" y="178" font-size="8.5" fill="#334155">Intestinal luminal SCFAs stimulate enteroendocrine L-cells and vagal terminals.</text>
+    <text x="16" y="195" font-size="8.5" font-weight="700" fill="#991b1b">• Afferent Vagal Conduit:</text>
+    <text x="16" y="208" font-size="8.5" fill="#334155">Signals ascend via nodose ganglion to nucleus tractus solitarius (NTS) in brainstem.</text>
+    <text x="16" y="225" font-size="8.5" font-weight="700" fill="#991b1b">• Ascending Neuro-Immune Projections:</text>
+    <text x="16" y="238" font-size="8.5" fill="#334155">Locus coeruleus noradrenergic and cholinergic relays modulate parenchymal microglia.</text>
+    <text x="16" y="255" font-size="8.5" font-weight="700" fill="#991b1b">• Non-Vascular Communication:</text>
+    <text x="16" y="268" font-size="8.5" fill="#334155">Enables immediate peripheral calibration without requiring direct BBB solute crossing.</text>
+  </g>
+
+  <!-- ==================== BOTTOM RESOLUTION BANNER ==================== -->
+  <g id="bottom-banner" transform="translate(16, 350)">
+    <rect width="1108" height="58" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.0"/>
+    
+    <text x="20" y="20" font-size="10" font-weight="700" fill="#0f172a" font-family="'Geist', sans-serif">Resolution of the In Vivo Pharmacokinetic Paradox:</text>
+    <text x="20" y="36" font-size="8.5" fill="#334155" font-family="'Geist Mono', monospace">Direct in vitro competitive HDAC inhibition requires millimolar concentrations (IC₅₀ 500–2,000 µM), but circulating gut SCFAs are only 1–10 µM in vivo.</text>
+    <text x="20" y="49" font-size="8.5" fill="#334155" font-family="'Geist Mono', monospace">Microglial homeostasis is sustained via BAM vascular sensing, central acetate capture by ACSS2 for HAT poising, and vagal sensory afferent circuits.</text>
+  </g>
+</svg>

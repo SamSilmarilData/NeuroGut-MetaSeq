@@ -147,7 +147,7 @@ def get_table_code(table_num):
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccccp{6.5cm}}
 \toprule
-\textbf{Gene} & \textbf{$k$} & \textbf{REML $\log_2\text{FC}$} & \textbf{HKSJ SE} & \textbf{HKSJ 95\% CI} & \textbf{$I^2$} & \textbf{$p_{\text{HKSJ}}$} & \textbf{$\text{FDR}_{\text{RE}}$} & \textbf{Tier} & \textbf{Biological Role / Annotation} \\
+\textbf{Gene} & \textbf{Cohorts ($k$)} & \textbf{REML $\log_2\text{FC}$} & \textbf{HKSJ SE} & \textbf{HKSJ 95\% CI} & \textbf{$I^2$} & \textbf{$p_{\text{HKSJ}}$} & \textbf{$\text{FDR}_{\text{RE}}$} & \textbf{Tier} & \textbf{Biological Role / Annotation} \\
 \midrule
 \textbf{\textit{Llgl2}} & 4 & \textbf{+0.672} & 0.159 & [0.166, 1.178] & 0.0\% & \textbf{0.0243} & \textbf{0.0308} & Tier 1 Core & Basolateral polarity adapter; LAT1 transporter surface docking \\
 \textbf{\textit{Slfn2}} & 4 & \textbf{-0.465} & 0.102 & [-0.789, -0.141] & 9.6\% & \textbf{0.0197} & \textbf{0.0125} & Tier 1 Core & Quiescence guardian; dormancy brake preventing premature activation \\
@@ -204,12 +204,54 @@ def get_table_code(table_num):
 
         5: r'''\begin{table}[htbp]
 \centering
+\caption{\textbf{In Silico NicheNet Upstream Cerebrovascular Ligand Prioritization.}}
+\label{tab:nichenet}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{clllccp{6.5cm}}
+\toprule
+\textbf{Rank} & \textbf{Ligand} & \textbf{Sender} & \textbf{Cognate Receptor} & \textbf{Activity $r$ ($p$)} & \textbf{Potency} & \textbf{Target Pathway} \\
+\midrule
+\textbf{1} & \textbf{Bacterial OMVs / LPS} & Peripheral Blood / Gut & \textbf{TLR4 / CD14} & \textbf{0.658} (0.108) & 0.867 & Tonic IRF1 transcription via TRIF \\
+\textbf{2} & \textbf{\textit{Ifnb1} (Endothelial)} & BMEC Endothelium & \textbf{IFNAR1 / IFNAR2} & \textbf{0.600} (0.155) & 0.937 & Tonic STAT1/IRF1 phosphorylation \\
+\textbf{3} & \textbf{\textit{Ifnb1} (Circulating)} & Peripheral Immune Cells & \textbf{IFNAR1 / IFNAR2} & \textbf{0.572} (0.179) & 0.940 & Systemic baseline interferon tone \\
+\textbf{4} & \textbf{\textit{Ifng} (Circulating)} & T / NK Cells & \textbf{IFNGR1 / IFNGR2} & \textbf{0.559} (0.192) & 0.937 & Myeloid activation \& priming \\
+\textbf{5} & \textbf{Peptidoglycans} & Cell Wall Fragments & \textbf{NOD1 / NOD2} & \textbf{0.553} (0.198) & 0.650 & Basal NF-$\kappa$B / IRF crosstalk \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}''',
+
+        6: r'''\begin{table}[htbp]
+\centering
+\caption{\textbf{Myeloid Llgl2-LAT1 Amino Acid Sensing Co-Expression and BBB Transporters.}}
+\label{tab:lat1_coexpression}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Gene} & \textbf{Biological Function} & \textbf{Pearson $r$ with \textit{Llgl2}} & \textbf{$p$-value} & \textbf{Mean Log2 CPM} & \textbf{Perturbation LFC} \\
+\midrule
+\textbf{\textit{Llgl2}} & Basolateral adapter; transporter membrane docking & 1.000 & --- & 2.26 & +0.290\textsuperscript{\textdagger} \\
+\textbf{\textit{Slc7a5} (LAT1)} & Large neutral amino acid transporter (Leucine) & \textbf{-0.626} & $9.1 \times 10^{-8}$ & 6.64 & \textbf{+0.641} \\
+\textbf{\textit{Mtor}} & Mechanistic target of rapamycin; protein synthesis & \textbf{+0.784} & $1.3 \times 10^{-13}$ & 4.87 & \textbf{-0.469} \\
+\textbf{\textit{Rptor}} & Regulatory-associated protein of mTORC1 & \textbf{+0.690} & $1.1 \times 10^{-9}$ & 7.91 & \textbf{-0.068} \\
+\textbf{\textit{Slfn2}} & Myeloid quiescence gatekeeper; dormancy enforcement & \textbf{+0.518} & $2.3 \times 10^{-5}$ & 5.45 & \textbf{-0.833} \\
+\textbf{\textit{Slc16a1} (MCT1)} & Monocarboxylate transporter 1; SCFA brain influx & --- & --- & 4.86 & Stable \\
+\textbf{\textit{Acss2}} & Acetyl-CoA synthetase; intranuclear HAT replenishment & --- & --- & 3.34 & Stable \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{0.3em}
+{\footnotesize \textit{\textsuperscript{\textdagger}Unweighted 60-sample perturbation LFC; multi-cohort REML pooled estimate is $\hat{\theta} = +0.672$ (Table 2).}}
+\end{table}''',
+
+        7: r'''\begin{table}[htbp]
+\centering
 \caption{\textbf{Tripartite Microglial ATAC-Seq Peak Accessibility and TOBIAS Footprinting Depth Shifts.}}
 \label{tab:atac_footprinting}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lllcccccc}
 \toprule
-\textbf{Gene} & \textbf{TF Motif} & \textbf{Region} & \textbf{TOBIAS (SPF)} & \textbf{TOBIAS (Depleted)} & \textbf{TOBIAS (SCFA)} & \textbf{$\Delta\text{FP}_{\text{dep}}$} & \textbf{$\Delta\text{FP}_{\text{scfa}}$} & \textbf{Reversal \%} \\
+\textbf{Gene} & \textbf{TF Motif} & \textbf{Region} & \textbf{TOBIAS (SPF)} & \textbf{TOBIAS (Depleted)} & \textbf{TOBIAS (SCFA)} & $\Delta\mathbf{FP}_{\text{dep}}$ & $\Delta\mathbf{FP}_{\text{scfa}}$ & \textbf{Reversal \%} \\
 \midrule
 \textbf{\textit{Irf1}} & IRF1 & Promoter & 0.480 & 0.120 & 0.440 & -0.360 & +0.320 & \textbf{88.9\%} \\
 \textbf{\textit{Stat1}} & STAT1 & Promoter & 0.420 & 0.150 & 0.390 & -0.270 & +0.240 & \textbf{88.9\%} \\
@@ -228,63 +270,24 @@ def get_table_code(table_num):
 }
 \end{table}''',
 
-        6: r'''\begin{table}[htbp]
-\centering
-\caption{\textbf{In Silico NicheNet Upstream Cerebrovascular Ligand Prioritization.}}
-\label{tab:nichenet}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{cllllccp{6.5cm}}
-\toprule
-\textbf{Rank} & \textbf{Ligand} & \textbf{Sender} & \textbf{Cognate Receptor} & \textbf{Activity $r$ ($p$)} & \textbf{Potency} & \textbf{Target Pathway} \\
-\midrule
-\textbf{1} & \textbf{Bacterial OMVs / LPS} & Peripheral Blood / Gut & \textbf{TLR4 / CD14} & \textbf{0.658} (0.108) & 0.867 & Tonic IRF1 transcription via TRIF \\
-\textbf{2} & \textbf{\textit{Ifnb1} (Endothelial)} & BMEC Endothelium & \textbf{IFNAR1 / IFNAR2} & \textbf{0.600} (0.155) & 0.937 & Tonic STAT1/IRF1 phosphorylation \\
-\textbf{3} & \textbf{\textit{Ifnb1} (Circulating)} & Peripheral Immune Cells & \textbf{IFNAR1 / IFNAR2} & \textbf{0.572} (0.179) & 0.940 & Systemic baseline interferon tone \\
-\textbf{4} & \textbf{\textit{Ifng} (Circulating)} & T / NK Cells & \textbf{IFNGR1 / IFNGR2} & \textbf{0.559} (0.192) & 0.937 & Myeloid activation \& priming \\
-\textbf{5} & \textbf{Peptidoglycans} & Cell Wall Fragments & \textbf{NOD1 / NOD2} & \textbf{0.553} (0.198) & 0.650 & Basal NF-$\kappa$B / IRF crosstalk \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}''',
-
-        7: r'''\begin{table}[htbp]
-\centering
-\caption{\textbf{Myeloid Llgl2-LAT1 Amino Acid Sensing Co-Expression and BBB Transporters.}}
-\label{tab:lat1_coexpression}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llcccc}
-\toprule
-\textbf{Gene} & \textbf{Biological Function} & \textbf{Pearson $r$ with \textit{Llgl2}} & \textbf{$p$-value} & \textbf{Mean Log2 CPM} & \textbf{Perturbation LFC} \\
-\midrule
-\textbf{\textit{Llgl2}} & Basolateral adapter; transporter membrane docking & 1.000 & --- & 2.26 & +0.290 \\
-\textbf{\textit{Slc7a5} (LAT1)} & Large neutral amino acid transporter (Leucine) & \textbf{-0.626} & $9.1 \times 10^{-8}$ & 6.64 & \textbf{+0.641} \\
-\textbf{\textit{Mtor}} & Mechanistic target of rapamycin; protein synthesis & \textbf{+0.784} & $1.3 \times 10^{-13}$ & 4.87 & \textbf{-0.469} \\
-\textbf{\textit{Slfn2}} & Myeloid quiescence gatekeeper; dormancy enforcement & \textbf{+0.518} & $2.3 \times 10^{-5}$ & 5.45 & \textbf{-0.833} \\
-\textbf{\textit{Slc16a1} (MCT1)} & Monocarboxylate transporter 1; SCFA brain influx & --- & --- & 4.86 & Stable \\
-\textbf{\textit{Acss2}} & Acetyl-CoA synthetase; intranuclear HAT replenishment & --- & --- & 3.34 & Stable \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}''',
-
         8: r'''\begin{table}[htbp]
 \centering
 \caption{\textbf{SCFA Metabolite Reversibility Modeling Metrics (Erny 2015 GSE67858).}}
 \label{tab:scfa_rescue}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccl}
+\begin{tabular}{lcccccc}
 \toprule
-\textbf{Gene} & \textbf{Depletion $\log_2\text{FC}$} & \textbf{$I^2$} & \textbf{SCFA Rescue $\log_2\text{FC}$} & \textbf{ISRI} & \textbf{Rescue \%} & \textbf{Status} \\
+\textbf{Gene} & \textbf{$I^2$} & \textbf{Depletion $\log_2\text{FC}$} & \textbf{SCFA Rescue $\log_2\text{FC}$} & \textbf{ISRI} & \textbf{Rescue \%} & \textbf{Status} \\
 \midrule
-\textbf{\textit{Plin3}} & -0.918 & 96.5\% & \textbf{+1.550} & \textbf{+1.550} & \textbf{150.0\%*} & Reversible Responder \\
-\textbf{\textit{Tnf}} & +1.052 & 32.2\% & \textbf{-1.150} & \textbf{+1.150} & \textbf{109.3\%*} & Reversible Responder \\
-\textbf{\textit{Fosb}} & +1.345 & 0.0\% & \textbf{-0.950} & \textbf{+0.950} & \textbf{70.7\%} & Reversible Responder \\
-\textbf{\textit{Slfn2}} & -0.465 & 9.6\% & \textbf{+0.520} & \textbf{+0.520} & \textbf{111.7\%*} & Reversible Responder \\
-\textbf{\textit{Sap30}} & -0.392 & 0.0\% & \textbf{+0.450} & \textbf{+0.450} & \textbf{114.6\%*} & Reversible Responder \\
-\textbf{\textit{Tsc22d3}} & -1.010 & 95.4\% & \textbf{+0.850} & \textbf{+0.850} & \textbf{84.1\%} & Reversible Responder \\
-\textbf{\textit{Ddit4}} & -1.199 & 97.8\% & \textbf{+0.900} & \textbf{+0.900} & \textbf{75.1\%} & Reversible Responder \\
-\textbf{\textit{Clu}} & +0.873 & 0.0\% & \textbf{-0.650} & \textbf{+0.650} & \textbf{74.5\%} & Reversible Responder \\
-\textbf{\textit{Llgl2}} & +0.672 & 0.0\% & \textbf{-0.550} & \textbf{+0.550} & \textbf{81.8\%} & Reversible Responder \\
+\textbf{\textit{Plin3}} & 96.5\% & -0.918 & \textbf{+1.550} & \textbf{+1.550} & \textbf{150.0\%*} & Reversible Responder \\
+\textbf{\textit{Tnf}} & 32.2\% & +1.052 & \textbf{-1.150} & \textbf{+1.150} & \textbf{109.3\%*} & Reversible Responder \\
+\textbf{\textit{Fosb}} & 0.0\% & +1.345 & \textbf{-0.950} & \textbf{+0.950} & \textbf{70.7\%} & Reversible Responder \\
+\textbf{\textit{Slfn2}} & 9.6\% & -0.465 & \textbf{+0.520} & \textbf{+0.520} & \textbf{111.7\%*} & Reversible Responder \\
+\textbf{\textit{Sap30}} & 0.0\% & -0.392 & \textbf{+0.450} & \textbf{+0.450} & \textbf{114.6\%*} & Reversible Responder \\
+\textbf{\textit{Tsc22d3}} & 95.4\% & -1.010 & \textbf{+0.850} & \textbf{+0.850} & \textbf{84.1\%} & Reversible Responder \\
+\textbf{\textit{Ddit4}} & 97.8\% & -1.199 & \textbf{+0.900} & \textbf{+0.900} & \textbf{75.1\%} & Reversible Responder \\
+\textbf{\textit{Clu}} & 0.0\% & +0.873 & \textbf{-0.650} & \textbf{+0.650} & \textbf{74.5\%} & Reversible Responder \\
+\textbf{\textit{Llgl2}} & 0.0\% & +0.672 & \textbf{-0.550} & \textbf{+0.550} & \textbf{81.8\%} & Reversible Responder \\
 \bottomrule
 \end{tabular}%
 }
@@ -298,197 +301,68 @@ def get_figure_code(fig_num):
     figures = {
         1: r'''\begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.32\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_qc_library_depths.png}
-  \caption{Sequencing Depths}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.32\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_qc_microglial_purity.png}
-  \caption{Lineage Purity}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.32\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_qc_isolation_stress.png}
-  \caption{Isolation Stress}
-\end{subfigure}
-\caption{\textbf{Multi-Cohort Quality Control Audit, Lineage Purity, and Stress Independence.} 
-(A) Sequencing depth distribution across all 60 biological libraries. 
-(B) Microglial lineage marker purity audit evaluating expression of canonical microglial markers (\textit{Cx3cr1}, \textit{P2ry12}, \textit{Tmem119}, \textit{Hexb}, \textit{Csf1r}) versus astrocytic (\textit{Gfap}, \textit{Aqp4}), oligodendrocytic (\textit{Mbp}, \textit{Olig2}), and neuronal (\textit{Rbfox3}) markers. FACS cohorts demonstrate $>99\%$ purity. 
-(C) Ex vivo enzymatic dissociation stress scores across groups. Two-sample testing confirms no confounding ($p \ge 0.18$).}
+\includegraphics[width=\textwidth]{figures/fig1_harmonization_and_design.pdf}
+\caption{\textbf{Multi-Cohort Harmonization, Experimental Paradigms, Lineage Purity, and Study Architecture.} 
+(A) Panoramic biological circuit schematic mapping communication along the gut-microbiota-microglia axis across distinct experimental models (Lifelong Germ-Free, Acute Antibiotics, Dietary Fiber Starvation, and Colonized Specific-Pathogen-Free Controls). 
+(B) Mapped sequencing library depth distributions ($\log_{10}$ scale) across all 60 biological libraries. 
+(C) Multi-marker lineage purity fingerprint comparing high-abundance canonical microglial checkpoints (\textit{Csf1r}, \textit{Cx3cr1}, \textit{P2ry12}, \textit{Tmem119}, \textit{Hexb}; $\sim$2,438 CPM) against depleted neural and glial contaminants (\textit{Aqp4}, \textit{Gfap}, \textit{Mbp}, \textit{Rbfox3}; $<$10--30 CPM), establishing $>$99.2\% purity across FACS-sorted cohorts (isolation stress invariance detailed in \textbf{Supplementary Figure S1D}). 
+(D) Cross-cohort Principal Component Analysis (PCA) with 95\% confidence ellipses projecting biological depletion status along PC1 (20.8\% variance) and cohort-specific baseline variation along PC2 (9.0\% variance).}
 \label{fig:fig1}
 \end{figure}''',
 
         2: r'''\begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_volcano_GSE108045.png}
-  \caption{GSE108045 (ABX Shock)}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_volcano_GSE107925.png}
-  \caption{GSE107925 (Germ-Free)}
-\end{subfigure}
-\\[0.5em]
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_volcano_GSE186210.png}
-  \caption{GSE186210 (Fiber Starvation)}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_lfc_correlation_heatmap.png}
-  \caption{Cross-Cohort Correlation}
-\end{subfigure}
-\caption{\textbf{Single-Cohort Phenotypic Programs Across Antibiotic Shock, Germ-Free Isolation, and Fiber Starvation.} 
-(A) Volcano plot of acute antibiotic-treated microglia (GSE108045), highlighting massive downregulation of anti-inflammatory checkpoints \textit{Tsc22d3} (GILZ) and \textit{Ddit4} (REDD1). 
-(B) Volcano plot of lifelong germ-free adult microglia (GSE107925). 
-(C) Volcano plot of dietary fiber starvation (GSE186210), demonstrating selective suppression of lipid perilipin \textit{Plin3}. 
-(D) Cross-cohort effect size correlation heatmap showing near-zero correlation ($\rho \approx 0$).}
+\includegraphics[width=0.95\textwidth]{figures/fig2_reml_hksj_core.pdf}
+\caption{\textbf{Cross-Study REML-HKSJ Meta-Analysis Resolves the Invariant Biological Core from Model-Private Shocks.} 
+(A) Volcano plot of REML-HKSJ random-effects meta-analysis across 23,096 common genes with Higgins $I^2$ overlay ($I^2 < 25\%$ for consensus hits). 
+(B) Integrated multi-cohort table-forest plot of invariant landmark loci illustrating universal upregulation of polarity hub \textit{Llgl2} and extracellular chaperone \textit{Clu}, alongside universal repression of quiescence gatekeeper \textit{Slfn2} and chromatin corepressor \textit{Sap30}, complete with cohort-level effect sizes, pooled REML diamonds, and an aligned statistical summary table ($I^2$ heterogeneity and HKSJ $p$-values; high-heterogeneity model-private shock effectors \textit{Plin3} and \textit{Tsc22d3} detailed across the 12-gene forest grid in \textbf{Supplementary Figure S4B}). 
+(C) Leave-One-Out (LOO) sensitivity scatter plot omitting Percoll-isolated GSE266602 ($r = 0.670, \rho = 0.827$), demonstrating preservation of the invariant core along the unity diagonal. 
+(D) Cross-cohort consensus concordance vs. model-private shock effect size matrix across all four experimental paradigms and pooled REML-HKSJ synthesis, displaying exact $\log_2$ fold changes and Higgins $I^2$ heterogeneity to contrast the invariant core signature from model-private shock artifacts.}
 \label{fig:fig2}
 \end{figure}''',
 
         3: r'''\begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_meta_volcano.png}
-  \caption{REML-HKSJ Meta Volcano}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_forest_plots_top.png}
-  \caption{Landmark Forest Plots}
-\end{subfigure}
-\\[0.5em]
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_loo_stability.png}
-  \caption{Leave-One-Out Stability}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_consensus_heatmap.png}
-  \caption{Consensus Clustered Heatmap}
-\end{subfigure}
-\caption{\textbf{Cross-Study REML-HKSJ Meta-Analysis Resolves the Invariant Core Signature.} 
-(A) Volcano plot of REML-HKSJ random-effects meta-analysis across 23,096 common genes with Higgins $I^2$ overlay ($I^2 < 25\%$ for all consensus hits). 
-(B) Multi-cohort forest plots of landmark genes illustrating consistent upregulation of polarity hub \textit{Llgl2} and chaperone \textit{Clu}, alongside universal repression of quiescence gatekeeper \textit{Slfn2} and corepressor \textit{Sap30}. 
-(C) Leave-One-Out (LOO) sensitivity scatter plot omitting Percoll-isolated GSE266602 ($r = 0.670, \rho = 0.827$). 
-(D) Hierarchically clustered heatmap of relative expression across all 60 biological samples, standardized within cohorts (CPM Z-scores).}
+\includegraphics[width=0.95\textwidth]{figures/fig3_sex_and_subgroups.pdf}
+\caption{\textbf{Factorial Sex Invariance, Male Vulnerability, and Perturbation Subgroup Decomposition ($N = 51$ Sex-Informative Samples).} 
+(A) Bland-Altman / MA sex divergence plot ($X = \text{shared effect magnitude } (\beta_{\text{male}} + \beta_{\text{female}})/2$, $Y = \text{interaction magnitude } \hat{\theta}_{\text{int}} = \beta_{\text{male}} - \beta_{\text{female}}$) across 33,171 genes, de-densifying the shared core ($99.1\%$ sex-shared, $I^2_{\text{sex}} = 0\%$, soft central density envelope) while exposing the 106 male-vulnerable divergent outliers. 
+(B) Sex-stratified forest plots of landmark loci showing complete sex invariance for master regulators \textit{Irf1} ($p = 0.863$), \textit{Stat1} ($p = 0.362$), and \textit{Llgl2} ($p = 0.941$), alongside selective male-biased vulnerability in quiescence checkpoint \textit{Slfn2} ($\hat{\theta}_{\text{int}} = +0.338, p = 0.017$) and antiviral effector \textit{Oas1a} ($\hat{\theta}_{\text{int}} = +0.335, p = 0.051$). 
+(C) Multi-study factor analysis across all 60 biological samples separating Factor 1 (Microbial Tonic Depletion, 20.8\% variance) from Factor 2 (Model Modality / Acute Stress, 9.0\% variance), resolving cohort-specific clustering without marker occlusion. 
+(D) Global transcriptome perturbation partition bar chart (with wrapped category nomenclature and log scale) demonstrating that 50.0\% of meta-DEGs belong to the Shared Microbial Core, separating common microbial hits from model-private antibiotic shock and fiber starvation responses.}
 \label{fig:fig3}
 \end{figure}''',
 
         4: r'''\begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_sex_concordance_scatter.png}
-  \caption{Male vs. Female Concordance}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_sex_stratified_forest.png}
-  \caption{Sex-Stratified Landmark Forest}
-\end{subfigure}
-\caption{\textbf{Sex-Stratified Meta-Regression and Dimorphism Discordance ($N = 51$).} 
-(A) Concordance scatter plot comparing pooled male vs. female $\log_2$ fold changes across 33,171 genes (Pearson $r = 0.520$, Spearman $\rho = 0.551$). 99.1\% of genes are sex-shared ($I^2_{\text{sex}} = 0\%$). 
-(B) Sex-stratified forest plots of landmark loci showing identical effect sizes for \textit{Irf1} ($p = 0.863$), \textit{Stat1} ($p = 0.362$), and \textit{Llgl2} ($p = 0.941$), alongside selective male-biased vulnerability in quiescence checkpoint \textit{Slfn2} ($\hat{\theta}_{\text{int}} = +0.338, p = 0.017$) and \textit{Oas1a} ($\hat{\theta}_{\text{int}} = +0.335, p = 0.051$).}
+\includegraphics[width=0.95\textwidth]{figures/fig4_interferon_and_deconvolution.pdf}
+\caption{\textbf{Cell-Intrinsic Tonic Interferon Surveillance Collapse Governed by IRF1 and Preserved IRM Subpopulations.} 
+(A) Whole-transcriptome GSEA normalized enrichment score (NES) dotplot highlighting deep negative enrichment of \texttt{Interferon Gamma Response} ($\text{NES} = -2.274, \text{FDR} < 0.001$), \texttt{Interferon\_Responsive\_Microglia\_IRM} ($\text{NES} = -2.133$), and cell-cycle arrest (\texttt{G2M Checkpoint} $\text{NES} = -2.155$). 
+(B) Upstream transcription factor regulon volcano plot across 357 TRRUST TFs, identifying master regulator \textbf{IRF1} as significantly repressed ($Z = -2.453, p = 0.00098, \text{FDR} = 0.0380$). 
+(C) BayesPrism 5-state microglial subpopulation deconvolution across 60 biological samples (individual replicate points plotted alongside boxplots), demonstrating complete physical retention of the IRM subset ($17.5\% \pm 0.8\%$ depleted vs. $16.8\% \pm 0.6\%$ reference, $p = 0.524$). 
+(D) Two-tier per-cell expression imputation within the homeostatic compartment (individual biological replicate points with docked legend) showing significant collapse of canonical ISGs (\textit{Oas1a}, \textit{Stat1}, \textit{Gbp2}, \textit{Irf1}; $p < 0.001$), decisively establishing cell-intrinsic per-cell transcriptional shutoff.}
 \label{fig:fig4}
 \end{figure}''',
 
         5: r'''\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/fig_subgroup_perturbation_decomposition.png}
-\caption{\textbf{Two-Tier Subgroup Decomposition: Disentangling Microbial Tone from Perturbation Shocks.} 
-(A) Multi-study factor analysis across all 60 biological samples separating Factor 1 (Microbial Tonic Depletion, 20.8\% variance) from Factor 2 (Model Modality / Acute Shock, 9.0\% variance). 
-(B) Subgroup effect size concordance scatter comparing Germ-Free vs Antibiotic effects. 
-(C) Perturbation-specific effect size decomposition across landmark genes. 
-(D) Global transcriptome partition across perturbation axes.}
+\includegraphics[width=0.95\textwidth]{figures/fig5_relays_and_nutrient_axis.pdf}
+\caption{\textbf{Upstream Cerebrovascular Ligand Relays and the Myeloid Llgl2-LAT1 Nutrient Scavenging Adaptation.} 
+(A) Upstream ligand activity Pearson correlation ($r$) ranked across sender compartments (BMEC brain endothelium, BAMs, and circulating outer membrane vesicles). 
+(B) Tripartite communication circuit connecting upstream sender compartments through intermediate ligand-receptor interfaces (OMVs $\to$ TLR4/CD14, endothelial \textit{Ifnb1} $\to$ IFNAR1/2) to the microglial IRF1 regulon. 
+(C) Cross-sample co-expression scatter plot of basolateral polarity adapter \textit{Llgl2} versus large neutral amino acid transporter LAT1 (\textit{Slc7a5}, Pearson $r = -0.626, p = 9.1 \times 10^{-8}$) contrasting physiological transporter-adapter dynamics against coordinate post-depletion elevation of both loci (\textit{Llgl2} +0.290 LFC, \textit{Slc7a5} +0.641 LFC) under mTOR shutdown ($r = +0.784$). 
+(D) Microglial expression profiles ($\log_2$ CPM with error bars) demonstrating abundant monocarboxylate transporters (\textit{Slc16a7}, \textit{Slc16a3}, \textit{Slc16a1}) and acetyl-CoA synthetase (\textit{Acss2}, 3.34 $\log_2$ CPM) in contrast to near-undetectable cell-surface GPCRs (\textit{Ffar2}, \textit{Ffar3}).}
 \label{fig:fig5}
 \end{figure}''',
 
         6: r'''\begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_gsea_pathway_enrichment.png}
-  \caption{Whole-Transcriptome GSEA}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_tf_regulon_landscape.png}
-  \caption{TRRUST TF Regulon Landscape}
-\end{subfigure}
-\\[0.5em]
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_wgcna_modules_eigengenes.png}
-  \caption{WGCNA Module Eigengenes}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_network_hub_subgraph.png}
-  \caption{Co-expression Hub Subgraph}
-\end{subfigure}
-\caption{\textbf{Whole-Transcriptome GSEA, Upstream TRRUST Regulons, and WGCNA Networks.} 
-(A) GSEA enrichment plot showing deep negative enrichment of \texttt{Interferon Gamma Response} ($\text{NES} = -2.274, \text{FDR} < 0.001$) and \texttt{Interferon\_Responsive\_Microglia\_IRM} ($\text{NES} = -2.133$), accompanied by coordinated suppression of cell-cycle programs including \texttt{G2M Checkpoint} ($\text{NES} = -2.155$) and \texttt{E2F Targets} ($\text{NES} = -1.779$). 
-(B) Upstream transcription factor regulon volcano plot across 357 TRRUST TFs, highlighting master regulator \textbf{IRF1} as significantly repressed ($Z = -2.453, p = 0.00098, \text{FDR} = 0.0380$). 
-(C) WGCNA module eigengene correlations across perturbation conditions. 
-(D) Co-expression network hub subgraph illustrating topological overlap connections across three empirical functional axes (\textit{Slfn2-Sap30-Ddit4}, \textit{Sall1-Tmem119-Ffar2-Llgl2}, \textit{Fosb-Fos}).}
+\includegraphics[width=\textwidth]{figures/fig6_reversibility_and_bbb_climax.pdf}
+\caption{\textbf{In Vivo BBB Pharmacokinetic Delivery, Chromatin Poising, and Multi-Omic SCFA Reversibility.} 
+(A) Panoramic full-width Three-Pillar in vivo blood-brain barrier transport model resolving the pharmacokinetic paradox through BAM vascular sensing, direct central acetate influx with microglial ACSS2 nuclear HAT replenishment, and vagal afferent reflex circuitry. 
+(B) Tripartite microglial TOBIAS open chromatin footprint depths across landmark loci (\textit{Irf1}, \textit{Stat1}, \textit{Oas1a}, \textit{Gbp2}, \textit{Tap1}, \textit{Llgl2}) across SPF colonized, Germ-Free depleted, and SCFA-repleted adult mice (88.9\% chromatin footprint reversal; condition legend and restoration badge docked above axes). 
+(C) Cross-omic concordance scatter comparing microglial ATAC-seq peak accessibility shifts ($\log_2\text{FC}$) and matched RNA-seq effect sizes across the 10 active chromatin loci ($r = 0.88, p = 1.4 \times 10^{-4}$, dashed teal line), with transient antibiotic shock effectors (\textit{Tsc22d3}, \textit{Ddit4}) plotted as distinct negative control markers (open red diamonds) exhibiting invariant chromatin accessibility. 
+(D) In vivo transcriptomic rescue modeling (Erny 2015 GSE67858) demonstrating profound reciprocal signature inversion ($r = -0.873, p = 1.07 \times 10^{-6}$; 10,000-permutation specificity null testing and ranked ISRI waterfall plot detailed in \textbf{Supplementary Figure S9}).}
 \label{fig:fig6}
-\end{figure}''',
-
-        7: r'''\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig_sc_subpopulation_deconvolution.png}
-\caption{\textbf{BayesPrism Microglial Subpopulation Deconvolution and Cell-Intrinsic Normalization.} 
-(A) Inferred subpopulation proportions across 5 microglial states across 60 biological samples, demonstrating complete physical preservation of the IRM subset ($17.5\%$ depleted vs $16.8\%$ reference). 
-(B) SVD condition index scree plot confirming zero harmful multicollinearity ($\kappa = 1.54 < 30$). 
-(C) Imputed per-cell expression of canonical ISGs within the homeostatic compartment showing significant collapse ($p < 0.001$). 
-(D) Pan-microglial lineage marker stability (\textit{Hexb}, \textit{Csf1r}, \textit{Tmem119}, $p = 0.85$).}
-\label{fig:fig7}
-\end{figure}''',
-
-        8: r'''\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig_epigenomic_atac_footprinting.png}
-\caption{\textbf{Tripartite Microglial ATAC-Seq Peak Accessibility and TOBIAS Chromatin Footprinting.} 
-(A) TOBIAS open chromatin footprint depth across microglial landmark loci in SPF colonized, microbiome-depleted, and SCFA-repleted conditions (Erny et al. 2021). 
-(B) Cross-omic concordance between ATAC-seq chromatin peak accessibility ($\log_2\text{FC}$) and RNA-seq meta-analysis effect sizes ($\log_2\text{FC}$) across evaluated loci, confirming coordinate epigenetic and transcriptional regulation.}
-\label{fig:fig8}
-\end{figure}''',
-
-        9: r'''\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig_nichenet_ligand_receptor_network.png}
-\caption{\textbf{In Silico NicheNet Cerebrovascular Ligand-Receptor Relay.} 
-(A) Upstream ligand regulatory potential across BMEC endothelium, BAMs, and peripheral circulation. 
-(B) Prioritized ligand-receptor communication chord connecting gut-derived OMVs (TLR4/CD14) and endothelial \textit{Ifnb1} (IFNAR1/2) to the microglial IRF1 regulon.}
-\label{fig:fig9}
-\end{figure}''',
-
-        10: r'''\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig_pharmacokinetic_bbb_metabolic_axis.png}
-\caption{\textbf{Myeloid Llgl2-LAT1 Metabolic Co-Expression and Pharmacokinetic BBB Transport Flux.} 
-(A) Coordinate co-expression of basolateral adapter \textit{Llgl2} and large neutral amino acid transporter LAT1 (\textit{Slc7a5}, +0.641 LFC, $r = -0.63, p = 9.1 \times 10^{-8}$) alongside mTOR repression (-0.469 LFC) and \textit{Slfn2} dormancy release. 
-(B) Normalized microglial expression profile (log2 CPM) across monocarboxylate transporters (\textit{Slc16a7}, \textit{Slc16a3}, \textit{Slc16a1}) and acetyl-CoA synthetase (\textit{Acss2}) versus low cell-surface GPCRs (\textit{Ffar2}, \textit{Ffar3}) in reference ($N=25$) and microbiome-depleted ($N=35$) samples (mean $\pm$ SEM). 
-(C) Three-Pillar in vivo pharmacokinetic resolution of BBB SCFA delivery (BAM vascular relay, ACSS2 acetate capture, and vagal afferent reflex).}
-\label{fig:fig10}
-\end{figure}''',
-
-        11: r'''\begin{figure}[htbp]
-\centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_scfa_rescue_inversion.png}
-  \caption{Reciprocal Inversion Scatter}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_scfa_rescue_specificity_null.png}
-  \caption{Specificity Null Permutation}
-\end{subfigure}
-\caption{\textbf{In Vivo SCFA Metabolite Reversibility Modeling and Genomic Specificity Null Test.} 
-(A) Reciprocal signature inversion between meta-analytic depletion and empirical SCFA response in vivo (GSE67858, $r = -0.873, p = 1.07 \times 10^{-6}$). 
-(B) 10,000-permutation empirical label-shuffling specificity null test ($p_{\text{perm}} < 0.0001$). 
-(C) Ranked reversibility waterfall plot across microglial landmarks.}
-\label{fig:fig11}
 \end{figure}'''
     }
     return figures.get(fig_num, "")
@@ -547,27 +421,15 @@ def build_manuscript_tex():
         if sec_num == 1:
             woven_results.append("\n" + get_table_code(1) + "\n" + get_figure_code(1) + "\n")
         elif sec_num == 2:
-            woven_results.append("\n" + get_figure_code(2) + "\n")
+            woven_results.append("\n" + get_table_code(2) + "\n" + get_figure_code(2) + "\n")
         elif sec_num == 3:
-            woven_results.append("\n" + get_table_code(2) + "\n")
+            woven_results.append("\n" + get_table_code(3) + "\n" + get_figure_code(3) + "\n")
         elif sec_num == 4:
-            woven_results.append("\n" + get_figure_code(3) + "\n")
+            woven_results.append("\n" + get_table_code(4) + "\n" + get_figure_code(4) + "\n")
         elif sec_num == 5:
-            woven_results.append("\n" + get_table_code(3) + "\n" + get_figure_code(4) + "\n")
+            woven_results.append("\n" + get_table_code(5) + "\n" + get_table_code(6) + "\n" + get_figure_code(5) + "\n")
         elif sec_num == 6:
-            woven_results.append("\n" + get_figure_code(5) + "\n")
-        elif sec_num == 9:
-            woven_results.append("\n" + get_figure_code(6) + "\n")
-        elif sec_num == 10:
-            woven_results.append("\n" + get_table_code(4) + "\n" + get_figure_code(7) + "\n")
-        elif sec_num == 11:
-            woven_results.append("\n" + get_table_code(5) + "\n" + get_figure_code(8) + "\n")
-        elif sec_num == 12:
-            woven_results.append("\n" + get_table_code(6) + "\n" + get_figure_code(9) + "\n")
-        elif sec_num == 13:
-            woven_results.append("\n" + get_table_code(7) + "\n" + get_figure_code(10) + "\n")
-        elif sec_num == 14:
-            woven_results.append("\n" + get_table_code(8) + "\n" + get_figure_code(11) + "\n")
+            woven_results.append("\n" + get_table_code(7) + "\n" + get_table_code(8) + "\n" + get_figure_code(6) + "\n")
 
 
     results_latex = "\n\n".join(woven_results)
@@ -726,7 +588,7 @@ def build_supplementary_tex():
 \linenumbers
 
 \section*{Supplementary Information Overview}
-This document contains extended methodological formulations, supplementary diagnostic figures (Figures S1--S6), and supplementary statistical tables (Tables S1--S4) supporting the main text findings of \textbf{NeuroGut-MetaSeq (v1.3.0)}.
+This document contains extended methodological formulations, supplementary diagnostic figures (Figures S1--S9), and supplementary statistical tables (Tables S1--S4) supporting the main text findings of \textbf{NeuroGut-MetaSeq (v1.4.0)}.
 
 \tableofcontents
 
@@ -803,7 +665,7 @@ GSE266602 & Depleted GF/ABX ($n=6$) & 41.7M -- 70.4M & 54.1M & $74.3\% \pm 14.4\
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccl}
 \toprule
-\textbf{Gene Symbol} & \textbf{$k$} & \textbf{REML $\log_2\text{FC}$} & \textbf{HKSJ 95\% CI} & \textbf{$p_{\text{HKSJ}}$} & \textbf{$I^2$} & \textbf{Consensus Designation} \\
+\textbf{Gene Symbol} & \textbf{Cohorts ($k$)} & \textbf{REML $\log_2\text{FC}$} & \textbf{HKSJ 95\% CI} & \textbf{$p_{\text{HKSJ}}$} & \textbf{$I^2$} & \textbf{Consensus Designation} \\
 \midrule
 \textit{Llgl2} & 4 & +0.672 & [0.166, 1.178] & 0.0243 & 0.0\% & Invariant Basolateral Core \\
 \textit{Slfn2} & 4 & -0.465 & [-0.789, -0.141] & 0.0197 & 9.6\% & Invariant Quiescence Guardian \\
@@ -825,7 +687,7 @@ GSE266602 & Depleted GF/ABX ($n=6$) & 41.7M -- 70.4M & 54.1M & $74.3\% \pm 14.4\
 \caption{\textbf{Factorial Interaction Meta-Regression Metrics for Sex Dimorphism ($N=51$).}}
 \label{tab:s3_sex}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccclp{6.5cm}}
+\begin{tabular}{lccccclp{6.5cm}}
 \toprule
 \textbf{Gene} & \textbf{Male LFC} & \textbf{Female LFC} & \textbf{$\hat{\theta}_{\text{int}}$} & \textbf{$p_{\text{int}}$} & \textbf{$I^2_{\text{sex}}$} & \textbf{Dimorphism Status} & \textbf{Biological Interpretation} \\
 \midrule
@@ -869,38 +731,26 @@ GSE266602 & Depleted GF/ABX ($n=6$) & 41.7M -- 70.4M & 54.1M & $74.3\% \pm 14.4\
 % Figure S1
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_qc_microglial_purity.png}
-  \caption{Microglial Lineage Purity Audit}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_qc_library_depths.png}
-  \caption{Library Depth Distributions}
-\end{subfigure}
-\caption{\textbf{Detailed Quality Control Audit and Microglial Lineage Validation.} 
-(A) Assessment of microglial purity by measuring canonical microglial marker expression versus non-microglial contaminants across 60 biological libraries. 
-(B) Sequencing depth distributions across individual experimental cohorts.}
+\includegraphics[width=0.92\textwidth]{figures/fig_s1_qc_unified_audit.pdf}
+\caption{\textbf{Multi-Cohort Technical Quality Control Audit and Microglial Lineage Validation.} 
+(A) Sequencing library depth distribution across all 60 biological libraries. 
+(B) Canonical microglial lineage checkpoint abundance ($>99.2\%$ purity). 
+(C) Non-myeloid contaminant marker depletion ($<0.8\%$ astrocytic, oligodendrocytic, and neuronal transcripts). 
+(D) Ex vivo enzymatic dissociation stress scores across colonized controls and microbiome-depleted groups ($p \ge 0.18$).}
 \label{fig:figs1}
 \end{figure}
 
-\vspace{1.5em}
+\clearpage
 
 % Figure S2
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_lfc_correlation_heatmap.png}
-  \caption{Cross-Cohort Log2FC Correlation}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_cohort_deg_overlap.png}
-  \caption{Cohort DEG Overlap}
-\end{subfigure}
-\caption{\textbf{Study-Specific Variance and Unpooled DEG Concordance.} 
-(A) Pairwise Pearson correlation heatmap of genome-wide effect sizes between cohorts, showing uncoupled baseline laboratory noise ($\rho \approx 0$). 
-(B) Overlap of differentially expressed genes between cohorts illustrating limited raw gene intersection without statistical pooling.}
+\includegraphics[width=0.92\textwidth]{figures/fig_s2_volcano_all_cohorts.pdf}
+\caption{\textbf{Single-Cohort Differential Expression Landscapes Across Experimental Paradigms.} 
+(A) GSE107925 (Lifelong Germ-Free adult microglia). 
+(B) GSE108045 (Acute Broad-Spectrum Antibiotics cocktail), illustrating profound perturbation shock repression of \textit{Tsc22d3} and \textit{Ddit4}. 
+(C) GSE186210 (Dietary Fiber Starvation), highlighting selective suppression of perilipin \textit{Plin3}. 
+(D) GSE266602 (Germ-Free Percoll Baseline).}
 \label{fig:figs2}
 \end{figure}
 
@@ -909,20 +759,23 @@ GSE266602 & Depleted GF/ABX ($n=6$) & 41.7M -- 70.4M & 54.1M & $74.3\% \pm 14.4\
 % Figure S3
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.82\textwidth]{figures/fig_heterogeneity_distribution.png}
-\caption{\textbf{Distribution of Higgins $I^2$ Heterogeneity Across 23,096 Evaluated Genes.} 
-Histogram of Higgins $I^2$ values across the common transcriptome. Over 70.5\% of genes exhibit low between-study heterogeneity ($I^2 < 25\%$), with only 4.5\% displaying extreme heterogeneity ($I^2 > 75\%$).}
+\includegraphics[width=0.92\textwidth]{figures/fig_s3_cross_cohort_divergence.pdf}
+\caption{\textbf{Cross-Cohort Divergence, Marker Profiles, and Unpooled DEG Overlaps.} 
+(A) Pairwise Spearman rank correlation matrix of genome-wide effect sizes between cohorts ($\rho \approx 0$). 
+(B) Intersection of raw unpooled differentially expressed genes between cohorts illustrating limited overlap without formal meta-analytic pooling. 
+(C) Landmark marker effect sizes compared across individual experimental paradigms.}
 \label{fig:figs3}
 \end{figure}
 
-\vspace{1.5em}
+\clearpage
 
 % Figure S4
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{figures/fig_loo_stability.png}
-\caption{\textbf{Systematic Leave-One-Out (LOO) Sensitivity Meta-Analyses.} 
-Iterative recalculation of pooled REML effect sizes omitting each cohort. Core consensus loci (\textit{Llgl2}, \textit{Clu}, \textit{Slfn2}, \textit{Sap30}) remain tightly centered along the unity line across all iterations, while acute shock effectors (\textit{Tsc22d3}, \textit{Ddit4}) shift to zero upon omission of the antibiotic cohort.}
+\includegraphics[width=0.92\textwidth]{figures/fig_s4_heterogeneity_and_forest.pdf}
+\caption{\textbf{Transcriptome-Wide Heterogeneity Distribution and Full Landmark Forest Plot Grid.} 
+(A) Higgins $I^2$ distribution across 23,096 evaluated genes, demonstrating that 70.5\% of genes exhibit low between-study heterogeneity ($I^2 < 25\%$). 
+(B) Multi-study forest plot grid showing study-level effect sizes, confidence intervals, and pooled REML diamonds across landmark loci.}
 \label{fig:figs4}
 \end{figure}
 
@@ -931,39 +784,58 @@ Iterative recalculation of pooled REML effect sizes omitting each cohort. Core c
 % Figure S5
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_wgcna_modules_eigengenes.png}
-  \caption{WGCNA Module-Trait Correlations}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_network_hub_subgraph.png}
-  \caption{Topological Overlap Hub Network}
-\end{subfigure}
-\caption{\textbf{Weighted Gene Co-Expression Networks and Consensus Hub Subgraphs.} 
-(A) WGCNA module eigengenes and their correlations with experimental microbiome depletion. 
-(B) Consensus co-expression hub subgraph highlighting topological overlap connections across three empirical functional axes (\textit{Slfn2-Sap30-Ddit4}, \textit{Sall1-Tmem119-Ffar2-Llgl2}, \textit{Fosb-Fos}).}
+\includegraphics[width=0.92\textwidth]{figures/fig_s5_loo_sensitivity.pdf}
+\caption{\textbf{Systematic Leave-One-Out (LOO) Sensitivity Meta-Analyses.} 
+Iterative recalculation of pooled REML effect sizes omitting each cohort. Core consensus loci (\textit{Llgl2}, \textit{Clu}, \textit{Slfn2}, \textit{Sap30}) remain tightly centered along the unity line across all iterations, while acute shock effectors (\textit{Tsc22d3}, \textit{Ddit4}) return toward zero upon omission of the antibiotic cohort.}
 \label{fig:figs5}
 \end{figure}
 
-\vspace{1.5em}
+\clearpage
 
 % Figure S6
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_scfa_rescue_specificity_null.png}
-  \caption{Specificity Null Distribution}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-  \includegraphics[width=\textwidth]{figures/fig_scfa_rescue_inversion.png}
-  \caption{SCFA Signature Inversion}
-\end{subfigure}
-\caption{\textbf{SCFA Metabolite Rescue Specificity Null Model Permutations and Trajectory.} 
-(A) 10,000-iteration empirical label-shuffling permutation test ($p_{\text{perm}} < 0.0001$), confirming specificity of the rescue index. 
-(B) Scatter plot illustrating the profound reciprocal correlation ($r = -0.873$) between meta-analytic depletion and in vivo SCFA repletion.}
+\includegraphics[width=0.92\textwidth]{figures/fig_s6_wgcna_and_interactome.pdf}
+\caption{\textbf{Weighted Gene Co-Expression Networks and Consensus Hub Interactome.} 
+(A) WGCNA module eigengene correlations with experimental microbiome depletion. 
+(B) Consensus co-expression hub subgraph highlighting topological overlap connections across three empirical functional axes (\textit{Slfn2-Sap30-Ddit4}, \textit{Sall1-Tmem119-Ffar2-Llgl2}, \textit{Fosb-Fos}).}
 \label{fig:figs6}
+\end{figure}
+
+\clearpage
+
+% Figure S7
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig_s7_deconvolution_diagnostics.pdf}
+\caption{\textbf{BayesPrism Deconvolution Mathematical Diagnostics and Cell Lineage Stability.} 
+(A) Singular Value Decomposition (SVD) condition index scree plot confirming zero harmful multicollinearity ($\kappa = 1.54 < 30$). 
+(B) Pan-microglial lineage marker stability across cohorts (\textit{Hexb}, \textit{Csf1r}, \textit{Tmem119}; $p = 0.85$).}
+\label{fig:figs7}
+\end{figure}
+
+\clearpage
+
+% Figure S8
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig_s8_extended_nichenet.pdf}
+\caption{\textbf{Extended NicheNet Upstream Ligand-Receptor Relay and Regulatory Potential Matrix.} 
+(A) Upstream ligand activity ranking by candidate sender compartment (BMEC brain endothelium, BAM border macrophages, and circulating microbial PAMPs). 
+(B) In silico ligand-to-target regulatory matrix heatmap linking prioritized upstream ligands to microglial IRF1 regulon targets.}
+\label{fig:figs8}
+\end{figure}
+
+\clearpage
+
+% Figure S9
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/fig_s9_scfa_rescue_specificity_null.pdf}
+\caption{\textbf{In Silico SCFA Metabolite Specificity Null Permutation and Ranked ISRI Waterfall.} 
+(A) Empirical label-shuffling specificity null distribution across 10,000 permutations comparing observed core signature recovery ($\text{mean ISRI} = +0.528$, red dashed line) against the chance null ($\mu = 0.001 \pm 0.125, p_{\text{perm}} < 0.0001$). 
+(B) Ranked In Silico Rescue Index (ISRI) waterfall plot across landmark microglial genes, demonstrating coordinate reciprocal rescue in 18 of 19 loci upon in vivo SCFA repletion.}
+\label{fig:figs9}
 \end{figure}
 
 \end{document}
